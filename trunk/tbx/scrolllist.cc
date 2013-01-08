@@ -1,7 +1,7 @@
 /*
  * tbx RISC OS toolbox library
  *
- * Copyright (C) 2010 Alan Buckley   All Rights Reserved.
+ * Copyright (C) 2010-2012 Alan Buckley   All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -421,10 +421,10 @@ static void scrolllist_selection_router(IdBlock &id_block, PollBlock &data, List
 
 
 /**
- * Add listener for when the value of the number range changes
+ * Add listener for when the selected items changes
  *
- * The default value change event must have been enabled in the resources
- * for this number range.
+ * The default Selection listener event must have been enabled in the resources
+ * for this scroll list for the event listener to be called.
  *
  * @param listener listener to add
  */
@@ -434,7 +434,7 @@ void ScrollList::add_selection_listener(ScrollListSelectionListener *listener)
 }
 
 /**
- * Remove listener for when the value of the number range changes
+ * Remove listener for when the selected items changes
  *
  * @param listener listener to remove
  */
