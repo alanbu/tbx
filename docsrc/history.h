@@ -1,6 +1,9 @@
 /**
  * @page history History/Changelog
  *
+ * <B>0.7 Alpha ??? </B>
+ * - Minor documentation fixes
+ *
  * <B>0.6 Alpha September 2012</B>
  * - Fixed incorrect return value from Font class string_width methods
  * - Add a few more methods to the WindowInfo class

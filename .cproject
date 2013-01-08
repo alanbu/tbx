@@ -48,8 +48,18 @@
 							<tool id="cdt.managedbuild.tool.gnu.cpp.linker.cygwin.base.426588506" name="Cygwin C++ Linker" superClass="cdt.managedbuild.tool.gnu.cpp.linker.cygwin.base"/>
 						</toolChain>
 					</folderInfo>
+					<folderInfo id="cdt.managedbuild.config.gnu.cygwin.lib.debug.2143117164.120347687" name="/" resourcePath="apps">
+						<toolChain id="cdt.managedbuild.toolchain.gnu.cygwin.lib.debug.2003779889" name="Cygwin GCC" superClass="cdt.managedbuild.toolchain.gnu.cygwin.lib.debug" unusedChildren="">
+							<tool id="cdt.managedbuild.tool.gnu.assembler.cygwin.lib.debug.917162704" name="GCC Assembler" superClass="cdt.managedbuild.tool.gnu.assembler.cygwin.lib.debug.501602755"/>
+							<tool id="cdt.managedbuild.tool.gnu.archiver.cygwin.lib.debug.2058305286" name="GCC Archiver" superClass="cdt.managedbuild.tool.gnu.archiver.cygwin.lib.debug.535492089"/>
+							<tool id="cdt.managedbuild.tool.gnu.cpp.compiler.cygwin.lib.debug.156065375" name="Cygwin C++ Compiler" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.cygwin.lib.debug.1278851034"/>
+							<tool id="cdt.managedbuild.tool.gnu.c.compiler.cygwin.lib.debug.1476203104" name="Cygwin C Compiler" superClass="cdt.managedbuild.tool.gnu.c.compiler.cygwin.lib.debug.617741205"/>
+							<tool id="cdt.managedbuild.tool.gnu.c.linker.cygwin.base.797455363" name="Cygwin C Linker" superClass="cdt.managedbuild.tool.gnu.c.linker.cygwin.base.1816546129"/>
+							<tool id="cdt.managedbuild.tool.gnu.cpp.linker.cygwin.base.36408712" name="Cygwin C++ Linker" superClass="cdt.managedbuild.tool.gnu.cpp.linker.cygwin.base.426588506"/>
+						</toolChain>
+					</folderInfo>
 					<sourceEntries>
-						<entry excluding="examples|!TBX|tests" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
+						<entry excluding="apps|examples|!TBX|tests" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>
