@@ -1,7 +1,7 @@
 /*
  * tbx RISC OS toolbox library
  *
- * Copyright (C) 2010-2011 Alan Buckley   All Rights Reserved.
+ * Copyright (C) 2010-2012 Alan Buckley   All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -420,6 +420,38 @@ UTCTime Path::modified_time() const
 	PathInfo info;
 	info.read(_name);
 	return info.modified_time();
+}
+
+/**
+ * Return the objects file attributes
+ *
+ * The lower byte of the attributes are 0 or more of the values in
+ * the PathInfo::Attribute enum ored together.
+ *
+ * @returns file attributes of the object
+ */
+int Path::attributes() const
+{
+	PathInfo info;
+	info.read(_name);
+	return info.attributes();
+}
+
+/**
+ * Set the attributes of an object
+ *
+ * @param new_attributes new set of attributes (see PathInfo::Attribute)
+ * @returns true if successful
+ */
+bool Path::attributes(int new_attributes)
+{
+	_kernel_swi_regs regs;
+
+	regs.r[0] = 4;
+	regs.r[1] = reinterpret_cast<int>(_name.c_str());
+	regs.r[5] = new_attributes;
+
+	return (_kernel_swi(OS_File, &regs, &regs) == 0);
 }
 
 
@@ -1354,6 +1386,9 @@ int PathInfo::length() const
 
 /**
  * Return the objects file attributes
+ *
+ * The lower byte of the attributes are 0 or more of the values in
+ * the PathInfo::Attribute enum ored together.
  *
  * @returns file attributes of the object
  */

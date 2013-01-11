@@ -1,7 +1,8 @@
 /**
  * @page history History/Changelog
  *
- * <B>0.7 Alpha ??? </B>
+ * <B>0.7 Alpha ???</B>
+ * - Add attributes enum and setting for Path class
  * - Minor documentation fixes
  *
  * <B>0.6 Alpha September 2012</B>

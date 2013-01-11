@@ -104,6 +104,7 @@ namespace tbx
 
 	class Path;
 
+
 	/**
 	 * Class to hold the catalogue information for a file.
 	 */
@@ -127,6 +128,17 @@ namespace tbx
 			DIRECTORY, /*!< Path is a directory */
 			IMAGE_FILE /*!< Path is an image file */
 		};
+
+        /*! Attributes of an object. 0 or more of these will be combined using the | operation. */
+        enum Attribute
+        {
+           OWNER_READ = 0x1,   /*! Read access for owner */
+           OWNER_WRITE = 0x2,  /*! Write access for owner */
+           OWNER_LOCKED = 0x8, /*! Object locked against owner deletion */
+           OTHER_READ = 0x10,  /*! Read access for others */
+           OTHER_WRITE = 0x20, /*! Write access for others */
+           OTHER_LOCKED = 0x80 /*! Object locked against others deletion */
+        };
 
 		/**
 		 * Get the leaf name of the object the information if for
@@ -290,7 +302,6 @@ namespace tbx
 		std::string leaf_name() const;
 
 		PathInfo::ObjectType object_type() const;
-
 		bool path_info(PathInfo &info) const;
 
 		bool exists() const;
@@ -304,6 +315,10 @@ namespace tbx
 		static int file_type(const std::string &file_name);
 		static bool file_type(const std::string &file_name, int type);
 		int raw_file_type() const;
+
+		int attributes() const;
+		bool attributes(int new_attributes);
+
 
 		UTCTime modified_time() const;
 //TODO:		bool modified_time(const UTCTime &utcTime);
