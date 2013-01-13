@@ -1,7 +1,7 @@
 /*
  * tbx RISC OS toolbox library
  *
- * Copyright (C) 2010 Alan Buckley   All Rights Reserved.
+ * Copyright (C) 2010-2013 Alan Buckley   All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -549,7 +549,39 @@ Gadget Window::from_handle(WindowHandle window_handle, IconHandle icon_handle, W
 void Window::get_state(WindowState &state) const
 {
 	state._window_handle = window_handle();
-	swix_check(_swix(Wimp_GetWindowState, _IN(1), &(state._window_handle)));
+	swix_check(_swix(Wimp_GetWindowState, _INR(1,2), &(state._window_handle),0));
+}
+
+/**
+ * Gets a summary of the current state of the window.
+ *
+ * Usually this call isn't needed as the main information
+ * it returns is given during redraw events anyway.
+ *
+ * It can be useful if the state is required outside of
+ * a redraw event or if the window flags are required.
+ *
+ * This version alsoe returns the parent window and alignment flags
+ * for sub windows
+ *
+ * @param state window state structure to update with the state
+ * @param parent Updated to parent window of a subwindow (may be null())
+ * @param align_flags alignment flags of a subwindow
+ * @throws OsError unable to retrieve state for window.
+ */
+void Window::get_state(WindowState &state, Window &parent, int &align_flags) const
+{
+    WindowHandle pwh;
+	state._window_handle = window_handle();
+	swix_check(_swix(Wimp_GetWindowState, _INR(1,2)|_OUTR(3,4),
+	 &(state._window_handle),
+     0x4b534154, // "TASK" magic word to mean use extended call
+     &pwh,
+     &align_flags
+	 ));
+
+	 if (pwh == -1) parent = Window();
+	 else parent = Window::from_handle(pwh);
 }
 
 /**
@@ -577,7 +609,29 @@ void Window::get_info(WindowInfo &info) const
  */
 void Window::open_window(const WindowOpenInfo &open_info)
 {
-	swix_check(_swix(Wimp_OpenWindow, _IN(1), &(open_info._window_handle)));
+	swix_check(_swix(Wimp_OpenWindow, _INR(1,2),
+	        &(open_info._window_handle),
+	        0 // Ensure non-extended version is used
+	        ));
+}
+
+/**
+ * Open a window as a subwindow.
+ *
+ * A subwindow is a child window nested inside another window
+ *
+ * @param open_info new information to be used by the window.
+ * @param parent Window to make this a subwindow of
+ * @param align_flags use one the AlignFlags to specify how the edges of
+ * the subwindow are aligned to its parent window.
+ */
+void Window::open_subwindow(const WindowOpenInfo &open_info, Window &parent, unsigned int align_flags)
+{
+    swix_check(_swix(Wimp_OpenWindow, _INR(1,4),
+            &(open_info._window_handle),
+            0x4b534154, // "TASK" magic word to mean use extended call
+            parent.window_handle(),
+            align_flags));
 }
 
 /**

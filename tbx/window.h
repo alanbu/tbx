@@ -226,8 +226,30 @@ namespace tbx
 		void update(const BBox &bounds, RedrawListener *background);
 		void update(const BBox &bounds, RedrawListener **redrawers, int redrawer_count);
 		void get_state(WindowState &state) const;
+		void get_state(WindowState &state, Window &parent, int &align_flags) const;
 		void get_info(WindowInfo &info) const;
 		void open_window(const WindowOpenInfo &open_info);
+
+        /**
+         * Flags specifying how to align a subwindow in it's parent
+         */
+        enum AlignFlags
+        {
+           ALIGN_NONE = 0x0000, //!< All edges aligned to work area
+           ALIGN_LEFT_VISIBLE_LEFT = 0x0010000, //!< Left edge linked to left of visible area
+           ALIGN_LEFT_VISIBLE_RIGHT = 0x0020000, //!< Left edge linked to right of visible area
+           ALIGN_BOTTOM_VISIBLE_BOTTOM = 0x0040000, //!< Bottom edge linked to bottom of visible area
+           ALIGN_BOTTOM_VISIBLE_TOP = 0x0080000, //!< Bottom edge linked to right of visible area
+           ALIGN_RIGHT_VISIBLE_LEFT = 0x0100000, //!< Right edge linked to left of visible area
+           ALIGN_RIGHT_VISIBLE_RIGHT = 0x0200000, //!< Right edge linked to right of visible area
+           ALIGN_TOP_VISIBLE_BOTTOM  = 0x0400000, //!< Top edge linked to bottom of visible area
+           ALIGN_TOP_VISIBLE_TOP = 0x0800000, //!< Top edge linked to top of visible area
+           ALIGN_X_SCROLL_VISIBLE_LEFT = 0x100000, //!< X scroll linked to left of visible area
+           ALIGN_X_SCROLL_VISIBLE_RIGHT = 0x200000, //!< X scroll linked to right of visible area
+           ALIGN_Y_SCROLL_VISIBLE_BOTTOM = 0x400000, //!< Y scroll linked to bottom of visible area
+           ALIGN_Y_SCROLL_VISIBLE_TOP= 0x800000  //!< Y scroll linked to top of visible area
+        };
+		void open_subwindow(const WindowOpenInfo &open_info , Window &parent, unsigned int align_flags = ALIGN_NONE);
 		void scroll(int x, int y);
 		void scroll(const Point &pos);
 		Point scroll() const;
@@ -491,7 +513,7 @@ namespace tbx
         /**
          * Work area background colour
          *
-         * @returns WimpColour for the work area background or 
+         * @returns WimpColour for the work area background or
 		 * WimpColour::no_colour if the Wimp does not draw the background.
          */
 		WimpColour work_area_background() const {return WimpColour(_work_area_background);}
