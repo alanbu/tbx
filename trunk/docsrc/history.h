@@ -2,6 +2,7 @@
  * @page history History/Changelog
  *
  * <B>0.7 Alpha ???</B>
+ * - show_as_subwindow added to Window class to show a child window attached to a parent
  * - Add attributes enum and setting for Path class
  * - Minor documentation fixes
  *

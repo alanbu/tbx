@@ -1,7 +1,7 @@
 /*
  * tbx RISC OS toolbox library
  *
- * Copyright (C) 2010-2012 Alan Buckley   All Rights Reserved.
+ * Copyright (C) 2010-2013 Alan Buckley   All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -29,6 +29,7 @@
 #include "pollinfo.h"
 #include "visiblearea.h"
 #include "colour.h"
+#include "showsubwindowspec.h"
 
 namespace tbx
 {
@@ -150,6 +151,8 @@ namespace tbx
 		 */
 		bool operator!=(const Object &other) const {return (_handle != other.handle());}
 
+		void show_as_subwindow(const ShowSubWindowSpec &spec);
+
 		Gadget gadget(ComponentId component_id);
 
 		static Window from_handle(WindowHandle window_handle);
@@ -230,26 +233,7 @@ namespace tbx
 		void get_info(WindowInfo &info) const;
 		void open_window(const WindowOpenInfo &open_info);
 
-        /**
-         * Flags specifying how to align a subwindow in it's parent
-         */
-        enum AlignFlags
-        {
-           ALIGN_NONE = 0x0000, //!< All edges aligned to work area
-           ALIGN_LEFT_VISIBLE_LEFT = 0x0010000, //!< Left edge linked to left of visible area
-           ALIGN_LEFT_VISIBLE_RIGHT = 0x0020000, //!< Left edge linked to right of visible area
-           ALIGN_BOTTOM_VISIBLE_BOTTOM = 0x0040000, //!< Bottom edge linked to bottom of visible area
-           ALIGN_BOTTOM_VISIBLE_TOP = 0x0080000, //!< Bottom edge linked to right of visible area
-           ALIGN_RIGHT_VISIBLE_LEFT = 0x0100000, //!< Right edge linked to left of visible area
-           ALIGN_RIGHT_VISIBLE_RIGHT = 0x0200000, //!< Right edge linked to right of visible area
-           ALIGN_TOP_VISIBLE_BOTTOM  = 0x0400000, //!< Top edge linked to bottom of visible area
-           ALIGN_TOP_VISIBLE_TOP = 0x0800000, //!< Top edge linked to top of visible area
-           ALIGN_X_SCROLL_VISIBLE_LEFT = 0x100000, //!< X scroll linked to left of visible area
-           ALIGN_X_SCROLL_VISIBLE_RIGHT = 0x200000, //!< X scroll linked to right of visible area
-           ALIGN_Y_SCROLL_VISIBLE_BOTTOM = 0x400000, //!< Y scroll linked to bottom of visible area
-           ALIGN_Y_SCROLL_VISIBLE_TOP= 0x800000  //!< Y scroll linked to top of visible area
-        };
-		void open_subwindow(const WindowOpenInfo &open_info , Window &parent, unsigned int align_flags = ALIGN_NONE);
+		void open_subwindow(const WindowOpenInfo &open_info , Window &parent, unsigned int align_flags = 0);
 		void scroll(int x, int y);
 		void scroll(const Point &pos);
 		Point scroll() const;
