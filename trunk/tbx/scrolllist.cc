@@ -1,7 +1,7 @@
 /*
  * tbx RISC OS toolbox library
  *
- * Copyright (C) 2010-2012 Alan Buckley   All Rights Reserved.
+ * Copyright (C) 2010-2013 Alan Buckley   All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -87,13 +87,15 @@ void ScrollList::add_item(const std::string &text, const WimpSprite &sprite, int
 void ScrollList::add_item(const std::string &text, const UserSprite &sprite, int index /*= -1*/)
 {
 	_kernel_swi_regs regs;
-	regs.r[0] = 0;
+	regs.r[0] = 1;
 	regs.r[2] = 0x401c;
 	regs.r[1] = _handle;
 	regs.r[3] = _id;
 	regs.r[4] = reinterpret_cast<int>(const_cast<char *>(text.c_str() ));
 	regs.r[5] = reinterpret_cast<int>(sprite.get_sprite_area()->pointer());
-	regs.r[6] = reinterpret_cast<int>(sprite.pointer());
+//	regs.r[6] = reinterpret_cast<int>(sprite.pointer());
+    std::string name = sprite.name();
+	regs.r[6] = reinterpret_cast<int>(const_cast<char *>(name.c_str()));
 	regs.r[7] = index;
 	swix_check(_kernel_swi(0x44ec6, &regs, &regs));
 }
