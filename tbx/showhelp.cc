@@ -1,7 +1,7 @@
 /*
  * tbx RISC OS toolbox library
  *
- * Copyright (C) 2010 Alan Buckley   All Rights Reserved.
+ * Copyright (C) 2010-2013 Alan Buckley   All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -48,7 +48,7 @@ ShowHelp::~ShowHelp()
  */
 void ShowHelp::execute()
 {
-	std::string cmd("Filer_Run " + app()->directory() + ".!Help");
+	std::string cmd("Filer_Run " + app()->directory() + "!Help");
 	_kernel_oscli(cmd.c_str());
 }
 }
