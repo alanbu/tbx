@@ -4,6 +4,9 @@
  * <B>0.7 Alpha ???</B>
  * - show_as_subwindow added to Window class to show a child window attached to a parent
  * - Add attributes enum and setting for Path class
+ * - Modifed Application::directory method to return directory as a path 
+ *   (i.e. with a dot added if it was specified as just a directory initially)
+ *   so it returns consistent results on RISC OS 4 and 5.
  * - Minor documentation fixes
  *
  * <B>0.6 Alpha September 2012</B>
