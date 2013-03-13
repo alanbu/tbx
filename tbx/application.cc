@@ -490,6 +490,12 @@ res::ResObject Application::resource(std::string template_name)
 /**
  * Return the name of the directory that was used to initialised this
  * application.
+ *
+ * RISC OS 5 always returns this as a path, so may have appended a
+ * '.' to the name. RISC OS 4.0.2 doesn't do this.
+ *
+ * For consistency this function returns it in the RISC OS 5 format
+ * whatever the OS.
  */
 std::string Application::directory() const
 {
@@ -500,10 +506,15 @@ std::string Application::directory() const
     std::string dir;
     if (len)
     {
-    	char buffer[len];
+    	char buffer[len+1];
         swix_check(_swix(0x44ECE, _INR(0,2), 2,
     		   reinterpret_cast<int>(buffer),
     		   len));
+        if (buffer[len-2] != '.' && buffer[len-2] != ':')
+        {
+        	buffer[len-1] = '.';
+        	buffer[len] = 0;
+        }
         dir = buffer;
     }
 
