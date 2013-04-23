@@ -197,7 +197,7 @@ namespace tbx
 			 BBox scr_box;
 			 screen(work_box.min, scr_box.min);
 			 screen(work_box.max, scr_box.max);
-			 return work_box;
+			 return scr_box;
 		 }
 	};
 }
