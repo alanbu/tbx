@@ -7,6 +7,8 @@
  * - Modifed Application::directory method to return directory as a path 
  *   (i.e. with a dot added if it was specified as just a directory initially)
  *   so it returns consistent results on RISC OS 4 and 5.
+ * - Fixed bug in VisibleArea::screen methods for a BBox. It was returning
+ *   the original rectangle not the screen rectangle.
  * - Minor documentation fixes
  *
  * <B>0.6 Alpha September 2012</B>
