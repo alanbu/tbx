@@ -183,6 +183,7 @@ void Saver::SaverImpl::user_message(WimpMessageEvent &event)
 	switch(event.message().message_id())
 	{
 	case 2: // DataSaveAck - want file via file transfer
+		_safe = (event.message().word(9) != -1);
 		if (_save_to_file_handler)
 		{
 			Saver saver(this);
@@ -191,7 +192,6 @@ void Saver::SaverImpl::user_message(WimpMessageEvent &event)
 			_save_to_file_handler->saver_save_to_file(saver, event.message().str(11));
 			event.claim();
 		}
-		_safe = (event.message().word(9) != -1);
 		break;
 
 	case 4: // DataLoadAck - target application has successfully loaded the app
