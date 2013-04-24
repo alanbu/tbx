@@ -245,6 +245,7 @@ namespace tbx
 		Point top_left() const;
 		void bounds(const BBox &bounds);
 		BBox bounds() const;
+		BBox outline() const;
 
 		void block_copy(const BBox &bounds, const Point &to);
 
