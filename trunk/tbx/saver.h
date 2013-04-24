@@ -69,7 +69,6 @@ class Saver
 		int _reply_to;
 		int _my_ref;
 		int _msg_ref;
-		bool _safe;
 		char *_source_buffer;
 		char *_dest_buffer;
 		int _dest_size;
@@ -86,6 +85,7 @@ class Saver
 		std::string _leaf_name;
 		int _file_type;
 		int _file_size;
+		bool _safe;
 		SaverSaveToFileHandler *_save_to_file_handler;
 		SaverFillBufferHandler *_fill_buffer_handler;
 		SaverSaveCompletedHandler *_completed_handler;
@@ -140,6 +140,13 @@ public:
 	 * Get the file size from the SaveAs object
 	 */
 	int file_size() const {return _impl->_file_size;}
+
+	/**
+	 * Check if the save is to a safe locations.
+	 *
+	 * This is set before the save to file handler is called.
+	 */
+	bool safe() const {return _impl->_safe;}
 
 
 //TODO: See if this is needed: void set_data_address(void *data, int size);
