@@ -821,6 +821,26 @@ BBox Window::bounds() const
 }
 
 /**
+ * Get the bounding box that completely covers the window on the
+ * screen.
+ *
+ * Note: The window must be visible for this call if the Nested
+ * Window Manager is not installed.
+ *
+ * @returns Bounding box for window (min inclusive, max exclusive).
+ * @throws OsError if call fails
+ */
+BBox Window::outline() const
+{
+	int block[5];
+	block[0] = window_handle();
+    swix_check(_swix(Wimp_GetWindowOutline, _IN(1), block));
+
+	return BBox(block[1],block[2],block[3],block[4]);
+}
+
+
+/**
  * Fast copy of a part of the work area to somewhere else.
  *
  * Uses VDU primitives where possible and invalidates other areas.

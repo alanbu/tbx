@@ -7,6 +7,7 @@
  * - Modifed Application::directory method to return directory as a path 
  *   (i.e. with a dot added if it was specified as just a directory initially)
  *   so it returns consistent results on RISC OS 4 and 5.
+ * - Added Window::outline to return the area covered by the window on the desktop
  * - Fixed bug in VisibleArea::screen methods for a BBox. It was returning
  *   the original rectangle not the screen rectangle.
  * - Minor documentation fixes
