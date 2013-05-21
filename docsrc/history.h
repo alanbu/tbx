@@ -1,7 +1,7 @@
 /**
  * @page history History/Changelog
  *
- * <B>0.7 Alpha ???</B>
+ * <B>0.7 Alpha May 2013</B>
  * - show_as_subwindow added to Window class to show a child window attached to a parent
  * - Add attributes enum and setting for Path class
  * - Modifed Application::directory method to return directory as a path 
