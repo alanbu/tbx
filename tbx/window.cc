@@ -97,6 +97,8 @@ Gadget Window::add_gadget(const res::ResGadget &gadget_template)
  * Remove a gadget from the window.
  *
  * If the window is visible this will cause a redraw of the Window
+ *
+ * Automatically removes any listeners that were added to the gadget
  */
 void Window::remove_gadget(ComponentId component_id)
 {
@@ -107,6 +109,9 @@ void Window::remove_gadget(ComponentId component_id)
 	regs.r[3] = component_id;
 
 	swix_check(_kernel_swi(0x44ec6, &regs, &regs));
+
+	Gadget g(_handle, component_id);
+	g.remove_all_listeners();
 }
 
 
