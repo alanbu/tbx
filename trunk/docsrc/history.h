@@ -1,6 +1,10 @@
 /**
  * @page history History/Changelog
  *
+ *
+ * <B>0.8 Alpha ????</B>
+ * - Window::remove_gadget now removes all listeners for the gadget
+ *
  * <B>0.7 Alpha May 2013</B>
  * - show_as_subwindow added to Window class to show a child window attached to a parent
  * - Add attributes enum and setting for Path class
