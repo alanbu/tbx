@@ -68,11 +68,17 @@ namespace tbx
 		void paint(int x, int y, const std::string &text, int flags = Font::FPF_NONE) const;
 		void paint(int x, int y, const char *text, int length = -1, int flags = Font::FPF_NONE) const;
 
-		int string_width_mp(const std::string &text);
-		int string_width_mp(const char *text, int length = -1);
-		int string_width_os(const std::string &text);
-		int string_width_os(const char *text, int length = -1);
-		int string_height_os(const char *text, int length = -1, int max_width  = -1);
+		int string_width_mp(const std::string &text) const;
+		int string_width_mp(const char *text, int length = -1) const;
+		int string_width_os(const std::string &text) const;
+		int string_width_os(const char *text, int length = -1) const;
+		int string_height_os(const std::string &text, int max_width = -1) const;
+		int string_height_os(const char *text, int length = -1, int max_width  = -1) const;
+		tbx::Size string_size_os(const std::string &text, int max_width = -1) const;
+		tbx::Size string_size_os(const char *text, int length = -1, int max_width  = -1) const;
+		tbx::BBox string_bounds_os(const std::string &text, int max_width = -1) const;
+		tbx::BBox string_bounds_os(const char *text, int length = -1, int max_width  = -1) const;
+
 		void get_char_bounds_mp(BBox &bounds, char c);
 		void get_char_bounds_os(BBox &bounds, char c);
 
