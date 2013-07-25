@@ -59,7 +59,6 @@ Font::Font()
  */
 Font::Font(const Font &other)
 {
-	_font_ref->release();
 	_font_ref = other._font_ref;
 	_font_ref->add_ref();
 }
@@ -206,7 +205,7 @@ void Font::paint(int x, int y, const char *text, int length /*= -1*/, int flags 
  *@param text the string to measure
  *@returns length of string in millipoints
  */
-int Font::string_width_mp(const std::string &text)
+int Font::string_width_mp(const std::string &text) const
 {
 	_kernel_swi_regs regs;
 	regs.r[0] = _font_ref->handle;
@@ -228,7 +227,7 @@ int Font::string_width_mp(const std::string &text)
  * @param length length of string or -1 to measure to terminating char 0
  * @returns width of string in millipoints
  */
-int Font::string_width_mp(const char *text, int length /*= -1*/)
+int Font::string_width_mp(const char *text, int length /*= -1*/) const
 {
 	_kernel_swi_regs regs;
 	regs.r[0] = _font_ref->handle;
@@ -251,7 +250,7 @@ int Font::string_width_mp(const char *text, int length /*= -1*/)
  *@param text the string to measure
  *@returns length of string in OS units
  */
-int Font::string_width_os(const std::string &text)
+int Font::string_width_os(const std::string &text) const
 {
 	_kernel_swi_regs regs;
 	regs.r[0] = _font_ref->handle;
@@ -274,7 +273,7 @@ int Font::string_width_os(const std::string &text)
  * @param length length of string or -1 to measure to terminating char 0
  * @returns width of string in os units
  */
-int Font::string_width_os(const char *text, int length /*= -1*/)
+int Font::string_width_os(const char *text, int length /*= -1*/) const
 {
 	_kernel_swi_regs regs;
 	regs.r[0] = _font_ref->handle;
@@ -300,7 +299,7 @@ int Font::string_width_os(const char *text, int length /*= -1*/)
  * @parma max_width maximum width of string is os units or -1 for maximum possible
  * @returns height of string in os units
  */
-int Font::string_height_os(const char *text, int length /*= -1*/, int max_width /* = -1 */)
+int Font::string_height_os(const char *text, int length /*= -1*/, int max_width /* = -1 */) const
 {
 	_kernel_swi_regs regs;
 	regs.r[0] = _font_ref->handle;
@@ -316,6 +315,193 @@ int Font::string_height_os(const char *text, int length /*= -1*/, int max_width 
 
 	// 400 OS units to the millipoint
 	return (-regs.r[4] + 399) / 400;
+}
+
+/**
+ * Get height of string in os units
+ *
+ * @param text string to measure
+ * @parma max_width maximum width of string is os units or -1 for maximum possible
+ * @returns height of string in os units
+ */
+int Font::string_height_os(const std::string &text, int max_width /*= -1*/) const
+{
+	_kernel_swi_regs regs;
+	regs.r[0] = _font_ref->handle;
+	regs.r[1] = reinterpret_cast<int>(text.c_str());
+	regs.r[2] = 256 | 512; // Handle is in r0 and kerning is on
+	regs.r[3] = (max_width == -1) ? 0x70000000 : max_width * 400;
+	regs.r[4] = -0x70000000;
+	regs.r[2] |= (1<<7); // Use string length
+	regs.r[7] = text.size();
+
+	// Font_ScanString
+	swix_check(_kernel_swi(0x400A1, &regs, &regs));
+
+	// 400 OS units to the millipoint
+	return (-regs.r[4] + 399) / 400;
+}
+
+// Round millipoint to os units down
+inline int round_down_mp_to_os(int mp)
+{
+	return (mp > 0) ? (mp/400) : ((mp-399)/400);
+}
+
+// Round millipoint to os units down
+inline int round_up_mp_to_os(int mp)
+{
+	return (mp > 0) ? ((mp+399)/400) : (mp/400);
+}
+
+/**
+ * Get size of string in os units
+ *
+ * @param text string to measure
+ * @parma max_width maximum width of string is os units or -1 for maximum possible
+ * @returns size of string in os units
+ */
+tbx::Size Font::string_size_os(const std::string &text, int max_width /*= -1*/) const
+{
+	_kernel_swi_regs regs;
+	int block[9];
+	regs.r[0] = _font_ref->handle;
+	regs.r[1] = reinterpret_cast<int>(text.c_str());
+	regs.r[2] = 256 | 512; // Handle is in r0 and kerning is on
+	regs.r[3] = (max_width == -1) ? 0x70000000 : max_width * 400;
+	regs.r[4] = -0x70000000;
+	regs.r[2] |= (1<<7); // Use string length
+	regs.r[7] = text.size();
+	regs.r[2] |= (1<<5) | (1<< 18); // use r5 return bounding block
+	regs.r[5] = reinterpret_cast<int>(block);
+	block[0] = block[1] = 0; // additional x, y offset on space
+	block[2] = block[3] = 0; // additional x, y offset between each letter
+	block[4] = -1;           // split character (-1 => none)
+
+	// Font_ScanString
+	swix_check(_kernel_swi(0x400A1, &regs, &regs));
+
+	// convert to os units
+	tbx::BBox box;
+	box.min.x = round_down_mp_to_os(block[5]);
+	box.min.y = round_down_mp_to_os(block[6]);
+	box.max.x = round_up_mp_to_os(block[7]);
+	box.max.y = round_up_mp_to_os(block[8]);
+
+	return box.size();
+}
+
+/**
+ * Get size of string in os units
+ *
+ * @param text string to measure
+ * @param length length of string or -1 to measure to terminating char 0
+ * @parma max_width maximum width of string is os units or -1 for maximum possible
+ * @returns size of of string in os units
+ */
+tbx::Size Font::string_size_os(const char *text, int length /*= -1*/, int max_width /* = -1*/) const
+{
+	_kernel_swi_regs regs;
+	int block[9];
+	regs.r[0] = _font_ref->handle;
+	regs.r[1] = reinterpret_cast<int>(text);
+	regs.r[2] = 256 | 512; // Handle is in r0 and kerning is on
+	regs.r[3] = (max_width == -1) ? 0x70000000 : max_width * 400;
+	regs.r[4] = -0x70000000;
+	if (length > 0) regs.r[2] |= (1<<7); // Use string length
+	regs.r[7] = length;
+	regs.r[2] |= (1<<5) | (1<< 18); // use r5 and return bounding block
+	regs.r[5] = reinterpret_cast<int>(block);
+	block[0] = block[1] = 0; // additional x, y offset on space
+	block[2] = block[3] = 0; // additional x, y offset between each letter
+	block[4] = -1;           // split character (-1 => none)
+
+	// Font_ScanString
+	swix_check(_kernel_swi(0x400A1, &regs, &regs));
+
+	// convert to os units
+	tbx::BBox box;
+	box.min.x = round_down_mp_to_os(block[5]);
+	box.min.y = round_down_mp_to_os(block[6]);
+	box.max.x = round_up_mp_to_os(block[7]);
+	box.max.y = round_up_mp_to_os(block[8]);
+
+	return box.size();
+}
+
+/**
+ * Get bounding box of a string in os units
+ *
+ * @param text string to measure
+ * @parma max_width maximum width of string is os units or -1 for maximum possible
+ * @returns bounding box of string in os units
+ */
+tbx::BBox Font::string_bounds_os(const std::string &text, int max_width /*= -1*/) const
+{
+	_kernel_swi_regs regs;
+	int block[9];
+	regs.r[0] = _font_ref->handle;
+	regs.r[1] = reinterpret_cast<int>(text.c_str());
+	regs.r[2] = 256 | 512; // Handle is in r0 and kerning is on
+	regs.r[3] = (max_width == -1) ? 0x70000000 : max_width * 400;
+	regs.r[4] = -0x70000000;
+	regs.r[2] |= (1<<7); // Use string length
+	regs.r[7] = text.size();
+	regs.r[2] |= (1<<5) | (1<< 18); // use r5 return bounding block
+	regs.r[5] = reinterpret_cast<int>(block);
+	block[0] = block[1] = 0; // additional x, y offset on space
+	block[2] = block[3] = 0; // additional x, y offset between each letter
+	block[4] = -1;           // split character (-1 => none)
+
+	// Font_ScanString
+	swix_check(_kernel_swi(0x400A1, &regs, &regs));
+
+	// convert to os units
+	tbx::BBox box;
+	box.min.x = round_down_mp_to_os(block[5]);
+	box.min.y = round_down_mp_to_os(block[6]);
+	box.max.x = round_up_mp_to_os(block[7]);
+	box.max.y = round_up_mp_to_os(block[8]);
+
+	return box;
+}
+
+/**
+ * Get bounding box of string in os units
+ *
+ * @param text string to measure
+ * @param length length of string or -1 to measure to terminating char 0
+ * @parma max_width maximum width of string is os units or -1 for maximum possible
+ * @returns bounding box of string in os units
+ */
+tbx::BBox Font::string_bounds_os(const char *text, int length /*= -1*/, int max_width  /*= -1*/) const
+{
+	_kernel_swi_regs regs;
+	int block[9];
+	regs.r[0] = _font_ref->handle;
+	regs.r[1] = reinterpret_cast<int>(text);
+	regs.r[2] = 256 | 512; // Handle is in r0 and kerning is on
+	regs.r[3] = (max_width == -1) ? 0x70000000 : max_width * 400;
+	regs.r[4] = -0x70000000;
+	if (length > 0) regs.r[2] |= (1<<7); // Use string length
+	regs.r[7] = length;
+	regs.r[2] |= (1<<5) | (1<< 18); // use r5 and return bounding block
+	regs.r[5] = reinterpret_cast<int>(block);
+	block[0] = block[1] = 0; // additional x, y offset on space
+	block[2] = block[3] = 0; // additional x, y offset between each letter
+	block[4] = -1;           // split character (-1 => none)
+
+	// Font_ScanString
+	swix_check(_kernel_swi(0x400A1, &regs, &regs));
+
+	// convert to os units
+	tbx::BBox box;
+	box.min.x = round_down_mp_to_os(block[5]);
+	box.min.y = round_down_mp_to_os(block[6]);
+	box.max.x = round_up_mp_to_os(block[7]);
+	box.max.y = round_up_mp_to_os(block[8]);
+
+	return box;
 }
 
 /**
