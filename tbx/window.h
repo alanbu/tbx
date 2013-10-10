@@ -196,7 +196,7 @@ namespace tbx
 		 *
 		 * @returns the window title
 		 */
-		std::string title() const {return string_property(11);}
+		std::string title() const {return string_property(12);}
 		/**
 		 * Set the title (caption) of the window
 		 *
