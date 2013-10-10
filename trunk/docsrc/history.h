@@ -4,11 +4,12 @@
  *
  * <B>0.8 Alpha ????</B>
  * - Window::remove_gadget now removes all listeners for the gadget
+ * - Fixed Window::title() always through an exception
  * - Fixed crash in Font copy constructor
  * - Added string bounds and size methods to Font and made some of the existing methods const
  * - Added stringviewvalue.h header with template classes to always return ItemViewValues as string as
  * required by the WimpFontItemRenderer. It uses tbx::to_string to convert the item type to a string.
- * - Addedstringutils.h added overrides to to_string for simple conversion of char * and const std::string & types.
+ * - stringutils.h added overrides to to_string for simple conversion of char * and const std::string & types.
  *
  * <B>0.7 Alpha May 2013</B>
  * - show_as_subwindow added to Window class to show a child window attached to a parent
