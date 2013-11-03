@@ -10,11 +10,12 @@
  * - Added stringviewvalue.h header with template classes to always return ItemViewValues as string as
  * required by the WimpFontItemRenderer. It uses tbx::to_string to convert the item type to a string.
  * - stringutils.h added overrides to to_string for simple conversion of char * and const std::string & types.
+ * - added UserSprite iterator to SpriteArea class
  *
  * <B>0.7 Alpha May 2013</B>
  * - show_as_subwindow added to Window class to show a child window attached to a parent
  * - Add attributes enum and setting for Path class
- * - Modifed Application::directory method to return directory as a path 
+ * - Modifed Application::directory method to return directory as a path
  *   (i.e. with a dot added if it was specified as just a directory initially)
  *   so it returns consistent results on RISC OS 4 and 5.
  * - Added Window::outline to return the area covered by the window on the desktop

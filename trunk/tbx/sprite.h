@@ -272,6 +272,11 @@ namespace tbx
 		  static int calculate_mask_size(int width, int height, int mode);
 		  static int get_bits_per_pixel(int mode);
 
+          class iterator;
+
+		  iterator begin();
+		  iterator end();
+
 	   private:
 		  OsSpriteAreaPtr _area;
 		  bool _owns_area;
@@ -448,11 +453,11 @@ namespace tbx
            /**
             * Check if two sprite classes refer to the same underlying sprite
             */
-		   bool operator==(const UserSprite &other) {return _offset == other._offset && _area == other._area;}
+		   bool operator==(const UserSprite &other) const {return _offset == other._offset && _area == other._area;}
            /**
             * Check if two sprite classes DO NOT refer to the same underlying sprite
             */
-		   bool operator!=(const UserSprite &other) {return _offset != other._offset || _area != other._area;}
+		   bool operator!=(const UserSprite &other) const {return _offset != other._offset || _area != other._area;}
 
 		   /**
 		    * Check this sprite object is valid.
@@ -520,6 +525,46 @@ namespace tbx
 		   SpriteArea *_area; //!< Sprite area containing this sprite
 		   int _offset;       //!< offset of sprite within the sprite area
 	};
+
+    /**
+     * Iterator class for iterating through UserSprites in a sprite area
+     */
+    class SpriteArea::iterator
+    {
+    	  UserSprite _sprite;
+    	  friend class SpriteArea;
+
+    public:
+          /**
+           * Move to next sprite in the area
+           * @returns *this
+           */
+    	  iterator operator++() {next_sprite(); return *this;}
+    	  /**
+    	   * Move to next sprite in the area
+    	   * @returns copy of iterator before it was moved
+    	   */
+    	  iterator operator++(int) {iterator tmp(*this); next_sprite(); return tmp;}
+    	  /**
+    	   * Get the sprite the iterator is pointing at
+    	   */
+    	  UserSprite operator*() {return _sprite;}
+    	  /**
+    	   * See if iterators are equal
+    	   * @param other iterator to compare to
+    	   * @returns true if the iterators are equal
+    	   */
+    	  bool operator==(const iterator &other) const {return _sprite == other._sprite;}
+    	  /**
+    	   * See if iterators are not equal
+    	   * @param other iterator to compare to
+    	   * @returns true if the iterators are not equal
+    	   */
+    	  bool operator!=(const iterator &other) const {return _sprite != other._sprite;}
+
+    private:
+    	  void next_sprite();
+    };
 
     /**
      * Class to capture screen output to a sprite
