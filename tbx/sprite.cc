@@ -807,6 +807,50 @@ UserSprite SpriteArea::create_sprite_pixels(const std::string &name, int width, 
 }
 
 /**
+ * Move iterator to next sprite
+ *
+ * Uses an invalid (null) sprite to mark end of iterator
+ */
+void SpriteArea::iterator::next_sprite()
+{
+	if (_sprite.is_valid())
+	{
+		unsigned int *sprite_header = (unsigned int *)_sprite.pointer();
+		unsigned int next_offset = *sprite_header;
+		_sprite._offset += next_offset;
+		if (next_offset == 0 || _sprite._offset >= _sprite.get_sprite_area()->pointer()[3])
+		{
+			_sprite._area = 0;
+			_sprite._offset = 0;
+		}
+	}
+}
+
+/**
+ * Return an iterator to the first sprite in the sprite area
+ */
+SpriteArea::iterator SpriteArea::begin()
+{
+	iterator i;
+
+	if (_area[2])
+	{
+		i._sprite._area = this;
+		i._sprite._offset = _area[2];
+	}
+	return i;
+}
+
+/**
+ * Return an iterator to the sprite after the last one in the
+ * sprite area. This is always an invalid sprite
+ */
+SpriteArea::iterator SpriteArea::end()
+{
+   return iterator();
+}
+
+/**
  *  Calculate the memory required to create a sprite
  *
  *  @param width width of sprite in pixels
