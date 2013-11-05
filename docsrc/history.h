@@ -11,6 +11,8 @@
  * required by the WimpFontItemRenderer. It uses tbx::to_string to convert the item type to a string.
  * - stringutils.h added overrides to to_string for simple conversion of char * and const std::string & types.
  * - added UserSprite iterator to SpriteArea class
+ * - Replaced ModeInfo set/get mode methods with mode() and mode(int) to be consistant with other tbx setters and getters
+ * - Added static method ModeInfo::screen_mode to return the mode specifier for the current mode.
  *
  * <B>0.7 Alpha May 2013</B>
  * - show_as_subwindow added to Window class to show a child window attached to a parent
