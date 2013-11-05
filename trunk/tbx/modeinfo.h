@@ -59,12 +59,24 @@ class ModeInfo
       *
       * @param mode screen mode number
       */
-     void set_mode(int mode = -1) {_mode = mode;};
+     void mode(int mode = -1) {_mode = mode;};
+
+     /**
+      * Get to current sreen mode.
+      *
+      * This is the actual mode value and not -1 (which is
+      * used in some APIs to mean the current mode).
+      *
+      * This value is only avaliable on RISC OS 3.5 or later
+      *
+      * @returns the current screen mode
+      */
+     static int screen_mode();
 
      /**
       * Get the mode number information will be returned about
       */
-     int get_mode() const {return _mode;};
+     int mode() const {return _mode;};
 
      /**
       * Return the number of colours for the mode
@@ -156,6 +168,14 @@ inline Size ModeInfo::screen_size() const
 
    return Size(x,y);
 }
+
+inline int ModeInfo::screen_mode()
+{
+	int mode = 0;
+	_swix(OS_ScreenMode, _IN(0)|_OUT(1), 1, &mode);
+	return mode;
+}
+
 };
 
 #endif
