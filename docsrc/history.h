@@ -15,6 +15,8 @@
  * - Added static method ModeInfo::screen_mode to return the mode specifier for the current mode.
  * - Window::update background redrawer made optional
  * - VisibleArea::screen(Point) fixed bug where it converted the point given to work area co-ordinates instead of screen coordinates.
+ * - UserSprite::area_id did not return the correct value
+ * - Window::DragSpriteFlags added DSFLAG_SOLID for solid drags
  *
  * <B>0.7 Alpha May 2013</B>
  * - show_as_subwindow added to Window class to show a child window attached to a parent
