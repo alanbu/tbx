@@ -13,6 +13,8 @@
  * - added UserSprite iterator to SpriteArea class
  * - Replaced ModeInfo set/get mode methods with mode() and mode(int) to be consistant with other tbx setters and getters
  * - Added static method ModeInfo::screen_mode to return the mode specifier for the current mode.
+ * - Window::update background redrawer made optional
+ * - VisibleArea::screen(Point) fixed bug where it converted the point given to work area co-ordinates instead of screen coordinates.
  *
  * <B>0.7 Alpha May 2013</B>
  * - show_as_subwindow added to Window class to show a child window attached to a parent

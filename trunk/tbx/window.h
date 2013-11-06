@@ -226,7 +226,7 @@ namespace tbx
 
 		// Methods
 		void force_redraw(const BBox &work_area);
-		void update(const BBox &bounds, RedrawListener *background);
+		void update(const BBox &bounds, RedrawListener *background = 0);
 		void update(const BBox &bounds, RedrawListener **redrawers, int redrawer_count);
 		void get_state(WindowState &state) const;
 		void get_state(WindowState &state, Window &parent, int &align_flags) const;

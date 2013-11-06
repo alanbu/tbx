@@ -160,7 +160,7 @@ namespace tbx
 			 scr_pt.x = work_pt.x + (_bounds.min.x - _scroll.x);
 			 scr_pt.y = work_pt.y + (_bounds.max.y - _scroll.y);
 
-			return scr_pt;
+			 return scr_pt;
 		 }
 
 		 /**
@@ -169,7 +169,7 @@ namespace tbx
 		  * @param work_pt work area point to convert
 		  * @returns point converted to screen coordinates
 		  */
-		 Point screen(const Point &work_pt) const {Point pt; work(work_pt, pt); return pt;}
+		 Point screen(const Point &work_pt) const {Point pt; screen(work_pt, pt); return pt;}
 
 
 		 /**
