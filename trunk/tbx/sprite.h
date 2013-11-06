@@ -510,7 +510,7 @@ namespace tbx
 		    * Return sprite area id used for calls that take an area pointer
 		    * or a special value for WIMP/System areas.
 		    */
-		   virtual int area_id() const {return (int)pointer();}
+		   virtual int area_id() const {return (int)(_area->pointer());}
 
 		   /**
 		    * Returns true if this sprite has a palette

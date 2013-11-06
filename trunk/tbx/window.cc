@@ -1381,7 +1381,7 @@ void Window::cancel_drag() const
  */
 void Window::drag_sprite(const Sprite &sprite, const BBox &box, DragHandler *handler, int flags /*= 0*/) const
 {
-	swix_check(_swix(DragASprite_Start, _INR(0,4),
+	swix_check(_swix(DragASprite_Start, _INR(0,3),
 			flags, sprite.area_id(), sprite.name().c_str(),
 			&box.min.x
 			));

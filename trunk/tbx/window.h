@@ -305,7 +305,8 @@ namespace tbx
 			DSFLAG_VCENTRE = 4, //- Sprite is vertically centred in box
 			DSFLAG_TOP = 8,     //- Sprite it at top of box
 			DSFLAG_BOUND_POINT = 64, //- Point is set to bounds, otherwise box
-			DSFLAG_DROP_SHADOW = 128 //- Sprite has drop shadow
+			DSFLAG_DROP_SHADOW = 128, //- Sprite has drop shadow
+			DSFLAG_SOLID = 256 //- Do no dither the sprite
 			};
 
 		void drag_sprite(const Sprite &sprite, const BBox &box, DragHandler *handler, int flags = 0) const;
