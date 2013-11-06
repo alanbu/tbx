@@ -440,7 +440,7 @@ void Window::force_redraw(const BBox &work_area)
  * @param bounds area to update in work area co-ordinates
  * @param background redrawer to paint the background or 0 for none.
  */
-void Window::update(const BBox &bounds, RedrawListener *background = 0)
+void Window::update(const BBox &bounds, RedrawListener *background /*= 0*/)
 {
 	int more;
 	IdBlock id_block(*this);
