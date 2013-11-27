@@ -119,6 +119,8 @@ namespace tbx
 		bool operator!=(const PathInfo &other);
 
 		bool read(const Path &path);
+		bool read_raw(const Path &path, bool calc_file_type);
+
 
 		/*! Type of an object */
 		enum ObjectType
@@ -303,6 +305,7 @@ namespace tbx
 
 		PathInfo::ObjectType object_type() const;
 		bool path_info(PathInfo &info) const;
+		bool raw_path_info(PathInfo &info, bool calc_file_type) const;
 
 		bool exists() const;
 		bool file() const;

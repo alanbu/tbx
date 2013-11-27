@@ -284,6 +284,22 @@ bool Path::path_info(PathInfo &info) const
 }
 
 /**
+ * Read catalogue information for the given path always
+ * returning the raw load/exec address.
+ *
+ * This can be used to get the actual file type for an ImageFS directory.
+ *
+ * @param path Path referring to a location on a file system
+ * @param calc_file_type true to calculate file type from the returned catalogue information,
+ * if false file_type -1 will always be returned.
+ * @returns true if information read
+ */
+bool Path::raw_path_info(PathInfo &info, bool calc_file_type) const
+{
+	return info.read_raw(_name, calc_file_type);
+}
+
+/**
  * Check if path exists on the file system
  *
  * @returns true if the path exists.
@@ -404,7 +420,7 @@ bool Path::file_type(const std::string &file_name, int type)
 int Path::raw_file_type() const
 {
 	PathInfo info;
-	info.read(_name);
+	info.read_raw(_name, true);
 	return info.raw_file_type();
 }
 
@@ -1279,6 +1295,54 @@ bool PathInfo::read(const Path &path)
 }
 
 /**
+ * Read catalogue information for the given path always
+ * returning the raw load/exec address.
+ *
+ * This can be used to get the actual file type for an ImageFS directory.
+ *
+ * @param path Path referring to a location on a file system
+ * @param calc_file_type true to calculate file type from the returned catalogue information,
+ * if false file_type -1 will always be returned.
+ * @returns true if information read
+ */
+bool PathInfo::read_raw(const Path &path, bool calc_file_type)
+{
+	_kernel_swi_regs regs;
+
+	_name = path.leaf_name();
+
+	regs.r[0] = 17;
+	regs.r[1] = reinterpret_cast<int>(path.name().c_str());
+
+	// Call OSFile
+	if (_kernel_swi(0x08, &regs, &regs) == 0)
+	{
+		_object_type = ObjectType(regs.r[0]);
+		_load_address = (unsigned int)regs.r[2];
+		_exec_address = (unsigned int)regs.r[3];
+		_length = regs.r[4];
+		_attributes = regs.r[5];
+		_file_type = -1;
+		if (calc_file_type)
+		{
+			regs.r[0] = 38; // Convert file type
+			regs.r[6] = _object_type;
+			if (_kernel_swi(OS_FSControl, &regs, &regs) == 0)
+			{
+				_file_type = regs.r[2];
+			}
+		}
+	} else
+	{
+		_object_type = NOT_FOUND;
+		_file_type = -2;
+	}
+
+	return (_object_type != NOT_FOUND);
+}
+
+
+/**
  * Return the object type read for this path
  *
  * @returns object type
@@ -1320,6 +1384,9 @@ int PathInfo::file_type() const
  *
  * The return value is undefined for directories/applications
  * or files that do not have file types.
+ *
+ * The file_type() must be -1 or the PathInfo read with the
+ * read_raw functions for this to give the correct results.
  *
  * @return raw file type.
  */
