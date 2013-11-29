@@ -4,7 +4,7 @@
  *
  * <B>0.8 Alpha ????</B>
  * - Window::remove_gadget now removes all listeners for the gadget
- * - Fixed Window::title() always through an exception
+ * - Fixed Window::title() always threw an exception
  * - Fixed crash in Font copy constructor
  * - Added string bounds and size methods to Font and made some of the existing methods const
  * - Added stringviewvalue.h header with template classes to always return ItemViewValues as string as
@@ -18,6 +18,8 @@
  * - UserSprite::area_id did not return the correct value
  * - Window::DragSpriteFlags added DSFLAG_SOLID for solid drags
  * - Path::raw_path_info and PathInfo::read_raw added to get raw load/executable address for a file
+ * - Fixed UserSprite::create_mask to stop it corrupting the internal sprite pointers. The sprite was unusable 
+ * unless it was reobtained using SpriteArea::get_sprite
  *
  * <B>0.7 Alpha May 2013</B>
  * - show_as_subwindow added to Window class to show a child window attached to a parent
