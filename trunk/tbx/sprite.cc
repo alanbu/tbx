@@ -481,7 +481,7 @@ bool UserSprite::create_mask()
    int new_offset;
    if (_swix(OS_SpriteOp, _INR(0,2)|_OUT(2), 24 + 256, _area->pointer(), n.c_str(), &new_offset) == 0)
    {
-	   _offset = new_offset;
+	   _offset = new_offset  - int(_area->pointer());
 	   return true;
    } else
    {
