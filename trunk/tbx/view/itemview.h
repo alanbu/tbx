@@ -84,7 +84,8 @@ protected:
 					SELECT_MENU = 8, ///< Menu button selects item if no others selected
 					AUTO_SIZE_CHECKED = 0x100, ///< Removing or changing called
 					WANT_AUTO_SIZE = 0x200,    ///< Need to auto size on removed called
-					LAST_SELECT_MENU = 0x400   ///< Last selection was caused by menu button
+					LAST_SELECT_MENU = 0x400,   ///< Last selection was caused by menu button
+					NO_UPDATES = 0x800  ///< Do not update window
 				   };
 	unsigned int _flags; ///< Internal view flags
 
@@ -125,6 +126,22 @@ public:
 	 * Returns true if auto size is on
 	 */
 	bool auto_size() const {return ((_flags & AUTO_SIZE)!= 0);}
+
+	/**
+	 * Enable/disable updating of attached window
+	 *
+	 * After turning on updates - a call to update_window_extents to refresh the window
+	 *
+	 * @param updates true to turn on updates (the default), false to turn them off
+	 */
+	void updates_enabled(bool updates) {if (updates) _flags &= ~NO_UPDATES; else _flags |= NO_UPDATES;}
+
+	/**
+	 * Check if updates of the attached window are enabled
+	 *
+	 * @returns true if updates are enabled
+	 */
+	bool updates_enabled() const {return ((_flags & NO_UPDATES) == 0);}
 
 	/**
 	 * Returns number of items being displayed

@@ -377,9 +377,12 @@ void ItemView::process_mouse_click(int index, MouseClickEvent &event)
  */
 void ItemView::selection_changed(const SelectionChangedEvent &event)
 {
-	BBox bounds;
-	get_bounds(bounds, event.first(), event.last());
-	_window.force_redraw(bounds);
+	if (updates_enabled())
+	{
+		BBox bounds;
+		get_bounds(bounds, event.first(), event.last());
+		_window.force_redraw(bounds);
+	}
 
 	// Any other selection turns last select menu off
 	_flags &= ~LAST_SELECT_MENU;
