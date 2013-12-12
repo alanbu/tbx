@@ -269,6 +269,22 @@ void Object::hide()
 }
 
 /**
+ * Check if an object is currently showing
+ */
+bool Object::showing() const
+{
+	if (_handle == NULL_ObjectId) throw ObjectNullError();
+
+	_kernel_swi_regs regs;
+	regs.r[0] = 0; // Flags
+	regs.r[1] = _handle;
+	swix_check(_kernel_swi(0x44EC5, &regs, &regs));
+
+	return ((regs.r[0] & 1)!= 0);
+}
+
+
+/**
  * Remove all listeners and commands from this object
  *
  * @throws ObjectNullError toolbox handle is NULL_ObjectId

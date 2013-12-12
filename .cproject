@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?fileVersion 4.0.0?>
-
-<cproject>
+<?fileVersion 4.0.0?><cproject>
 	<storageModule moduleId="org.eclipse.cdt.core.settings">
 		<cconfiguration id="cdt.managedbuild.config.gnu.cygwin.lib.debug.2143117164">
 			<storageModule buildSystemId="org.eclipse.cdt.managedbuilder.core.configurationDataProvider" id="cdt.managedbuild.config.gnu.cygwin.lib.debug.2143117164" moduleId="org.eclipse.cdt.core.settings" name="Debug">
@@ -9,15 +7,15 @@
 					<externalSetting>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/tbx"/>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="libraryPath" name="/tbx/Debug"/>
-						<entry flags="RESOLVED" kind="libraryFile" name="tbx"/>
+						<entry flags="RESOLVED" kind="libraryFile" name="tbx" srcPrefixMapping="" srcRootPath=""/>
 					</externalSetting>
 				</externalSettings>
 				<extensions>
-					<extension id="org.eclipse.cdt.core.Cygwin_PE" point="org.eclipse.cdt.core.BinaryParser"/>
 					<extension id="org.eclipse.cdt.core.GCCErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
 					<extension id="org.eclipse.cdt.core.GASErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
 					<extension id="org.eclipse.cdt.core.GmakeErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
 					<extension id="org.eclipse.cdt.core.CWDLocator" point="org.eclipse.cdt.core.ErrorParser"/>
+					<extension id="org.eclipse.cdt.core.Cygwin_PE" point="org.eclipse.cdt.core.BinaryParser"/>
 				</extensions>
 			</storageModule>
 			<storageModule moduleId="cdtBuildSystem" version="4.0.0">
@@ -48,18 +46,18 @@
 							<tool id="cdt.managedbuild.tool.gnu.cpp.linker.cygwin.base.426588506" name="Cygwin C++ Linker" superClass="cdt.managedbuild.tool.gnu.cpp.linker.cygwin.base"/>
 						</toolChain>
 					</folderInfo>
-					<folderInfo id="cdt.managedbuild.config.gnu.cygwin.lib.debug.2143117164.120347687" name="/" resourcePath="apps">
-						<toolChain id="cdt.managedbuild.toolchain.gnu.cygwin.lib.debug.2003779889" name="Cygwin GCC" superClass="cdt.managedbuild.toolchain.gnu.cygwin.lib.debug" unusedChildren="">
-							<tool id="cdt.managedbuild.tool.gnu.assembler.cygwin.lib.debug.917162704" name="GCC Assembler" superClass="cdt.managedbuild.tool.gnu.assembler.cygwin.lib.debug.501602755"/>
-							<tool id="cdt.managedbuild.tool.gnu.archiver.cygwin.lib.debug.2058305286" name="GCC Archiver" superClass="cdt.managedbuild.tool.gnu.archiver.cygwin.lib.debug.535492089"/>
-							<tool id="cdt.managedbuild.tool.gnu.cpp.compiler.cygwin.lib.debug.156065375" name="Cygwin C++ Compiler" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.cygwin.lib.debug.1278851034"/>
-							<tool id="cdt.managedbuild.tool.gnu.c.compiler.cygwin.lib.debug.1476203104" name="Cygwin C Compiler" superClass="cdt.managedbuild.tool.gnu.c.compiler.cygwin.lib.debug.617741205"/>
-							<tool id="cdt.managedbuild.tool.gnu.c.linker.cygwin.base.797455363" name="Cygwin C Linker" superClass="cdt.managedbuild.tool.gnu.c.linker.cygwin.base.1816546129"/>
-							<tool id="cdt.managedbuild.tool.gnu.cpp.linker.cygwin.base.36408712" name="Cygwin C++ Linker" superClass="cdt.managedbuild.tool.gnu.cpp.linker.cygwin.base.426588506"/>
+					<folderInfo id="cdt.managedbuild.config.gnu.cygwin.lib.debug.2143117164.970653383" name="/" resourcePath="unittests">
+						<toolChain id="cdt.managedbuild.toolchain.gnu.cygwin.lib.debug.1341011926" name="Cygwin GCC" superClass="cdt.managedbuild.toolchain.gnu.cygwin.lib.debug" unusedChildren="">
+							<tool id="cdt.managedbuild.tool.gnu.assembler.cygwin.lib.debug.279494625" name="GCC Assembler" superClass="cdt.managedbuild.tool.gnu.assembler.cygwin.lib.debug.501602755"/>
+							<tool id="cdt.managedbuild.tool.gnu.archiver.cygwin.lib.debug.1541538997" name="GCC Archiver" superClass="cdt.managedbuild.tool.gnu.archiver.cygwin.lib.debug.535492089"/>
+							<tool id="cdt.managedbuild.tool.gnu.cpp.compiler.cygwin.lib.debug.974711255" name="Cygwin C++ Compiler" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.cygwin.lib.debug.1278851034"/>
+							<tool id="cdt.managedbuild.tool.gnu.c.compiler.cygwin.lib.debug.1961830116" name="Cygwin C Compiler" superClass="cdt.managedbuild.tool.gnu.c.compiler.cygwin.lib.debug.617741205"/>
+							<tool id="cdt.managedbuild.tool.gnu.c.linker.cygwin.base.1953195165" name="Cygwin C Linker" superClass="cdt.managedbuild.tool.gnu.c.linker.cygwin.base.1816546129"/>
+							<tool id="cdt.managedbuild.tool.gnu.cpp.linker.cygwin.base.1717604229" name="Cygwin C++ Linker" superClass="cdt.managedbuild.tool.gnu.cpp.linker.cygwin.base.426588506"/>
 						</toolChain>
 					</folderInfo>
 					<sourceEntries>
-						<entry excluding="apps|examples|!TBX|tests" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
+						<entry excluding="unittests|apps|examples|!TBX|tests" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>
@@ -74,15 +72,15 @@
 					<externalSetting>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/tbx"/>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="libraryPath" name="/tbx/Release"/>
-						<entry flags="RESOLVED" kind="libraryFile" name="tbx"/>
+						<entry flags="RESOLVED" kind="libraryFile" name="tbx" srcPrefixMapping="" srcRootPath=""/>
 					</externalSetting>
 				</externalSettings>
 				<extensions>
-					<extension id="org.eclipse.cdt.core.Cygwin_PE" point="org.eclipse.cdt.core.BinaryParser"/>
 					<extension id="org.eclipse.cdt.core.GCCErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
 					<extension id="org.eclipse.cdt.core.GASErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
 					<extension id="org.eclipse.cdt.core.GmakeErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
 					<extension id="org.eclipse.cdt.core.CWDLocator" point="org.eclipse.cdt.core.ErrorParser"/>
+					<extension id="org.eclipse.cdt.core.Cygwin_PE" point="org.eclipse.cdt.core.BinaryParser"/>
 				</extensions>
 			</storageModule>
 			<storageModule moduleId="cdtBuildSystem" version="4.0.0">
@@ -376,7 +374,13 @@
 			</profile>
 		</scannerConfigBuildInfo>
 	</storageModule>
-	<storageModule moduleId="refreshScope" versionNumber="1">
-		<resource resourceType="PROJECT" workspacePath="/tbx"/>
+	<storageModule moduleId="refreshScope" versionNumber="2">
+		<configuration configurationName="Release">
+			<resource resourceType="PROJECT" workspacePath="/tbx"/>
+		</configuration>
+		<configuration configurationName="Debug">
+			<resource resourceType="PROJECT" workspacePath="/tbx"/>
+		</configuration>
 	</storageModule>
+	<storageModule moduleId="org.eclipse.cdt.core.LanguageSettingsProviders"/>
 </cproject>
