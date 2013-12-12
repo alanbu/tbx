@@ -134,6 +134,7 @@ namespace tbx
 		// Visibility
 		void show();
 		void hide();
+		bool showing() const;
 
 		// Listeners for all objects
 		void add_command(int command_id, Command *command);
