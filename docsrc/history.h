@@ -20,6 +20,7 @@
  * - Path::raw_path_info and PathInfo::read_raw added to get raw load/executable address for a file
  * - Fixed UserSprite::create_mask to stop it corrupting the internal sprite pointers. The sprite was unusable 
  * unless it was reobtained using SpriteArea::get_sprite
+ * - Fixed conversion operators and other minor bugs in tbx::Fixed16
  *
  * <B>0.7 Alpha May 2013</B>
  * - show_as_subwindow added to Window class to show a child window attached to a parent
