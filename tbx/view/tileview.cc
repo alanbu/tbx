@@ -241,7 +241,7 @@ void TileView::redraw(const RedrawEvent &event)
  */
 void TileView::open_window(OpenWindowEvent &event)
 {
-	if (recalc_layout(event.visible_area()))
+	if (updates_enabled() && recalc_layout(event.visible_area()))
 	{
 		refresh();
 	}
@@ -255,6 +255,8 @@ void TileView::open_window(OpenWindowEvent &event)
  */
 void TileView::update_window_extent()
 {
+	if (!updates_enabled()) return;
+
 	WindowState state;
 	_window.get_state(state);
 	recalc_layout(state.visible_area().bounds());
@@ -297,7 +299,7 @@ bool TileView::recalc_layout(const BBox &visible_area)
 
 void TileView::refresh()
 {
-	_window.force_redraw(_window.extent());
+	if (updates_enabled()) _window.force_redraw(_window.extent());
 }
 
 /**
@@ -335,11 +337,14 @@ void TileView::inserted(unsigned int where, unsigned int how_many)
 
 	int first_row = refresh_from / _cols_per_row;
 	int last_row = _count / _cols_per_row + 1;
-	BBox dirty(_margin.left,
-		-last_row * _tile_size.height - _margin.top,
-		_cols_per_row * _tile_size.width + _margin.left,
-		-first_row * _tile_size.height - _margin.top);
-	_window.force_redraw(dirty);
+	if (updates_enabled())
+	{
+		BBox dirty(_margin.left,
+			-last_row * _tile_size.height - _margin.top,
+			_cols_per_row * _tile_size.width + _margin.left,
+			-first_row * _tile_size.height - _margin.top);
+		_window.force_redraw(dirty);
+	}
 }
 
 /**
@@ -400,11 +405,14 @@ void TileView::removed(unsigned int where, unsigned int how_many)
 	update_window_extent();
 
 	//TODO: Use window block copy to update
-	BBox dirty(_margin.left,
-		-last_row * old_size.height - _margin.top,
-		_cols_per_row * old_size.width + _margin.left,
-		-first_row * old_size.height - _margin.top);
-	_window.force_redraw(dirty);
+	if (updates_enabled())
+	{
+		BBox dirty(_margin.left,
+			-last_row * old_size.height - _margin.top,
+			_cols_per_row * old_size.width + _margin.left,
+			-first_row * old_size.height - _margin.top);
+		_window.force_redraw(dirty);
+	}
 }
 
 /**
@@ -488,11 +496,14 @@ void TileView::changed(unsigned int where, unsigned int how_many)
 	}
 	_flags &= ~(AUTO_SIZE_CHECKED | WANT_AUTO_SIZE);
 
-	BBox dirty(_margin.left,
-		-last_row * _tile_size.height - _margin.top,
-		_cols_per_row * _tile_size.width + _margin.left,
-		-first_row * _tile_size.height - _margin.top);
-	_window.force_redraw(dirty);
+	if (updates_enabled())
+	{
+		BBox dirty(_margin.left,
+			-last_row * _tile_size.height - _margin.top,
+			_cols_per_row * _tile_size.width + _margin.left,
+			-first_row * _tile_size.height - _margin.top);
+		_window.force_redraw(dirty);
+	}
 }
 
 /**
@@ -506,15 +517,18 @@ void TileView::cleared()
 		_count = 0;
 		if (_flags & AUTO_SIZE) _tile_size = Size(1,1);
 		if (_selection) _selection->clear();
-		update_window_extent();
-		WindowState state;
-		_window.get_state(state);
-		Point &scroll = state.visible_area().scroll();
-		if (scroll.x != 0 || scroll.y != 0)
+		if (updates_enabled())
 		{
-			scroll.x = 0;
-			scroll.y = 0;
-			_window.open_window(state);
+			update_window_extent();
+			WindowState state;
+			_window.get_state(state);
+			Point &scroll = state.visible_area().scroll();
+			if (scroll.x != 0 || scroll.y != 0)
+			{
+				scroll.x = 0;
+				scroll.y = 0;
+				_window.open_window(state);
+			}
 		}
 	}
 }

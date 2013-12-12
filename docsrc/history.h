@@ -22,6 +22,7 @@
  * unless it was reobtained using SpriteArea::get_sprite
  * - Fixed conversion operators and other minor bugs in tbx::Fixed16
  * - added showing() method to Object
+ * - ItemView updates_enabled() added to pause window updates.
  *
  * <B>0.7 Alpha May 2013</B>
  * - show_as_subwindow added to Window class to show a child window attached to a parent

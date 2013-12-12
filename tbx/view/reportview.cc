@@ -72,7 +72,7 @@ void ReportView::row_height(unsigned int height)
 	if (height != _height)
 	{
 		_height = height;
-		if (_count)
+		if (_count && updates_enabled())
 		{
 			update_window_extent();
 			refresh();
@@ -153,6 +153,8 @@ void ReportView::column_gap(unsigned int gap)
  */
 void ReportView::update_window_extent()
 {
+	if (!updates_enabled()) return;
+
 	int width = _width + _margin.left + _margin.right;
 	int height = _count * _height + _margin.top + _margin.bottom;
 
@@ -175,9 +177,12 @@ void ReportView::update_window_extent()
  */
 void ReportView::refresh()
 {
-	BBox all(_margin.left, -_margin.top - _count * _height,
-			_margin.left + _width, -_margin.top);
-	_window.force_redraw(all);
+	if (updates_enabled())
+	{
+		BBox all(_margin.left, -_margin.top - _count * _height,
+				_margin.left + _width, -_margin.top);
+		_window.force_redraw(all);
+	}
 }
 
 
@@ -431,11 +436,14 @@ void ReportView::inserted(unsigned int where, unsigned int how_many)
 
 	if (_selection) _selection->inserted(where, how_many);
 
-	BBox dirty(_margin.left,
-		-_count * _height - _margin.top,
-		_width + _margin.left,
-		-first_row * _height - _margin.top);
-	_window.force_redraw(dirty);
+	if (updates_enabled())
+	{
+		BBox dirty(_margin.left,
+			-_count * _height - _margin.top,
+			_width + _margin.left,
+			-first_row * _height - _margin.top);
+		_window.force_redraw(dirty);
+	}
 }
 
 /**
@@ -507,13 +515,17 @@ void ReportView::removed(unsigned int where, unsigned int how_many)
 		} else if (adjust_min_width(0, _count)) first = 0;
 	}
 	//TODO: Use window block copy to update
-	BBox dirty(_margin.left,
-		-(_count + how_many) * _height - _margin.top,
-		old_width + _margin.left,
-		-first * _height - _margin.top);
 	if (_selection) _selection->removed(where, how_many);
-	update_window_extent();
-	_window.force_redraw(dirty);
+	if (updates_enabled())
+	{
+		BBox dirty(_margin.left,
+			-(_count + how_many) * _height - _margin.top,
+			old_width + _margin.left,
+			-first * _height - _margin.top);
+
+		update_window_extent();
+		_window.force_redraw(dirty);
+	}
 }
 
 /**
@@ -608,11 +620,14 @@ void ReportView::changed(unsigned int where, unsigned int how_many)
 	}
 
 	_flags &= ~(AUTO_SIZE_CHECKED | WANT_AUTO_SIZE);
-	BBox dirty(_margin.left,
-		-last * _height - _margin.top,
-		old_width + _margin.left,
-		-where * _height - _margin.top);
-	_window.force_redraw(dirty);
+	if (updates_enabled())
+	{
+		BBox dirty(_margin.left,
+			-last * _height - _margin.top,
+			old_width + _margin.left,
+			-where * _height - _margin.top);
+		_window.force_redraw(dirty);
+	}
 }
 
 /**
@@ -635,15 +650,18 @@ void ReportView::cleared()
 		}
 
 		if (_selection) _selection->clear();
-		update_window_extent();
-		WindowState state;
-		_window.get_state(state);
-		Point &scroll = state.visible_area().scroll();
-		if (scroll.x != 0 || scroll.y != 0)
+		if (updates_enabled())
 		{
-			scroll.x = 0;
-			scroll.y = 0;
-			_window.open_window(state);
+			update_window_extent();
+			WindowState state;
+			_window.get_state(state);
+			Point &scroll = state.visible_area().scroll();
+			if (scroll.x != 0 || scroll.y != 0)
+			{
+				scroll.x = 0;
+				scroll.y = 0;
+				_window.open_window(state);
+			}
 		}
 	}
 }
@@ -725,11 +743,14 @@ void ReportView::cell_changed(unsigned int index, unsigned int column)
 	}
 
 	_flags &= ~(AUTO_SIZE_CHECKED | WANT_AUTO_SIZE);
-	BBox dirty(x_from_column(column),
-		-last * _height - _margin.top,
-		last_col_pos,
-		-first * _height - _margin.top);
-	_window.force_redraw(dirty);
+	if (updates_enabled())
+	{
+		BBox dirty(x_from_column(column),
+			-last * _height - _margin.top,
+			last_col_pos,
+			-first * _height - _margin.top);
+		_window.force_redraw(dirty);
+	}
 
 }
 

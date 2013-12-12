@@ -96,7 +96,7 @@ void ListView::row_height(unsigned int height)
 	if (height != _height)
 	{
 		_height = height;
-		if (_count)
+		if (_count && updates_enabled())
 		{
 			update_window_extent();
 			refresh();
@@ -139,7 +139,7 @@ void ListView::width(unsigned int width)
 	if (width != _width)
 	{
 		_width = width;
-		if (_count)
+		if (_count && updates_enabled())
 		{
 			update_window_extent();
 		}
@@ -260,6 +260,8 @@ void ListView::redraw(const tbx::RedrawEvent & event)
  */
 void ListView::update_window_extent()
 {
+	if (!updates_enabled()) return;
+
 	int width = _width + _margin.left + _margin.right;
 	int height = _count * _height + _margin.top + _margin.bottom;
 
@@ -283,9 +285,12 @@ void ListView::update_window_extent()
 
 void ListView::refresh()
 {
-	BBox all(_margin.left, -_margin.top - _count * _height,
-			_margin.left + _width, -_margin.top);
-	_window.force_redraw(all);
+	if (updates_enabled())
+	{
+		BBox all(_margin.left, -_margin.top - _count * _height,
+				_margin.left + _width, -_margin.top);
+		_window.force_redraw(all);
+	}
 }
 
 /**
@@ -308,16 +313,19 @@ void ListView::inserted(unsigned int where, unsigned int how_many)
 		}
 	}
 	_count += how_many;
-	update_window_extent();
+	if (updates_enabled()) update_window_extent();
 
 	if (_selection) _selection->inserted(where, how_many);
 
 	//TODO: Use window block copy to update
-	BBox dirty(_margin.left,
-		- _count * _height - _margin.top,
-		_width + _margin.left,
-		- where * _height - _margin.top);
-	_window.force_redraw(dirty);
+	if (updates_enabled())
+	{
+		BBox dirty(_margin.left,
+			- _count * _height - _margin.top,
+			_width + _margin.left,
+			- where * _height - _margin.top);
+		_window.force_redraw(dirty);
+	}
 }
 
 /**
@@ -373,8 +381,11 @@ void ListView::removed(unsigned int where, unsigned int how_many)
 		old_width + _margin.left,
 		-where * _height - _margin.top);
 	if (_selection) _selection->removed(where, how_many);
-	update_window_extent();
-	_window.force_redraw(dirty);
+	if (updates_enabled())
+	{
+		update_window_extent();
+		_window.force_redraw(dirty);
+	}
 }
 
 /**
@@ -449,12 +460,15 @@ void ListView::changed(unsigned int where, unsigned int how_many)
 	}
 	_flags &= ~(AUTO_SIZE_CHECKED | WANT_AUTO_SIZE);
 
-	int last_row = where + how_many;
-	BBox dirty(_margin.left,
-		-last_row * _height - _margin.top,
-		_width + _margin.left,
-		-where * _height - _margin.top);
-	_window.force_redraw(dirty);
+	if (updates_enabled())
+	{
+		int last_row = where + how_many;
+		BBox dirty(_margin.left,
+			-last_row * _height - _margin.top,
+			_width + _margin.left,
+			-where * _height - _margin.top);
+		_window.force_redraw(dirty);
+	}
 }
 
 /**
@@ -468,15 +482,18 @@ void ListView::cleared()
 		_count = 0;
 		if (_flags & AUTO_SIZE) _width = 0;
 		if (_selection) _selection->clear();
-		update_window_extent();
-		WindowState state;
-		_window.get_state(state);
-		Point &scroll = state.visible_area().scroll();
-		if (scroll.x != 0 || scroll.y != 0)
+		if (updates_enabled())
 		{
-			scroll.x = 0;
-			scroll.y = 0;
-			_window.open_window(state);
+			update_window_extent();
+			WindowState state;
+			_window.get_state(state);
+			Point &scroll = state.visible_area().scroll();
+			if (scroll.x != 0 || scroll.y != 0)
+			{
+				scroll.x = 0;
+				scroll.y = 0;
+				_window.open_window(state);
+			}
 		}
 	}
 }
