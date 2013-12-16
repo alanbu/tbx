@@ -1,4 +1,4 @@
-VERSION = 0.7-1
+VERSION = 0.7.1-1
 PACKAGES = \
  TBX-Dev_$(VERSION)
 INSTALL_TO=Temp/Apps/Library
@@ -13,7 +13,6 @@ pkg:
 	mkdir -p Temp/RiscPkg
 	mkdir -p $(INSTALL_TO)
 	cp RiscPkg/Copyright Temp/RiscPkg
-	svn export SysVars Temp/SysVars
 	svn export !TBX $(INSTALL_TO)/!TBX
 	svn export tbx $(INSTALL_TO)/!TBX/tbx
 	rm -rf $(INSTALL_TO)/!TBX/tbx/cc

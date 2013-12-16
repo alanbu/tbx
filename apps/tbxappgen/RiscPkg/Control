@@ -1,9 +1,9 @@
 Source: TBX
-Version: 0.4-1
+Version: 0.4-2
 Section: Development
 Priority: Optional
 Maintainer: Alan Buckley <alan_baa@hotmail.com>
-Standards-Version: 0.1.0
+Standards-Version: 0.4.0
 Licence: Free
 Description: Generate skeleton applications that use the TBX C++ library
  This package installs TbxAppGen that allows the simple creation of
@@ -13,4 +13,5 @@ Description: Generate skeleton applications that use the TBX C++ library
  package.
 
 Package: TbxAppGen
+Components: Apps.Development.!TbxAppGen (Movable)
 Recommends: TBX-Dev

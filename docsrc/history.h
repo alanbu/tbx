@@ -2,7 +2,7 @@
  * @page history History/Changelog
  *
  *
- * <B>0.8 Alpha ????</B>
+ * <B>0.7.1 Alpha December 2013</B>
  * - Window::remove_gadget now removes all listeners for the gadget
  * - Fixed Window::title() always threw an exception
  * - Fixed crash in Font copy constructor

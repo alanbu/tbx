@@ -1,5 +1,4 @@
 RiscPkg/*
-SysVars/*
 Apps/Library/!TBX/!*
 Apps/Library/!TBX/COPYING
 Apps/Library/!TBX/examples/*
