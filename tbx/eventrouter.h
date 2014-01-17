@@ -48,6 +48,7 @@ class DragHandler;
 class Command;
 class Timer;
 class PostPollListener;
+class UncaughtHandler;
 
 class EventRouter
 {
@@ -61,6 +62,7 @@ public:
 
 	// Turn on catching of uncaught exceptions (default to on)
 	void catch_exceptions(bool c) {_catch_exceptions = c;}
+	void uncaught_handler(UncaughtHandler *handler) {_uncaught_handler = handler;}
 
 private:
 	// Allow base listener adding classes access to low level listener adding routines
@@ -128,6 +130,8 @@ private:
 	PollBlock _poll_block;
 	int _reply_to;
 	bool _catch_exceptions;
+	UncaughtHandler *_uncaught_handler;
+
 	PostPollListener *_post_poll_listener;
 
 	// List item for object/component toolbox events
