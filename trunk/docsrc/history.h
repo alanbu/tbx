@@ -2,6 +2,9 @@
  * @page history History/Changelog
  *
  *
+ * <B>0.7.? Alpha XXX </B>
+ * - uncaught_exception method added to application to allow user processing of this error condition
+ * 
  * <B>0.7.1 Alpha December 2013</B>
  * - Window::remove_gadget now removes all listeners for the gadget
  * - Fixed Window::title() always threw an exception

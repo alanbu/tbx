@@ -44,6 +44,7 @@
 #include "monotonictime.h"
 #include "timer.h"
 #include "postpolllistener.h"
+#include "uncaughthandler.h"
 
 #include <cstring>
 #include <kernel.h>
@@ -83,6 +84,7 @@ EventRouter::EventRouter()
     _first_timer = 0;
 
     _catch_exceptions = true;
+    _uncaught_handler = 0;
     _post_poll_listener = 0;
 }
 
@@ -126,10 +128,12 @@ void EventRouter::poll()
 				route_event(regs.r[0]);
 			} catch(std::exception &e)
 			{
-				report_error(e.what(), "Uncaught Exception");
+				if (_uncaught_handler) _uncaught_handler->uncaught_exception(&e);
+				else report_error(e.what(), "Uncaught Exception");
 			} catch(...)
 			{
-				report_error("Uncaught exception");
+				if (_uncaught_handler) _uncaught_handler->uncaught_exception(0);
+				else report_error("Uncaught exception");
 			}
     	} else
     	{

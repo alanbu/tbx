@@ -588,6 +588,25 @@ void Application::catch_poll_exceptions(bool on)
 }
 
 /**
+ * Report any uncaught exceptions to the given interface.
+ *
+ * catch_poll_exceptions must be on for the given routine
+ * to be called.
+ *
+ * Setting the handler to 0 (the default), will just show
+ * a simple message in an error box and leave the application
+ * running.
+ *
+ * @param handler The class to handle the uncaught exception or
+ * 0 to use the default uncaught exception handling.
+ */
+void Application::uncaught_handler(UncaughtHandler *handler)
+{
+	event_router()->uncaught_handler(handler);
+}
+
+
+/**
  * Set listener to look at the results of the internal call to Wimp_Poll.
  *
  * There can only be one of these listeners. It is called immediately after

@@ -46,6 +46,7 @@ namespace tbx
 	class Timer;
 	class Loader;
 	class PostPollListener;
+	class UncaughtHandler;
 
 	namespace res
 	{
@@ -164,6 +165,7 @@ namespace tbx
 		int unix_file_name_control() const;
 
 		void catch_poll_exceptions(bool on);
+		void uncaught_handler(UncaughtHandler *handler);
 		void set_post_poll_listener(PostPollListener *listener);
 
 		bool owns_window(WindowHandle window_handle, IconHandle icon_handle = 0);
