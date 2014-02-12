@@ -1,7 +1,7 @@
 /*
  * tbx RISC OS toolbox library
  *
- * Copyright (C) 2010 Alan Buckley   All Rights Reserved.
+ * Copyright (C) 2010-2014 Alan Buckley   All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -32,6 +32,28 @@
 
 namespace tbx
 {
+  /**
+  * Structure used to return details of a font
+  */
+  struct FontDetails
+  {
+    int x_point_size; ///< x point size in 16th of a point
+    int y_point_size; ///< y point size in 16th of a point
+    int x_resolution; ///< x resolution in dots per inch
+    int y_resolution; ///< y resolution in dots per inch
+    int font_age;     ///< age of font
+    int usage_count;  ///< usage count of font
+  };
+
+  /**
+  * Structure used to return full details of the font which also
+  * includes the font identifier
+  */
+  struct FullFontDetails : public FontDetails
+  {
+     std::string identifier; ///< Full font identifier string
+  };
+
     /**
      * Class to handle painting and measuring text using an outline font
      */
@@ -50,6 +72,9 @@ namespace tbx
 		 */
 		bool is_valid() const {return (_font_ref->handle != 0);}
 		void set_colours(Colour fore, Colour back, int colourOffset = 14);
+		void read_details(FontDetails &details) const;
+		void read_details(FullFontDetails &details) const;
+		std::string identifier() const;
 		Size size() const;
 		int height() const;
 		int width() const;
