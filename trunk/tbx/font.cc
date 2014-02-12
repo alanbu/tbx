@@ -1,7 +1,7 @@
 /*
  * tbx RISC OS toolbox library
  *
- * Copyright (C) 2010 Alan Buckley   All Rights Reserved.
+ * Copyright (C) 2010-2014 Alan Buckley   All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -128,6 +128,8 @@ bool Font::find(const std::string &fontName, int width, int height /*= -1*/)
  * Using this give the full flexibility of the font system to
  * display and measure characters in the desktop font. For simple single
  * line text the WimpFont provides a simpler alternative
+ *
+ * @returns true if desktop font can be read and isn't the old style system font
  */
 bool Font::desktop_font()
 {
@@ -679,7 +681,88 @@ void Font::get_char_bounds_os(BBox &bounds, char c)
 	bounds.max.y = regs.r[4]; // maximum y of bounding box (exclusive)
 }
 
-//
+/**
+ * Read the details of the font
+ *
+ * @param details structure to fill in with the details
+ */
+void Font::read_details(FontDetails &details) const
+{
+    _kernel_swi_regs regs;
+    regs.r[0] = _font_ref->handle;
+    regs.r[1] = 0; // Only interested in basic information
+    regs.r[2] = 0;
+
+    swix_check(_kernel_swi(0x40083, &regs, &regs));
+
+    details.x_point_size = regs.r[2];
+    details.y_point_size = regs.r[3];
+    details.x_resolution = regs.r[4];
+    details.y_resolution = regs.r[5];
+    details.font_age     = regs.r[6];
+    details.usage_count  = regs.r[7];
+}
+
+/**
+ * Read the full details of the font
+ *
+ * The full details of the font are the details plus the
+ * font identifier
+ *
+ * @param details structure to fill in with the details
+ */
+void Font::read_details(FullFontDetails &details) const
+{
+    _kernel_swi_regs regs;
+    regs.r[0] = _font_ref->handle;
+    regs.r[1] = 0; // Only interested in basic information
+    regs.r[3] = 0x4C4C5546; // 'FULL'
+
+    swix_check(_kernel_swi(0x40083, &regs, &regs));
+
+    int size = regs.r[2];
+    char buffer[size+1];
+    regs.r[1] = reinterpret_cast<int>(buffer);
+
+    swix_check(_kernel_swi(0x40083, &regs, &regs));
+
+    buffer[size] = 0;
+    details.identifier = buffer;
+    details.x_point_size = regs.r[2];
+    details.y_point_size = regs.r[3];
+    details.x_resolution = regs.r[4];
+    details.y_resolution = regs.r[5];
+    details.font_age     = regs.r[6];
+    details.usage_count  = regs.r[7];
+}
+
+/**
+* Return full font identifier string for this font
+*
+* The full font identifier includes the name, transformation matrix
+* and encoding
+*
+* @returns font identifier string
+*/
+std::string Font::identifier() const
+{
+    _kernel_swi_regs regs;
+    regs.r[0] = _font_ref->handle;
+    regs.r[1] = 0; // Only interested in basic information
+    regs.r[3] = 0x4C4C5546; // 'FULL'
+
+    swix_check(_kernel_swi(0x40083, &regs, &regs));
+
+    int size = regs.r[2];
+    char buffer[size+1];
+    regs.r[1] = reinterpret_cast<int>(buffer);
+
+    swix_check(_kernel_swi(0x40083, &regs, &regs));
+
+    buffer[size] = 0;
+    return std::string(buffer);
+}
+
 /**
  *   Get the size of the font
  *

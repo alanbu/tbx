@@ -4,7 +4,8 @@
  *
  * <B>0.7.? Alpha XXX </B>
  * - uncaught_exception method added to application to allow user processing of this error condition
- * 
+ * - Added Font::read_details
+ *
  * <B>0.7.1 Alpha December 2013</B>
  * - Window::remove_gadget now removes all listeners for the gadget
  * - Fixed Window::title() always threw an exception
@@ -21,7 +22,7 @@
  * - UserSprite::area_id did not return the correct value
  * - Window::DragSpriteFlags added DSFLAG_SOLID for solid drags
  * - Path::raw_path_info and PathInfo::read_raw added to get raw load/executable address for a file
- * - Fixed UserSprite::create_mask to stop it corrupting the internal sprite pointers. The sprite was unusable 
+ * - Fixed UserSprite::create_mask to stop it corrupting the internal sprite pointers. The sprite was unusable
  * unless it was reobtained using SpriteArea::get_sprite
  * - Fixed conversion operators and other minor bugs in tbx::Fixed16
  * - added showing() method to Object
