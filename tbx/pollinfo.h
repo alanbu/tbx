@@ -74,6 +74,10 @@ namespace tbx
 		 * Array containing information return from Wimp_Poll
 		 */
 		int word[64];
+
+		PollBlock() {}
+		PollBlock(const PollBlock &other);
+		PollBlock &operator=(const PollBlock &other);
 	};
 
 	/**

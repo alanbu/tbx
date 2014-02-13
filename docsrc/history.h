@@ -4,7 +4,8 @@
  *
  * <B>0.7.? Alpha XXX </B>
  * - uncaught_exception method added to application to allow user processing of this error condition
- * - Added Font::read_details
+ * - Added Font::read_details to get the details of a font
+ * - Added Application::yield to allow multi-tasking in the middle of a long operation
  *
  * <B>0.7.1 Alpha December 2013</B>
  * - Window::remove_gadget now removes all listeners for the gadget

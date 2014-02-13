@@ -59,6 +59,7 @@ public:
 	static EventRouter *instance() {return _instance;}
 
 	void poll();
+	void yield();
 
 	// Turn on catching of uncaught exceptions (default to on)
 	void catch_exceptions(bool c) {_catch_exceptions = c;}

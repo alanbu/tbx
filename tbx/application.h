@@ -158,6 +158,17 @@ namespace tbx
 		 * main polling loop inside the run() method.
 		 */
 		void quit() {_running = false;}
+		/**
+		 * Check if application is running
+		 *
+		 * The application is considered to be running after a call to run()
+		 * until a call to quit() or the WIMP quit message is received
+		 *
+		 * @returns true
+		 */
+		bool running() const {return _running;}
+
+		bool yield();
 
 		void unix_file_name_translation(bool on);
 		bool unix_file_name_translation() const;
