@@ -64,6 +64,18 @@ const int MAX_WINDOW_EVENTS = 12;
 namespace tbx
 {
 	EventRouter the_event_router;
+
+
+	PollBlock::PollBlock(const PollBlock &other)
+	{
+		std::memcpy(word, other.word, 256);
+	}
+
+	PollBlock &PollBlock::operator=(const PollBlock &other)
+	{
+		std::memcpy(word, other.word, 256);
+		return *this;
+	}
 }
 
 EventRouter::EventRouter()
@@ -141,6 +153,48 @@ void EventRouter::poll()
     	}
 	}
 }
+
+// Save the contents of a poll block, restoring when this goes out of scope.
+struct SavePollBlock
+{
+private:
+	tbx::PollBlock _saved;
+	tbx::PollBlock *_block;
+public:
+	SavePollBlock(tbx::PollBlock *block) : _saved(*block), _block(block) {}
+	~SavePollBlock() {*_block = _saved;}
+};
+
+void EventRouter::yield()
+{
+    _kernel_swi_regs regs;
+	int poll = Wimp_Poll;
+    regs.r[1] = reinterpret_cast<int>(&_poll_block);
+
+    SavePollBlock spb(&_poll_block);
+
+	_poll_mask &= ~1; // Turn on null event processing
+	bool more_events = true;
+	while (app()->running() && more_events)
+	{
+	    regs.r[0] = (_poll_mask & ~1); // Always return for null events
+
+		if (_kernel_swi(poll, &regs, &regs) == 0)
+		{
+			// Reply task for User Message Acknowledge (eventCode == 18)
+			_reply_to = regs.r[2];
+
+			if (_post_poll_listener)
+			{
+			   _post_poll_listener->post_poll(regs.r[0], _poll_block, _id_block, _reply_to);
+			}
+
+			more_events = (regs.r[0] != 0);
+			route_event(regs.r[0]);
+		}
+	}
+}
+
 
 void EventRouter::route_event(int event_code)
 {
