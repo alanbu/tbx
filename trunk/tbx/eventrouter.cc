@@ -1,7 +1,7 @@
 /*
  * tbx RISC OS toolbox library
  *
- * Copyright (C) 2010-2012 Alan Buckley   All Rights Reserved.
+ * Copyright (C) 2010-2014 Alan Buckley   All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -637,20 +637,11 @@ void EventRouter::process_null_event()
 {
 	if (_null_event_commands)
 	{
-		unsigned int i = 0;
-		unsigned int size = _null_event_commands->size();
-
-		while (i < size)
+		Command *to_run;
+		while (_null_event_commands
+				&& ((to_run = _null_event_commands->next()) != 0))
 		{
-			Command *to_run = (*_null_event_commands)[i];
 			to_run->execute();
-			if (_null_event_commands == 0
-				|| i >= _null_event_commands->size()
-				|| (*_null_event_commands)[i] != to_run)
-			{
-				i = size; // Stop processing if list changes
-			}
-			i++;
 		}
 	}
 
@@ -1194,29 +1185,22 @@ void EventRouter::add_null_event_command(Command *command)
 {
 	if (_null_event_commands == 0)
 	{
-		_null_event_commands = new std::vector<Command *>();
+		_null_event_commands = new NullCommandQueue();
 		_poll_mask &= ~1; // Turn on null event processing
 	}
-	_null_event_commands->push_back(command);
+	_null_event_commands->add(command);
 }
 
 void EventRouter::remove_null_event_command(Command *command)
 {
 	if (_null_event_commands)
 	{
-		std::vector<Command *>::iterator found = std::find(
-				_null_event_commands->begin(),
-				_null_event_commands->end(),
-				command);
-		if (found != _null_event_commands->end())
+		_null_event_commands->remove(command);
+		if (_null_event_commands->size() == 0)
 		{
-			_null_event_commands->erase(found);
-			if (_null_event_commands->empty())
-			{
-				delete _null_event_commands;
-				_null_event_commands = 0;
-				_poll_mask |= 1; // Stop null events being reported
-			}
+			delete _null_event_commands;
+			_null_event_commands = 0;
+			_poll_mask |= 1; // Stop null events being reported
 		}
 	}
 }
@@ -1504,6 +1488,91 @@ void EventRouter::add_timer_info(TimerInfo *info)
 		}
 	}
 }
+
+EventRouter::NullCommandQueue::NullCommandQueue() :
+		_commands(0), _capacity(0), _size(0),
+		_next(0), _end(0)
+{
+	_commands = new Command*[8];
+	_capacity = 8;
+}
+
+EventRouter::NullCommandQueue::~NullCommandQueue()
+{
+	delete [] _commands;
+}
+
+void EventRouter::NullCommandQueue::add(Command *command)
+{
+	if (_size == _capacity)
+	{
+		unsigned int new_capacity = _capacity + 8;
+		Command **new_commands = new Command*[new_capacity];
+		std::memcpy(new_commands, _commands, sizeof(Command *) * _size );
+		delete [] _commands;
+		_commands = new_commands;
+		_capacity = new_capacity;
+	}
+	_commands[_size++] = command;
+}
+
+void EventRouter::NullCommandQueue::remove(Command *command)
+{
+	if (_size == 0) return;
+	unsigned int found;
+	for(found = 0; found < _size; found++)
+	{
+		if (_commands[found] == command) break;
+	}
+	if (found == _size) return;
+
+	Command **commands = _commands;
+	if (_capacity > 12 && _size < _capacity - 12)
+	{
+		commands = new Command*[_capacity - 8];
+	}
+
+	if (found == _size - 1)
+	{
+		if (commands != _commands && found > 0)
+		{
+			std::memcpy(commands, _commands, sizeof(Command *) * found);
+		}
+	} else
+	{
+		if (found) std::memmove(commands, _commands, sizeof(Command *) * found);
+		std::memmove(commands + found, _commands + found + 1, sizeof(Command *) * (_size - found - 1));
+	}
+
+	_size--;
+	if (_end >= found) _end--;
+	if (_next >= found) _next--;
+
+	if (commands != _commands)
+	{
+		delete [] _commands;
+		_commands = commands;
+		_capacity -= 8;
+	}
+}
+
+// Get next command until it hits the end then returns 0 and resets to beginning
+Command *EventRouter::NullCommandQueue::next()
+{
+	Command *command;
+	if (_next < _end)
+	{
+		command = _commands[_next++];
+	} else
+	{
+		command = 0;
+		_next = 0;
+		_end = _size;
+	}
+
+	return command;
+}
+
 
 //! @endcond
 
