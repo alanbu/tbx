@@ -173,7 +173,24 @@ private:
 	std::map<int, WimpMessageListenerItem *> **_message_listeners;
 	std::map<ObjectId, WindowEventListenerItem **> *_window_event_listeners;
 
-	std::vector<Command *> *_null_event_commands;
+	// Internal class to look after null events
+	class NullCommandQueue
+	{
+		Command **_commands;
+		unsigned int _capacity;
+		unsigned int _size;
+		unsigned int _next;
+		unsigned int _end;
+	public:
+		NullCommandQueue();
+		~NullCommandQueue();
+
+		void add(Command *command);
+		void remove(Command *command);
+		Command *next();
+
+		unsigned int size() const {return _size;}
+	} *_null_event_commands;
 
 	DragHandler *_drag_handler;
 	int _drag_stop_swi;

@@ -6,6 +6,7 @@
  * - uncaught_exception method added to application to allow user processing of this error condition
  * - Added Font::read_details to get the details of a font
  * - Added Application::yield to allow multi-tasking in the middle of a long operation
+ * - Fixed possible memory corruption when removing idle commands from within a running idle command
  *
  * <B>0.7.1 Alpha December 2013</B>
  * - Window::remove_gadget now removes all listeners for the gadget
