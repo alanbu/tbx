@@ -1,7 +1,7 @@
 /*
  * tbx RISC OS toolbox library
  *
- * Copyright (C) 2010-2012 Alan Buckley   All Rights Reserved.
+ * Copyright (C) 2010-2014 Alan Buckley   All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -142,7 +142,7 @@ namespace tbx
 		/**
 		 * Get WIMP task handle for application
 		 */
-		int task_handle() const {return _task_handle;}
+		TaskHandle task_handle() const {return _task_handle;}
 
 		std::string directory() const;
 
@@ -186,7 +186,7 @@ namespace tbx
 
 	private:
 		bool _running;
-        int _task_handle;
+        TaskHandle _task_handle;
         int _wimp_version;
         SpriteArea *_sprite_area;
         MessageFile _messages;
