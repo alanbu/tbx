@@ -74,7 +74,7 @@ class TaskManager
     bool next();
 
     TaskHandle handle() {return _current[0];}
-    const char *name()  {return reinterpret_cast<const char *>(_current[1]);}
+    std::string name() const;
     unsigned int memory() {return _current[2];}
     unsigned int flags() {return _current[3];}
   };

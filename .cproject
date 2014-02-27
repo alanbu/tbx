@@ -32,8 +32,11 @@
 								<option id="gnu.cpp.compiler.cygwin.lib.debug.option.optimization.level.746331428" name="Optimization Level" superClass="gnu.cpp.compiler.cygwin.lib.debug.option.optimization.level" value="gnu.cpp.compiler.optimization.level.none" valueType="enumerated"/>
 								<option id="gnu.cpp.compiler.cygwin.lib.debug.option.debugging.level.653776643" name="Debug Level" superClass="gnu.cpp.compiler.cygwin.lib.debug.option.debugging.level" value="gnu.cpp.compiler.debugging.level.max" valueType="enumerated"/>
 								<option id="gnu.cpp.compiler.option.include.paths.1579916711" name="Include paths (-I)" superClass="gnu.cpp.compiler.option.include.paths" valueType="includePath">
-									<listOptionValue builtIn="false" value="&quot;C:\Misc\cygwin\home\riscos\cross\include\c++\4.1.1&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;C:\Misc\cygwin\home\riscos\cross\arm-unknown-riscos\include\libunixlib&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;C:\Misc\cygwin\home\riscos\cross\arm-unknown-riscos\include&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;C:\Misc\cygwin\home\riscos\cross\include\c++\4.1.2&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;C:\Misc\cygwin\home\riscos\cross\include\c++\4.1.2\backward&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;C:\Misc\cygwin\home\riscos\cross\include\c++\4.1.2\bits&quot;"/>
 								</option>
 								<inputType id="cdt.managedbuild.tool.gnu.cpp.compiler.input.cygwin.1476933906" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.input.cygwin"/>
 							</tool>
@@ -373,4 +376,5 @@
 		</configuration>
 	</storageModule>
 	<storageModule moduleId="org.eclipse.cdt.core.LanguageSettingsProviders"/>
+	<storageModule moduleId="org.eclipse.cdt.internal.ui.text.commentOwnerProjectMappings"/>
 </cproject>

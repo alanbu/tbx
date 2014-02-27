@@ -150,16 +150,33 @@ TaskManager::Enumerator::Enumerator() :
 bool TaskManager::Enumerator::next()
 {
   _current += 4;
-  if (_current == _end)
+  if (_current == _end && _call_value >= 0)
   {
      swix_check(_swix(TaskManager_EnumerateTasks, _INR(0,2) | _OUTR(0,1),
         _call_value, _buffer, sizeof(_buffer),
         &_call_value, &_end));
      _current = _buffer;
   }
+
   return more();
 }
 
+
+/**
+ * Get task name from enumerator
+ *
+ * @param returns the name
+ */
+std::string TaskManager::Enumerator::name() const
+{
+	const unsigned char *p = reinterpret_cast<const unsigned char *>(_current[1]);
+	const unsigned char *end = p;
+	// If appears name may be delimited by any control character instead of char(0)
+	while (*end >= 32) end++;
+	return std::string((const char *)p, end-p);
 }
+
+}
+
 
 
