@@ -43,7 +43,9 @@
 #include "tbxexcept.h"
 #include "monotonictime.h"
 #include "timer.h"
+#include "prepolllistener.h"
 #include "postpolllistener.h"
+#include "posteventlistener.h"
 #include "uncaughthandler.h"
 
 #include <cstring>
@@ -97,6 +99,8 @@ EventRouter::EventRouter()
 
     _catch_exceptions = true;
     _uncaught_handler = 0;
+    _pre_poll_listener = 0;
+    _post_poll_listener = 0;
     _post_poll_listener = 0;
 }
 
@@ -120,6 +124,16 @@ void EventRouter::poll()
     	{
     		poll = Wimp_PollIdle;
 			regs.r[2] = _first_timer->due;
+    	}
+    }
+
+    if (_pre_poll_listener)
+    {
+    	if (_pre_poll_listener->pre_poll())
+    	{
+    		// Return true if it want's idle events enabled
+    		poll = Wimp_Poll;
+    		regs.r[0] &= ~1;
     	}
     }
 
@@ -150,6 +164,10 @@ void EventRouter::poll()
     	} else
     	{
     		route_event(regs.r[0]);
+    	}
+    	if (_post_event_listener)
+    	{
+    		_post_event_listener->post_event(regs.r[0], _poll_block, _id_block, _reply_to);
     	}
 	}
 }

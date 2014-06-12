@@ -624,6 +624,22 @@ void Application::uncaught_handler(UncaughtHandler *handler)
 
 
 /**
+ * Set listener to run just before the internal call to Wimp_Poll.
+ *
+ * There can only be one of these listeners. It is called immediately before
+ * Wimp_Poll.
+ *
+ * This is an advanced routine and should be used sparingly.
+ *
+ * @param listener Listener to call prior to wimp poll. Set to 0 to remove
+ * the post poll listener.
+ */
+void Application::set_pre_poll_listener(PrePollListener *listener)
+{
+   event_router()->_pre_poll_listener = listener;
+}
+
+/**
  * Set listener to look at the results of the internal call to Wimp_Poll.
  *
  * There can only be one of these listeners. It is called immediately after
@@ -642,6 +658,26 @@ void Application::set_post_poll_listener(PostPollListener *listener)
 {
    event_router()->_post_poll_listener = listener;
 }
+
+
+/**
+ * Set listener to call after the event processing in TBX.
+ *
+ * There can only be one of these listeners. It is called after Wimp_Poll
+ * and any event processing.
+ *
+ * The parameters past to the post event listener may have been changed
+ * by the event processing. (Though this is usually not the case).
+ *
+ * This is an advanced routine and should be used sparingly.
+ * @param listener Listener to report the poll results to. Set to 0 to remove
+ * the post poll listener.
+ */
+void Application::set_post_event_listener(PostEventListener *listener)
+{
+   event_router()->_post_event_listener = listener;
+}
+
 
 /**
  * Check if this application owns WIMP window/icon bar icon

@@ -45,7 +45,9 @@ namespace tbx
 	class SpriteArea;
 	class Timer;
 	class Loader;
+	class PrePollListener;
 	class PostPollListener;
+	class PostEventListener;
 	class UncaughtHandler;
 
 	namespace res
@@ -177,7 +179,9 @@ namespace tbx
 
 		void catch_poll_exceptions(bool on);
 		void uncaught_handler(UncaughtHandler *handler);
+		void set_pre_poll_listener(PrePollListener *listener);
 		void set_post_poll_listener(PostPollListener *listener);
+		void set_post_event_listener(PostEventListener *listener);
 
 		bool owns_window(WindowHandle window_handle, IconHandle icon_handle = 0);
 
