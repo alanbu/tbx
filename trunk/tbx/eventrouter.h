@@ -47,7 +47,9 @@ class RedrawListener;
 class DragHandler;
 class Command;
 class Timer;
+class PrePollListener;
 class PostPollListener;
+class PostEventListener;
 class UncaughtHandler;
 
 class EventRouter
@@ -133,7 +135,10 @@ private:
 	bool _catch_exceptions;
 	UncaughtHandler *_uncaught_handler;
 
+	PrePollListener *_pre_poll_listener;
 	PostPollListener *_post_poll_listener;
+	PostEventListener *_post_event_listener;
+
 
 	// List item for object/component toolbox events
     struct ObjectListenerItem

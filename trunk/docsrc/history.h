@@ -1,6 +1,10 @@
 /**
  * @page history History/Changelog
  *
+ * <B>0.7.x Alpha ???</B>
+ *
+ * Added PThreadGuard class to disable threading around wimp poll and event processing when using pthreads to prevent crashes caused by interrupting event processing.
+ * Added prepoll and post event listener to application (used by PThreadGuard)
  *
  * <B>0.7.2 Alpha March 2014 </B>
  * - uncaught_exception method added to application to allow user processing of this error condition
