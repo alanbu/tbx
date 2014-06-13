@@ -81,7 +81,7 @@ class ModeInfo
      /**
       * Return the number of colours for the mode
       *
-      * @returns number of colours
+      * @returns number of colours (or 0 for 16M colour modes)
       */
      inline int colours() const;
 

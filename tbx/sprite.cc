@@ -1265,7 +1265,7 @@ bool TranslationTable::create(const UserSprite *s)
    if (_table)
    {
       _kernel_swi_regs regs;
-      if (s->has_palette() || numColours > 16)
+      if (s->has_palette() || numColours > 16 || numColours == 0)
       {
          regs.r[0] = (int)(s->get_sprite_area()->pointer());
          regs.r[1] = (int)(s->pointer());
@@ -1385,14 +1385,19 @@ bool TranslationTable::create(UserSprite *source, UserSprite *target)
  * Allocate memory for translation table
  *
  * @param mode screen mode to create table for
- * @returns  Number of colours in the mode
+ * @returns  Number of colours in the mode (or 0 for 16M colour mode)
  */
 int TranslationTable::initialise(int mode)
 {
     ModeInfo sourceMode(mode);
     int numColours = sourceMode.colours();
     int newSize = numColours;
-	if (newSize > 256) newSize = 256;
+    if (newSize == 0 || newSize > 256)
+    {
+    	// New 32K or 16M colour modes
+    	// Uses internal pointer to lookup table with guard words
+    	newSize = 12;
+    }
 
     if (newSize != _size)
     {
