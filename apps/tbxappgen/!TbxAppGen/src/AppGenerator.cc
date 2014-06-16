@@ -89,11 +89,16 @@ void AppGenerator::Generate()
     if (m_taskName.empty()) m_taskName = m_appName;
     m_appNameLC = to_lower(m_appName);
 
-
-	if (!m_targetPath.create_directory())
+    bool dir_created = false;
+    try
+    {
+	     m_targetPath.create_directory();
+	     dir_created = true;
+	} catch(...)
 	{
-		report_error("Unable to create directory");
-	} else
+	    report_error("Unable to create directory");
+    }
+	if (dir_created)
 	{
 		Hourglass hg; // Show hourglass while copying is going on
 
@@ -313,8 +318,9 @@ void AppGenerator::CopyFiles(const Path &fromPath, const Path &toPath)
 	{
 		from = fromPath.child(subDirectories[j]);
 		to = toPath.child(subDirectories[j]);
-		if (to.create_directory())
+		try
 		{
+		    to.create_directory();
 			// Recursively copy subdirectories
 			if (subDirectories[j] == "cc" || subDirectories[j] == "h")
 			{
@@ -323,7 +329,7 @@ void AppGenerator::CopyFiles(const Path &fromPath, const Path &toPath)
 			{
 			   CopyFiles(from, to);
 			}
- 		}
+	    } catch(...) {}
 	}
 }
 
