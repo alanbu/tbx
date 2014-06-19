@@ -663,6 +663,8 @@ SpriteArea::SpriteArea(OsSpriteAreaPtr data, bool ownsarea /* = false*/)
    _owns_area = ownsarea;
 }
 
+
+
 /**
  * Construct an empty sprite area with the initial capacity
  *
@@ -722,6 +724,20 @@ SpriteArea &SpriteArea::operator=(const SpriteArea &other)
 }
 
 /**
+ * Assign this sprite area to a sprite area pointer
+ *
+ * @param data RISC OS sprite area pointer
+ * @param ownsarea true if the SpriteArea now looks after the area
+ */
+void SpriteArea::set(OsSpriteAreaPtr data, bool ownsarea /*= false*/)
+{
+    if (_owns_area) delete [] _area;
+    _area = data;
+    _owns_area = ownsarea;
+}
+
+
+/**
  * Get a sprite from this sprite area by name.
  *
  * Check is_valid on returned sprite to check it was found.
@@ -746,6 +762,22 @@ UserSprite SpriteArea::get_sprite(const std::string &name)
 
     return UserSprite();
 }
+
+/**
+ * Get sprite for area given a pointer to it
+ *
+ * @param sprite_ptr - pointer to sprite
+ * @throws std::out_of_range
+ */
+UserSprite SpriteArea::get_sprite(OsSpritePtr sprite_ptr)
+{
+	if (sprite_ptr < _area || sprite_ptr > _area + (_area[0]>>2))
+	{
+		throw std::out_of_range("Sprite pointer not within this area");
+	}
+	return UserSprite(this, (sprite_ptr - _area)<<2);
+}
+
 
 /**
  * Create a new sprite.
