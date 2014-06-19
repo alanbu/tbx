@@ -239,6 +239,8 @@ namespace tbx
           SpriteArea(const SpriteArea &other);
           SpriteArea &operator=(const SpriteArea &other);
 
+          void set(OsSpriteAreaPtr data, bool ownsarea = false);
+
           /**
            * Returns true if area is valid.
            */
@@ -276,6 +278,8 @@ namespace tbx
 
 		  iterator begin();
 		  iterator end();
+
+		  UserSprite get_sprite(OsSpritePtr sprite_ptr);
 
 	   private:
 		  OsSpriteAreaPtr _area;
