@@ -1,7 +1,7 @@
 /*
  * tbx RISC OS toolbox library
  *
- * Copyright (C) 2010-2012 Alan Buckley   All Rights Reserved.
+ * Copyright (C) 2010-2014 Alan Buckley   All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -126,6 +126,17 @@ Path &Path::operator=(const Path &other)
  * @param name path name as a string
  */
 Path &Path::operator=(const std::string &name)
+{
+	_name = name;
+	return *this;
+}
+
+/**
+ * Assign a path to a c string
+ *
+ * @param name path name as a c string
+ */
+Path &Path::operator=(const char *name)
 {
 	_name = name;
 	return *this;
