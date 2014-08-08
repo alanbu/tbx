@@ -7,6 +7,7 @@
  * - Added prepoll and post event listener to application (used by PThreadGuard)
  * - Fixed plotting of 16M colour sprites to any other mode caused a crash due to a bug in the TranslationTable class.
  * - Added SpriteArea::set and get_sprite(OsSpritePtr) to allow easier passing of a sprite area/user sprite to the TBX classes.
+ * - Fixed bug: where PropertySet set bool method went into an infinite loop
  *
  * <B>0.7.2 Alpha March 2014 </B>
  * - uncaught_exception method added to application to allow user processing of this error condition

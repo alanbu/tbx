@@ -57,6 +57,14 @@ public:
 	void set(std::string name, std::string value);
 
 	/**
+	* Set the value of a string property from a C string.
+	*
+	* @param name property name to set
+	* @param value new value
+	*/
+	void set(std::string name, const char *value);
+
+	/**
 	* Get the value of a property as a string
 	*
 	* @param name property name to get
