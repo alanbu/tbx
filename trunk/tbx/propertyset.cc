@@ -40,6 +40,12 @@ void PropertySet::set(std::string name, std::string value)
 	_properties[name] = value;
 }
 
+void PropertySet::set(std::string name, const char *value)
+{
+	_properties[name] = value;
+}
+
+
 std::string PropertySet::get(std::string name, const char *def /*=""*/) const
 {
 	std::map<std::string, std::string>::const_iterator i = _properties.find(name);
