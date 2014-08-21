@@ -1,6 +1,6 @@
 # Makefile for TBX Library
 
-# include FixDeps:Rules/make
+include FixDeps:Rules/make
 
 CXX=g++
 CXXFLAGS=-O2 -Wall -mthrowback
@@ -8,7 +8,7 @@ AR=ar
 
 TARGET=libtbx.a
 
-CCSRC = $(wildcard tbx/*.cc) $(wildcard tbx/view/*.cc) $(wildcard tbx/res/*.cc) $(wildcard tbx/doc/*.cc)
+CCSRC = $(wildcard tbx/*.cc) $(wildcard tbx/view/*.cc) $(wildcard tbx/res/*.cc) $(wildcard tbx/doc/*.cc) $(wildcard tbx/ext/*.cc)
 
 
 bin:	$(TARGET)
@@ -37,4 +37,4 @@ cleanapp:
 	rm -rf !TBX/html
 	IfThere !TBX.libtbx/a Then Delete !TBX.libtbx/a
 
-# include $(CCSRC:.cc=.d)
+include $(CCSRC:.cc=.d)
