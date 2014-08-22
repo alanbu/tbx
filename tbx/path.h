@@ -369,6 +369,7 @@ namespace tbx
 		bool canonical_equals(const tbx::Path &compare_to) const;
 		bool canonical_equals(const std::string &compare_to) const;
 
+		static Path temporary(const char *prefix = 0);
 		//Operators
 
 		/**
