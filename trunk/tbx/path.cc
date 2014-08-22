@@ -821,6 +821,36 @@ bool Path::set_current_directory() const
 }
 
 /**
+ * Return a Path for a temporary file
+ *
+ * The file will be inside the scrap directory and the
+ * leaf name will start with the prefix given (or tbx
+ * if there is no prefix).
+ *
+ * The file name is checked against other
+ *
+ * @param prefix for leaf name of the path
+ * @returns Path with temporary file name
+ */
+Path Path::temporary(const char *prefix /* = 0 */)
+{
+	if (prefix == 0) prefix="tbx";
+	unsigned int num = UTCTime::now().low_word();
+	std::string file_name;
+	tbx::Path temp;
+	do
+	{
+		std::ostringstream ss;
+		ss << "<Wimp$ScrapDir>." << prefix << std::hex << num;
+		temp = ss.str();
+		num++;
+	} while (temp.exists());
+
+	return temp;
+}
+
+
+/**
  * Create an iterator to search the current directory.
  *
  * @param wild_card Wildcard to use for search.

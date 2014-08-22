@@ -3,6 +3,7 @@
  *
  * <B>0.7.x Alpha ???</B>
  *
+ * - Added Path::temporary() method to return a temporary path in the Wimp scrap directory.
  * - Added ext namespace for classes that access third-party applications/modules.
  * - Add StrongHelp class to ext namespace to help using the StrongHelp help system.
  * - Added PThreadGuard class to disable threading around wimp poll and event processing when using pthreads to prevent crashes caused by interrupting event processing.
