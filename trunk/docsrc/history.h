@@ -6,6 +6,7 @@
  * - Added Path::temporary() method to return a temporary path in the Wimp scrap directory.
  * - Added ext namespace for classes that access third-party applications/modules.
  * - Add StrongHelp class to ext namespace to help using the StrongHelp help system.
+ * - Added OleClient class to the ext namespace to help using OLE editing.
  * - Added PThreadGuard class to disable threading around wimp poll and event processing when using pthreads to prevent crashes caused by interrupting event processing.
  * - Added prepoll and post event listener to application (used by PThreadGuard)
  * - Fixed plotting of 16M colour sprites to any other mode caused a crash due to a bug in the TranslationTable class.
