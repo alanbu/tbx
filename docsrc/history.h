@@ -1,7 +1,7 @@
 /**
  * @page history History/Changelog
  *
- * <B>0.7.x Alpha ???</B>
+ * <B>0.7.3 Alpha October 2014</B>
  *
  * - Added Path::temporary() method to return a temporary path in the Wimp scrap directory.
  * - Added ext namespace for classes that access third-party applications/modules.

@@ -1,4 +1,4 @@
-VERSION = 0.7.1-1
+VERSION = 0.7.3-1
 PACKAGES = \
  TBX-Dev_$(VERSION)
 INSTALL_TO=Temp/Apps/Library
@@ -30,8 +30,4 @@ pkg:
 $(PACKAGES): %:
 	riscpkg-gencontrol $(firstword $(subst _, ,$@)) < ../RiscPkg/Control > RiscPkg/Control
 	rm -f ../RiscPkg/$@
-	set StoreSuffix <UnixEnv$$zip$$sfix>
-	set UnixEnv$$zip$$sfix \"\"
-	zip -r ../RiscPkg/$@ * -i@../RiscPkg/$(firstword $(subst _, ,$@)).inc
-	set UnixEnv$$zip$$sfix <StoreSuffix>
-	unset StoreSuffix
+	zip -r ^.RiscPkg.$(subst .,/,$@) * -i@^.RiscPkg.$(firstword $(subst _, ,$@))/inc
