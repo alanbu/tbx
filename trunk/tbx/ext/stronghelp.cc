@@ -28,6 +28,8 @@
 #include "../reporterror.h"
 #include "../command.h"
 
+#include <stdlib.h>
+
 namespace tbx {
 namespace ext {
 

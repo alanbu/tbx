@@ -1,9 +1,34 @@
+# Rules for creating the TBX library
+
 VERSION = 0.7.3-1
 PACKAGES = \
  TBX-Dev_$(VERSION)
 INSTALL_TO=Temp/Apps/Library
 
+# Detect host
+HOST := $(shell uname -s)
+ifeq ($(HOST),)
+  # Assume RISC OS
+  HOST := riscos
+else
+  ifeq ($(HOST),RISC OS)
+    HOST := riscos
+  endif
+endif
+
+ifeq ($(HOST),riscos)
+CC_PATTERN=cc
+TOOL_PATH=""
+ZIP=zip
+else
+CC_PATTERN=*.cc
+TOOL_PATH=$(GCCSDK_INSTALL_ENV)/bin/
+ZIP=$(GCCSDK_INSTALL_ENV)/ro-path ../unix-zip
+endif
+
 all: build pkg
+
+cross: build pkg-cross
 
 build:
 	make all
@@ -12,22 +37,24 @@ pkg:
 	rm -rf Temp
 	mkdir -p Temp/RiscPkg
 	mkdir -p $(INSTALL_TO)
-	cp RiscPkg/Copyright Temp/RiscPkg
+	cp RiscPkg/Copyright Temp/RiscPkg	
 	svn export !TBX $(INSTALL_TO)/!TBX
 	svn export tbx $(INSTALL_TO)/!TBX/tbx
-	rm -rf $(INSTALL_TO)/!TBX/tbx/cc
-	rm -rf $(INSTALL_TO)/!TBX/tbx/view/cc
-	rm -rf $(INSTALL_TO)/!TBX/tbx/res/cc
+	rm -rf $(INSTALL_TO)/!TBX/tbx/$(CC_PATTERN)
+	rm -rf $(INSTALL_TO)/!TBX/tbx/doc/$(CC_PATTERN)
+	rm -rf $(INSTALL_TO)/!TBX/tbx/ext/$(CC_PATTERN)
+	rm -rf $(INSTALL_TO)/!TBX/tbx/view/$(CC_PATTERN)
+	rm -rf $(INSTALL_TO)/!TBX/tbx/res/$(CC_PATTERN)
 	set UnixEnv$$cp$$sfix f:for:F:fpp:cc:cxx:cpp:c++:C:i:ii:rpo:c:m:h:hh:s:S:xrb:xrs:l:o:y:tcc:cmhg:adb:ads:ali
 	cp libtbx.a $(INSTALL_TO)/!TBX
 	cp -R docs/html $(INSTALL_TO)/!TBX/html/refguide
 	svn export userguide/html $(INSTALL_TO)/!TBX/html/userguide
 	make -C Temp -f ../RiscPkg/Rules $(PACKAGES)
 	set UnixEnv$$rm$$sfix f:for:F:fpp:cc:cxx:cpp:c++:C:i:ii:rpo:c:m:h:hh:s:S:xrb:xrs:l:o:y:tcc:cmhg:adb:ads:ali
-	rm -rf Temp
+	# rm -rf Temp
 
 .PHONY: $(PACKAGES)
-$(PACKAGES): %:
-	riscpkg-gencontrol $(firstword $(subst _, ,$@)) < ../RiscPkg/Control > RiscPkg/Control
+$(PACKAGES):
+	$(TOOL_PATH)riscpkg-gencontrol $(firstword $(subst _, ,$@)) < ../RiscPkg/Control > RiscPkg/Control
 	rm -f ../RiscPkg/$@
-	zip -r ^.RiscPkg.$(subst .,/,$@) * -i@^.RiscPkg.$(firstword $(subst _, ,$@))/inc
+	$(ZIP) -r ^.RiscPkg.$(subst .,/,$@) * -i@^.RiscPkg.$(firstword $(subst _, ,$@))/inc

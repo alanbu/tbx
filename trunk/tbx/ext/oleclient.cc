@@ -30,6 +30,7 @@
 #include "swis.h"
 #include <stdexcept>
 #include <cstdlib>
+#include <cstdio>
 
 namespace tbx
 {

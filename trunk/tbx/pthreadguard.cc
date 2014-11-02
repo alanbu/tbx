@@ -23,13 +23,13 @@
  */
 
 /*
- * PThreadGuard.cc
+ * pthreadguard.cc
  *
  *  Created on: 6 Jun 2014
  *      Author: alanb
  */
 
-#include "PThreadGuard.h"
+#include "pthreadguard.h"
 #include "application.h"
 #include <pthread.h>
 
