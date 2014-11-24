@@ -3,13 +3,15 @@
 # include FixDeps:Rules/make
 
 CXX=g++
-CPPFLAGS=-MD -MP
 CXXFLAGS=-O2 -Wall -mthrowback
 AR=ar
 
 TARGET=libtbx.a
 
 CCSRC = $(wildcard tbx/*.cc) $(wildcard tbx/view/*.cc) $(wildcard tbx/res/*.cc) $(wildcard tbx/doc/*.cc) $(wildcard tbx/ext/*.cc)
+
+%.d: %.cc
+	$(CC) -MM $(CPPFLAGS) $< > $@
 
 
 bin:	$(TARGET)
@@ -20,7 +22,7 @@ doc:
 all:	bin doc
 
 $(TARGET): $(CCSRC:.cc=.o)
-	$(AR) -r $(TARGET) $(CCSRC:.cc=.o)
+	$(AR) -rcs $(TARGET) $(CCSRC:.cc=.o)
 
 clean:
 	rm -f $(CCSRC:.cc=.o) $(CCSRC:.cc=.d) $(TARGET)
