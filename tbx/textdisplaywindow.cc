@@ -1,7 +1,7 @@
 /*
  * tbx RISC OS toolbox library
  *
- * Copyright (C) 2012 Alan Buckley   All Rights Reserved.
+ * Copyright (C) 2012-2014 Alan Buckley   All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -253,12 +253,18 @@ void TextDisplayWindow::create_window(const char *buttons,
         {
            button.is_default(true);
            get_focus = true;
+        } else
+        {
+           button.is_default(false);
         }
 
         if (j == cancel_button)
         {
            button.cancel(true);
            get_focus = true;
+        } else
+        {
+           button.cancel(false);
         }
 
         button.xmin(button.xmin() + button_width + gap);

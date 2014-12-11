@@ -4,14 +4,12 @@
 
 CXX=g++
 CXXFLAGS=-O2 -Wall -mthrowback
+CPPFLAGS=-MMD -MP
 AR=ar
 
 TARGET=libtbx.a
 
 CCSRC = $(wildcard tbx/*.cc) $(wildcard tbx/view/*.cc) $(wildcard tbx/res/*.cc) $(wildcard tbx/doc/*.cc) $(wildcard tbx/ext/*.cc)
-
-%.d: %.cc
-	$(CC) -MM $(CPPFLAGS) $< > $@
 
 
 bin:	$(TARGET)
@@ -26,7 +24,6 @@ $(TARGET): $(CCSRC:.cc=.o)
 
 clean:
 	rm -f $(CCSRC:.cc=.o) $(CCSRC:.cc=.d) $(TARGET)
-
 
 copytoapp: all
 	mkdir -p !TBX/tbx/h
