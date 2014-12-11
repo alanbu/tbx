@@ -1,7 +1,7 @@
 /**
  * @page history History/Changelog
  *
- * <B>0.7.3 Alpha October 2014</B>
+ * <B>0.7.3 Alpha December 2014</B>
  *
  * - Added Path::temporary() method to return a temporary path in the Wimp scrap directory.
  * - Added ext namespace for classes that access third-party applications/modules.
@@ -11,7 +11,8 @@
  * - Added prepoll and post event listener to application (used by PThreadGuard)
  * - Fixed plotting of 16M colour sprites to any other mode caused a crash due to a bug in the TranslationTable class.
  * - Added SpriteArea::set and get_sprite(OsSpritePtr) to allow easier passing of a sprite area/user sprite to the TBX classes.
- * - Fixed bug: where PropertySet set bool method went into an infinite loop
+ * - Fixed bug where PropertySet set bool method went into an infinite loop
+ * - Fixed display of all buttons with default styling after the first one was set in the message window.
  *
  * <B>0.7.2 Alpha March 2014 </B>
  * - uncaught_exception method added to application to allow user processing of this error condition
