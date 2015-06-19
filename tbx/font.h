@@ -1,7 +1,7 @@
 /*
  * tbx RISC OS toolbox library
  *
- * Copyright (C) 2010-2014 Alan Buckley   All Rights Reserved.
+ * Copyright (C) 2010-2015 Alan Buckley   All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -65,6 +65,12 @@ namespace tbx
 		Font(const Font &other);
 		virtual ~Font();
 
+		/**
+		 * Get RISC OS font handle
+		 *
+		 * @returns RISC OS font handle for the font
+		 */
+		int handle() const {return _font_ref->handle;}
 		/**
 		 * Check if this object is assigned to an outline font on the system
 		 *
@@ -228,7 +234,104 @@ namespace tbx
     	void paint(int x, int y, const std::string &text, int flags = WimpFont::WFPF_NONE) const;
     	void paint(int x, int y, const char *text, int length = -1, int flags = WimpFont::WFPF_NONE) const;
     };
+
+    /**
+     * fpcs namespace is used to provide control strings for font painting
+     */
+    namespace fpcs
+    {
+    	/**
+    	 * Move position horizontally
+    	 *
+    	 * @param move distance to move in millipoints
+    	 * @returns string to use for font paint
+    	 */
+    	inline std::string move_x(int move)
+    	{
+    		std::string t("\x09xxx");
+    		t[1] = move & 0xFF;
+    		t[2] = (move & 0xFF00) >> 8;
+    		t[3] = (move & 0xFF0000) >> 16;
+    		return t;
+    	}
+
+    	/**
+    	 * Move position horizontally in OS units
+    	 * @param move distance to move in OS units
+    	 * @returns string to use for font paint
+    	 */
+    	inline std::string move_x_os(int move) {return move_x(tbx::os_to_millipoints(move));}
+
+    	/**
+    	 * Move position vertically
+    	 *
+    	 * @param move distance to move in millipoints
+    	 * @returns string to use for font paint
+    	 */
+    	inline std::string move_y(int move)
+    	{
+    		std::string t("\x0bxxx");
+    		t[1] = move & 0xFF;
+    		t[2] = (move & 0xFF00) >> 8;
+    		t[3] = (move & 0xFF0000) >> 16;
+    		return t;
+    	}
+
+    	/**
+    	 * Move position vertically in OS units
+    	 * @param move distance to move in OS units
+    	 * @returns string to use for font paint
+    	 */
+    	inline std::string move_y_os(int move) {return move_y(tbx::os_to_millipoints(move));}
+
+    	/**
+    	 * Set foreground and background font colours
+    	 *
+    	 * @param fore foreground colour
+    	 * @param back background colour
+    	 * @param offset number of colours to use for antialiasing
+    	 * @returns string with sequence to change colours
+    	 */
+    	inline std::string colour(tbx::Colour fore, tbx::Colour back, int offset = 14)
+    	{
+    		std::string t("\x13rgbRGBo");
+    		t[1] = char(back.red());
+    		t[2] = char(back.green());
+    		t[3] = char(back.blue());
+    		t[4] = char(fore.red());
+    		t[5] = char(fore.green());
+    		t[6] = char(fore.blue());
+    		t[7] = char(offset);
+    		return t;
+    	}
+
+    	/**
+    	 * Turn on or off underlining
+    	 * @param base distance from base line for underline in 1/256th of current font size
+    	 * @param thickness thickness of underline in 1/256th of current font size or 0 to turn it off
+    	 * @returns string to set underline
+    	 */
+    	inline std::string underline(int base, int thickness)
+    	{
+    		std::string t("0x19bt");
+    		t[1] = char(base);
+    		t[2] = char(thickness);
+    		return t;
+    	}
+
+    	/**
+    	 * Change font in the string
+    	 *
+    	 * @param fnt - new font to use
+    	 * @returns string to change to new font handle
+    	 */
+    	inline std::string font(const tbx::Font &fnt)
+    	{
+    		std::string t("0x1af");
+    		t[1] = char(fnt.handle());
+    		return t;
+    	}
+    }
 };
 
 #endif
-
