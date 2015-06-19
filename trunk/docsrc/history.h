@@ -1,6 +1,12 @@
 /**
  * @page history History/Changelog
  *
+ * <B>0.7.? Alpha ???</B>
+ *
+ *  - Added Font::handle() to return RISC OS font handle
+ *  - Added fpcs namespace with function to create font paint control sequences
+ *  - Added FontItemRenderer to render items with a given font
+ *
  * <B>0.7.3 Alpha December 2014</B>
  *
  * - Added Path::temporary() method to return a temporary path in the Wimp scrap directory.
