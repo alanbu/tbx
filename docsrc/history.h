@@ -6,6 +6,7 @@
  *  - Added Font::handle() to return RISC OS font handle
  *  - Added fpcs namespace with function to create font paint control sequences
  *  - Added FontItemRenderer to render items with a given font
+ *  - Added common and wimp colours to Colour class enum
  *
  * <B>0.7.3 Alpha December 2014</B>
  *
