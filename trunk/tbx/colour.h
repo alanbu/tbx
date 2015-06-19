@@ -126,7 +126,17 @@ public:
    * Enumeration of some common colours
    */
   enum { black = 0x00000000, white = 0xFFFFFF00,
-	 no_colour = 0xFFFFFFFF };
+	     light_red = 0x0000FF00, light_green = 0x00FF0000, light_blue = 0xFF000000,
+	     magenta = 0xFFFF0000, yellow = 0x00FFFF00, cyan =  0xFFFF0000,
+	     // Wimp colour equivalents
+	     wimp_grey0 = 0xFFFFFF00, wimp_grey1 = 0xDDDDDD00, wimp_grey2 = 0xBBBBBB00,
+	     wimp_grey3 = 0x99999900, wimp_grey4 = 0x77777700, wimp_grey5 = 0x55555500,
+	     wimp_grey6 = 0x33333300, wimp_grey7 = 0x00000000,
+	     wimp_dark_blue = 0x99440000, wimp_yellow = 0x00EEEE00,
+	     wimp_light_green = 0x00CC0000, wimp_red = 0x0000DD00,
+	     wimp_cream = 0xBBEEEE00,  wimp_dark_green = 0x00885500,
+	     wimp_orange = 0x00BBFF00, wimp_light_blue = 0xFFBB0000,
+	     no_colour = 0xFFFFFFFF };
 };
 
 /**
