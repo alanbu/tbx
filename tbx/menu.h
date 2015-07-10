@@ -35,7 +35,8 @@ class ResMenuItem;
 class AboutToBeShownListener;
 class HasBeenHiddenListener;
 class SubMenuListener;
-class MenuItemSelectedListener;
+class MenuSelectionListener;
+class Command;
 
 namespace res
 {
@@ -158,6 +159,12 @@ public:
 
 	void add_has_been_hidden_listener(HasBeenHiddenListener *listener);
 	void remove_has_been_hidden_listener(HasBeenHiddenListener *listener);
+
+	void add_submenu_listener(SubMenuListener *listener);
+	void remove_submenu_listener(SubMenuListener *listener);
+
+	void add_selection_listener(MenuSelectionListener *listener);
+	void remove_selection_listener(MenuSelectionListener *listener);
 };
 
 /**
@@ -254,13 +261,14 @@ public:
 	std::string help_message() const;
 	int help_message_length() const;
 
-	/*TODO: This lot of listeners
 	void add_submenu_listener(SubMenuListener *listener);
 	void remove_submenu_listener(SubMenuListener *listener);
 
-	void add_selected_listener(MenuItemSelectedListener *listener);
-	void remove_selected_listener(MenuItemSelectedListener *listener);
-	*/
+	void add_selection_listener(MenuSelectionListener *listener);
+	void remove_selection_listener(MenuSelectionListener *listener);
+
+	void add_selection_command(Command *command);
+	void remove_selection_command(Command *command);
 };
 
 }
