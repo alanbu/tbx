@@ -7,6 +7,7 @@
  *  - Added fpcs namespace with function to create font paint control sequences
  *  - Added FontItemRenderer to render items with a given font
  *  - Added common and wimp colours to Colour class enum
+ *  - Added Menu/MenuItem submenu and selection listeners
  *
  * <B>0.7.3 Alpha December 2014</B>
  *

@@ -27,6 +27,10 @@
 #include "swis.h"
 #include "abouttobeshownlistener.h"
 #include "hasbeenhiddenlistener.h"
+#include "submenulistener.h"
+#include "menuselectionlistener.h"
+#include "command.h"
+#include "commandrouter.h"
 #include "tbxexcept.h"
 #include "res/resmenu.h"
 
@@ -34,6 +38,17 @@
 
 namespace tbx {
 
+static void submenu_router(IdBlock &id_block, PollBlock &data, Listener *listener)
+{
+	SubMenuEvent event(id_block, data);
+	static_cast<SubMenuListener *>(listener)->submenu(event);
+}
+
+static void menu_selection_router(IdBlock &id_block, PollBlock &data, Listener *listener)
+{
+	tbx::EventInfo event(id_block, data);
+	static_cast<MenuSelectionListener *>(listener)->menu_selection(event);
+}
 
 /**
  * Retrieve the menu item for a given component id.
@@ -90,6 +105,53 @@ void Menu::add_has_been_hidden_listener(HasBeenHiddenListener *listener)
 void Menu::remove_has_been_hidden_listener(HasBeenHiddenListener *listener)
 {
 	remove_listener(0x828c1, listener);
+}
+
+/**
+ * Add listener for mouse moving over the menu arrow when no other toolbox
+ * event is assosiated with this event.
+ *
+ * @param listener to add
+ */
+void Menu::add_submenu_listener(SubMenuListener *listener)
+{
+	add_listener(0x828c2, listener, submenu_router);
+}
+
+/**
+ * Remove listener for mouse moving over the menu arrow when no other toolbox
+ * event is assosiated with this event.
+ *
+ * @param listener to remove
+ */
+void Menu::remove_submenu_listener(SubMenuListener *listener)
+{
+	remove_listener(0x828c2, listener);
+}
+
+/**
+ * Add listener for menu item selection. This is only generated if no other
+ * toolbox event is assosiated with this event.
+ *
+ * This will be called for any menu item that has no other event
+ * associated with it. (including those with their own menu selection
+ * listener).
+ *
+ * @param listener to add
+ */
+void Menu::add_selection_listener(MenuSelectionListener *listener)
+{
+	add_listener(0x828c3, listener, menu_selection_router);
+}
+
+/**
+ * Remove menu selection listener
+ *
+ * @param listener to remove
+ */
+void Menu::remove_selection_listener(MenuSelectionListener *listener)
+{
+    remove_listener(0x828c3, listener);
 }
 
 /**
@@ -442,12 +504,66 @@ int MenuItem::help_message_length() const
 	return string_property_length(19);
 }
 
-/*
-void MenuItem::add_submenu_listener(SubMenuListener *listener);
-void MenuItem::remove_submenu_listener(SubMenuListener *listener);
+/**
+ * Add listener for mouse moving over the menu arrow when no other toolbox
+ * event is associated with this event.
+ *
+ * @param listener to add
+ */
+void MenuItem::add_submenu_listener(SubMenuListener *listener)
+{
+	add_listener(0x828c2, listener, submenu_router);
+}
 
-void MenuItem::add_selected_listener(MenuItemSelectedListener *listener);
-void MenuItem::remove_selected_listener(MenuItemSelectedListener *listener);
-*/
+/**
+ * Remove listener for mouse moving over the menu arrow when no other toolbox
+ * event is associated with this event.
+ *
+ * @param listener to remove
+ */
+void MenuItem::remove_submenu_listener(SubMenuListener *listener)
+{
+	remove_listener(0x828c2, listener);
+}
+
+/**
+ * Add listener for menu item selection. This is only generated if no other
+ * toolbox event is assosiated with this event.
+ *
+ * @param listener to add
+ */
+void MenuItem::add_selection_listener(MenuSelectionListener *listener)
+{
+	add_listener(0x828c3, listener, menu_selection_router);
+}
+
+/**
+ * Remove menu selection listener
+ *
+ * @param listener to remove
+ */
+void MenuItem::remove_selection_listener(MenuSelectionListener *listener)
+{
+    remove_listener(0x828c3, listener);
+}
+
+/**
+ * Add command to be run when this menu item is selected.
+ * This is only generated if no other toolbox event is associated
+ * with the menu items selection.
+ *
+ * @param command command to add
+ */
+void MenuItem::add_selection_command(Command *command)
+{
+	add_listener(0x828c3, command, command_router);
+}
+
+void MenuItem::remove_selection_command(Command *command)
+{
+    remove_listener(0x828c3, command);
+}
+
+
 
 }
