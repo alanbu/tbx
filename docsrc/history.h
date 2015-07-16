@@ -8,6 +8,8 @@
  *  - Added FontItemRenderer to render items with a given font
  *  - Added common and wimp colours to Colour class enum
  *  - Added Menu/MenuItem submenu and selection listeners
+ *  - Added DeleteClassAndObjectOnHidden listener
+ *  - Fixed hang when saving a TagDoc where a node had attributes
  *
  * <B>0.7.3 Alpha December 2014</B>
  *
