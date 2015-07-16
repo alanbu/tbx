@@ -1,7 +1,7 @@
 /*
  * tbx RISC OS toolbox library
  *
- * Copyright (C) 2010 Alan Buckley   All Rights Reserved.
+ * Copyright (C) 2010-2015 Alan Buckley   All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -84,6 +84,38 @@ namespace tbx
 		}
 	};
 
+	/**
+	 * Templated object has been hidden listener to delete a C++ object and
+	 * the toolbox object that generated the event when a toolbox object
+	 * gets hidden
+	 *
+	 * This class deletes itself once used so should always be
+	 * allocated with new.
+	 */
+	template<class T> class DeleteClassAndObjectOnHidden : public tbx::HasBeenHiddenListener
+	{
+		T *_class_to_delete;
+	public:
+		/**
+		 * Constructor parsing object to delete when the toolbox object
+		 * is hidden.
+		 *
+		 * @param class_to_delete C++ object to delete.
+		 */
+		DeleteClassAndObjectOnHidden(T *class_to_delete) : _class_to_delete(class_to_delete) {}
+		/**
+		 * Delete the given C++ class, the toolbox object and this
+		 * C++ object on event received
+		 *
+		 * @param hidden_event details of the has been hidden event
+		 */
+		virtual void has_been_hidden(const EventInfo &hidden_event)
+		{
+			delete _class_to_delete;
+			hidden_event.id_block().self_object().delete_object();
+			delete this;
+		}
+	};
 }
 
 #endif /* DELETEONHIDDEN_H_ */
