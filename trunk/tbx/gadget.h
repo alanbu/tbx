@@ -1,7 +1,7 @@
 /*
  * tbx RISC OS toolbox library
  *
- * Copyright (C) 2010 Alan Buckley   All Rights Reserved.
+ * Copyright (C) 2010-2015 Alan Buckley   All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -131,6 +131,9 @@ namespace tbx
 		bool operator!=(const Gadget &other) const {return (_handle != other.handle() || _id != other._id);}
 
 		void check_toolbox_class(int class_id) const;
+
+		int toolbox_class() const;
+		int toolbox_class_and_size() const;
 
 		// Attributes
 		unsigned int flags() const;

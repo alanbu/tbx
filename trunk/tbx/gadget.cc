@@ -1,7 +1,7 @@
 /*
  * tbx RISC OS toolbox library
  *
- * Copyright (C) 2010 Alan Buckley   All Rights Reserved.
+ * Copyright (C) 2010-2015 Alan Buckley   All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -56,6 +56,38 @@ void Gadget::check_toolbox_class(int class_id) const
 	if ((tbox_class_id  & 0xFFFF) != class_id) throw GadgetClassError();
 }
 
+/**
+ * Get the toolbox class for a gadget
+ * @returns gadget class
+ * @throws GadgetClassError if gadget class id is NULL.
+ */
+int Gadget::toolbox_class() const
+{
+	if (_id == NULL_ComponentId) throw GadgetClassError();
+
+	int tbox_class_id;
+	swix_check(_swix(0x44ec6, _INR(0,3) | _OUT(0), 0,  _handle,
+		70, _id, &tbox_class_id));
+
+	// class is in lower 16 bits (top 16bits is size)
+	return (tbox_class_id & 0xFFFFF);
+}
+
+/**
+ * Get the toolbox class and size for a gadget
+ * @returns gadget class (bottom 16 bits), size (top 16 bits)
+ * @throws GadgetClassError if gadget class id is NULL.
+ */
+int Gadget::toolbox_class_and_size() const
+{
+	if (_id == NULL_ComponentId) throw GadgetClassError();
+
+	int tbox_class_id;
+	swix_check(_swix(0x44ec6, _INR(0,3) | _OUT(0), 0,  _handle,
+		70, _id, &tbox_class_id));
+
+	return tbox_class_id;
+}
 
 /**
  * Return the gadget flags.
