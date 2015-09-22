@@ -28,7 +28,7 @@
 #ifndef APPGENERATOR_H
 #define APPGENERATOR_H
 
-#include "tbx/Path.h"
+#include "tbx/path.h"
 #include <string>
 #include <vector>
 #include <map>
