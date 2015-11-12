@@ -13,6 +13,7 @@
  *  - Added GadgetListView class to handle a list made up of one or more gadgets on a line
  *  - Added copy_gadget_value function to copy the main value between gadgets of the same type
  *  - Added Gadget toolbox_class and toolbox_class_and_size methods
+ *  - Added new class LockExtentPosition to keep gadget edges locked to the side of the windows extent
  *
  * <B>0.7.3 Alpha December 2014</B>
  *
