@@ -121,7 +121,7 @@ void GadgetListView::setup(tbx::Window window, tbx::res::ResWindow &res_window, 
     _width = gadget_bounds.width();
     _row_height = gadget_bounds.height();
     _margin.left = gadget_bounds.min.x - res_window.work_xmin();
-    _margin.right = res_window.work_xmax() - gadget_bounds.min.x;
+    _margin.right = res_window.work_xmax() - gadget_bounds.max.x;
     _margin.top = res_window.work_ymax() - gadget_bounds.max.y;
     _margin.bottom = gadget_bounds.min.y - res_window.work_ymin();
 
