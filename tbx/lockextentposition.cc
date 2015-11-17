@@ -123,6 +123,7 @@ void LockExtentPosition::add_gadgets(tbx::ComponentId from, tbx::ComponentId to,
       }
       delete [] _items;
    }
+   _items = tmp;
    for (int comp = from; comp <= to; comp++)
    {
        _items[_num_gadgets].first = _window.gadget(comp);
