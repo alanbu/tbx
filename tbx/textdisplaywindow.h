@@ -65,6 +65,9 @@ private:
 	std::string _text;
 	std::vector<int> _line_end;
 	tbx::BBox _text_bounds;
+	bool _delete_on_hide;
+	tbx::Command *_close_command;
+	bool _delete_close_command;
 
 	virtual void redraw (const tbx::RedrawEvent &e);
 	virtual void has_been_hidden (const tbx::EventInfo &hidden_event);
@@ -87,6 +90,7 @@ public:
     tbx::Window window() {return _window;}
 
     void delete_on_hide();
+    void close_command(tbx::Command *close_command, bool delete_command = false);
 
     void show();
     void show_as_menu();

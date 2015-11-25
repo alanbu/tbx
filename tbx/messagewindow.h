@@ -1,7 +1,7 @@
 /*
  * tbx RISC OS toolbox library
  *
- * Copyright (C) 2012 Alan Buckley   All Rights Reserved.
+ * Copyright (C) 2012-2015 Alan Buckley   All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -29,6 +29,7 @@
 #include <vector>
 
 #include "textdisplaywindow.h"
+#include "command.h"
 
 namespace tbx
 {
@@ -64,13 +65,13 @@ class MessageWindow : public TextDisplayWindow
 {
    public:
       MessageWindow(const std::string &msg);
+      virtual ~MessageWindow();
 
       void sprite(const std::string &sprite_name);
 };
 
-void show_message(const std::string &msg, const std::string &title = "", const std::string &sprite = "");
-void show_message_as_menu(const std::string &msg, const std::string &title = "", const std::string &sprite = "");
-
+void show_message(const std::string &msg, const std::string &title = "", const std::string &sprite = "", tbx::Command *close_command = 0, bool delete_command = false);
+void show_message_as_menu(const std::string &msg, const std::string &title = "", const std::string &sprite = "", tbx::Command *close_command = 0, bool delete_command = false);
 
 };
 

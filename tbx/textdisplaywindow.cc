@@ -1,7 +1,7 @@
 /*
  * tbx RISC OS toolbox library
  *
- * Copyright (C) 2012-2014 Alan Buckley   All Rights Reserved.
+ * Copyright (C) 2012-2015 Alan Buckley   All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -39,6 +39,7 @@
 #include "res/resactionbutton.h"
 #include "application.h"
 #include "margin.h"
+#include "command.h"
 #include <cstring>
 
 namespace tbx
@@ -62,16 +63,22 @@ TextDisplayWindow::TextDisplayWindow(const std::string &text,
         const char *buttons,
 	    int default_button /*= -1*/, int cancel_button /*= -1*/,
 	    int button_width /*= 200*/) :
-		_text(text)
+		_text(text),
+		_delete_on_hide(false),
+		_close_command(0),
+		_delete_close_command(false)
 {
     create_window(buttons, default_button, cancel_button, button_width);
 
 	_window.add_redraw_listener(this);
 }
 
-
+/**
+ * Destructor, delete close command if necessary
+ */
 TextDisplayWindow::~TextDisplayWindow()
 {
+	if (_delete_close_command) delete _close_command;
 }
 
 
@@ -92,7 +99,25 @@ void TextDisplayWindow::title(const std::string &new_title)
  */
 void TextDisplayWindow::delete_on_hide()
 {
-  _window.add_has_been_hidden_listener(this);
+	if (_delete_on_hide) return;
+	_delete_on_hide = true;
+	if (!_close_command) _window.add_has_been_hidden_listener(this);
+}
+
+/**
+ * Set command to be run when message window is closed.
+ *
+ * Closing includes using the close button or clicking outside
+ * it if it has been shown as a menu
+ *
+ * @param close_command command to run on close
+ * @param delete_close_command delete the close command when the window is deleted
+ */
+void TextDisplayWindow::close_command(tbx::Command *close_command, bool delete_command /*= false*/)
+{
+	if (!_delete_on_hide && !_close_command) _window.add_has_been_hidden_listener(this);
+	_close_command = close_command;
+	_delete_close_command = delete_command;
 }
 
 /**
@@ -188,6 +213,8 @@ void TextDisplayWindow::create_window(const char *buttons,
     twindow.back_icon(false);
     twindow.close_icon(false);
     twindow.toggle_size_icon(false);
+    twindow.generate_has_been_hidden(true);
+    twindow.hide_event(0x82890); // Default has been hidden event
 
     // size window and centre on screen
     int wx = (screen_size.width - window_width)/2;
@@ -362,6 +389,7 @@ bool TextDisplayWindow::calc_line_ends(int max_width)
     return updated;
 }
 
+
 /**
  * Self destruct when message window is hidden
  *
@@ -369,8 +397,12 @@ bool TextDisplayWindow::calc_line_ends(int max_width)
  */
 void TextDisplayWindow::has_been_hidden (const tbx::EventInfo &hidden_event)
 {
-   hidden_event.id_block().self_object().delete_object();
-   delete this;
+	if (_close_command) _close_command->execute();
+	if (_delete_on_hide)
+	{
+	   hidden_event.id_block().self_object().delete_object();
+	   delete this;
+	}
 }
 
 

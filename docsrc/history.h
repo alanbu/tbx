@@ -14,6 +14,8 @@
  *  - Added copy_gadget_value function to copy the main value between gadgets of the same type
  *  - Added Gadget toolbox_class and toolbox_class_and_size methods
  *  - Added new class LockExtentPosition to keep gadget edges locked to the side of the windows extent
+ *  - Fixed memory leak in show_message/show_message_as_menu and class MessageWindow
+ *  - Added close_command method to show_message/show_message_as_menu and class MessageWindow to set a command to be run when the message window is closed.
  *
  * <B>0.7.3 Alpha December 2014</B>
  *
