@@ -1,7 +1,7 @@
 /*
  * tbx RISC OS toolbox library
  *
- * Copyright (C) 2012 Alan Buckley   All Rights Reserved.
+ * Copyright (C) 2012-2015 Alan Buckley   All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -40,7 +40,7 @@ namespace tbx
  *
  * This shows the window and returns immediately. It is appropriate to use
  * instead of report_error as it allows the current and all other applications
- * to multi-task while the mesasge is shown.
+ * to multi-task while the message is shown.
  *
  * @param msg The text of the message. This can be multi-line and the window
  *  will be resized to fit it.
@@ -49,12 +49,15 @@ namespace tbx
  * @param sprite_name The name of the sprite for the window. Use "" (the
  * default) to keep the sprite name in the Message resource. Useful sprites for
  * this provided with RISC OS include "information", "warning" and "error".
+ * @param close_command - command to run when message window is closed
+ * @param delete_command - true to delete the command after it has been run
  */
-void show_message(const std::string &msg, const std::string &title /*=""*/, const std::string &sprite_name/*=""*/)
+void show_message(const std::string &msg, const std::string &title /*=""*/, const std::string &sprite_name/*=""*/, tbx::Command *close_command /*= 0*/, bool delete_command /*= false*/)
 {
    MessageWindow *mw = new MessageWindow(msg);
    if (!sprite_name.empty()) mw->sprite(sprite_name);
    if (!title.empty()) mw->title(title);
+   if (close_command) mw->close_command(close_command, delete_command);
    mw->delete_on_hide();
    mw->show();
 }
@@ -65,10 +68,11 @@ void show_message(const std::string &msg, const std::string &title /*=""*/, cons
  *
  * This shows the window and returns immediately. It is appropriate to use
  * instead of report_error as it allows the current and all other applications
- * to multi-task while the mesasge is shown.
+ * to multi-task while the message is shown.
  *
  * The window is closed if the OK button is selected or the mouse is clicked
- * outside the window.
+ * outside the window. If a close command is set it is run in both of these
+ * cases.
  *
  * @param msg The text of the message. This can be multi-line and the window
  *  will be resized to fit it.
@@ -77,12 +81,16 @@ void show_message(const std::string &msg, const std::string &title /*=""*/, cons
  * @param sprite_name The name of the sprite for the window. Use "" (the
  * default) to keep the sprite name in the Message resource. Useful sprites for
  * this provided with RISC OS include "information", "warning" and "error".
+ * @param close_command - command to run when message window is closed
+ * @param delete_command - true to delete the command after it has been run
  */
-void show_message_as_menu(const std::string &msg, const std::string &title /*=""*/, const std::string &sprite_name/*=""*/)
+void show_message_as_menu(const std::string &msg, const std::string &title /*=""*/, const std::string &sprite_name/*=""*/,
+	tbx::Command *close_command /*= 0*/, bool delete_command /*= false*/)
 {
    MessageWindow *mw = new MessageWindow(msg);
    if (!sprite_name.empty()) mw->sprite(sprite_name);
    if (!title.empty()) mw->title(title);
+   if (close_command) mw->close_command(close_command, delete_command);
    mw->delete_on_hide();
    mw->show_as_menu();
 }
@@ -96,6 +104,10 @@ MessageWindow::MessageWindow(const std::string &msg) :
     TextDisplayWindow(msg, "OK", 0, 0)
 {
    title("Message from " + message("_TaskName"));
+}
+
+MessageWindow::~MessageWindow()
+{
 }
 
 /**
