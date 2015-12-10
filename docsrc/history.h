@@ -16,6 +16,7 @@
  *  - Added new class LockExtentPosition to keep gadget edges locked to the side of the windows extent
  *  - Fixed memory leak in show_message/show_message_as_menu and class MessageWindow
  *  - Added close_command method to show_message/show_message_as_menu and class MessageWindow to set a command to be run when the message window is closed.
+ *  - Added TaskWindow class to run a child task using the RISC OS TaskWindow command
  *
  * <B>0.7.3 Alpha December 2014</B>
  *
