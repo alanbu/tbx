@@ -37,6 +37,9 @@ cleanapp:
 	rm -rf !TBX/html
 	IfThere !TBX.libtbx/a Then Delete !TBX.libtbx/a
 
+install:
+	./install-cross
+
 
 -include $(CCSRC:.cc=.d)
 

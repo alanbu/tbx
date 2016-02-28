@@ -7,7 +7,7 @@
 # where ~/gccsdk/env is replaced with the location you installed
 # the cross compiler to
 
-if [ "$GCCSDK_INSTALL_ENV" == "" ] ; then
+if [ -z "$GCCSDK_INSTALL_ENV" ] ; then
    echo "GCCSDK_INSTALL_ENV is not defined"
    exit 1
 fi
