@@ -1,7 +1,7 @@
 /**
  * @page history History/Changelog
  *
- * <B>0.7.? Alpha ???</B>
+ * <B>0.7.4 Alpha March 2016</B>
  *
  *  - Added Font::handle() to return RISC OS font handle
  *  - Added fpcs namespace with function to create font paint control sequences

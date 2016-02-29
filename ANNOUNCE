@@ -1,48 +1,35 @@
-Packman package manager 0.8.4 beta released
+TBX C++ library version 0.7.4 (alpha) has now been released. 
 
-Packman version 0.8.4 beta is now available.
+The main features of this release are: 
+- Added TaskWindow class to run a child task using the RISC OS
+  TaskWindow command
+- Added Menu/MenuItem submenu and selection listeners
+- Added GadgetListView class to handle a list made up of one or
+  more gadgets on a line
+- Added new class LockExtentPosition to keep gadget edges locked
+  to the side of the windows extent
 
-New to this version:
+As always it also includes a range of bug fixes, 
+documentation improvements and further coverage of 
+RISC OS in the existing classes 
 
-- Added a configurable reminder message to prompt to update the lists
-- Save position of the main window
-- Main Window filter split into status and section.
-- Fixed documentation that was not referring correctly to the
-  Components which were added last release.
-  
-+ An assortment of minor bug fixes and UI improvements (see the
-  history page in the help for details) 
 
-If you already have a previous version of !PackMan or !RiscPkg
-installed you can install it or upgrade it from either of
-these programs.
+TBX is a C++ library to help with the development of 
+C++ applications for the RISC OS desktop. 
 
-Otherwise go to https://sites.google.com/site/alansriscosstuff/packman
-for download and installation instructions.
+It comes with a userguide and reference documentation. 
 
-PackMan is a package manager front end for packages distributed
-using the RISC OS Packaging Project (see http://www.riscpkg.org).
+TBX is released under the permissive X11 licence so can be used 
+with commercial and non-commercial applications without charge. 
 
-It can be used instead of or alongside !RiscPkg.
+Addition downloads provide some examples and a 
+program to help generate simple C++ skeleton projects. 
 
-Its features include:
+All these packages can be easily downloaded using the 
+RISC OS Packaging Project managers !RiscPkg or !PackMan. 
 
-- Summary and detailed description of the packages
-- Filters to allow display of packages for a specific category,
-  what's installed, what's new or upgrades to already installed
-  packages.
-- Search for a package.
-- Single buttons to start an install, upgrade or removal of a package.
-- Menu option to upgrade all your packages at once.
-- Automatically install dependencies for you, always showing what
-  is going to be installed.
-- Install multiple packages at once.
-- Install the components from (non fixed location) packages where you
-  want (subject to a package upgrade that is ongoing). Older
-  (non fixed location) packages can be moved after install.
-  
-  
-System requirements
+For more information and instruction on how to download 
+them manually see: 
 
-RISC OS 4.0 or greater with long filenames
-Internet connection for downloading packages
+https://sites.google.com/site/alansriscosstuff/tbx 
+
