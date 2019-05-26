@@ -1,0 +1,6 @@
+This is a simple test program to test the tbx URI class.
+
+Type in a URL into the writeable field and click open to open it in the configured
+browser.
+
+check see if there is a suitable browser running. It may also start the browser.
