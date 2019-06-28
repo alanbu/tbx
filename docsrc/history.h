@@ -1,6 +1,10 @@
 /**
  * @page history History/Changelog
  *
+ * <B>0.7.5 Alpha July 2019</B>
+ *
+ *  - Added URI class to launch URIs using the Acorn URI module.
+ *
  * <B>0.7.4 Alpha March 2016</B>
  *
  *  - Added Font::handle() to return RISC OS font handle
