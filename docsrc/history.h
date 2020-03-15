@@ -1,6 +1,10 @@
 /**
  * @page history History/Changelog
  *
+ * <B>0.7.? Alpha ??? <B>
+ *
+ *  - Fixed subwindow alignment flags (from Serge Lenz)
+ *
  * <B>0.7.5 Alpha July 2019</B>
  *
  *  - Added URI class to launch URIs using the Acorn URI module.
