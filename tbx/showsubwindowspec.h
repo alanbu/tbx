@@ -44,10 +44,10 @@ namespace tbx
 	   ALIGN_RIGHT_VISIBLE_RIGHT = 0x0200000, //!< Right edge linked to right of visible area
 	   ALIGN_TOP_VISIBLE_BOTTOM  = 0x0400000, //!< Top edge linked to bottom of visible area
 	   ALIGN_TOP_VISIBLE_TOP = 0x0800000, //!< Top edge linked to top of visible area
-	   ALIGN_X_SCROLL_VISIBLE_LEFT = 0x100000, //!< X scroll linked to left of visible area
-	   ALIGN_X_SCROLL_VISIBLE_RIGHT = 0x200000, //!< X scroll linked to right of visible area
-	   ALIGN_Y_SCROLL_VISIBLE_BOTTOM = 0x400000, //!< Y scroll linked to bottom of visible area
-	   ALIGN_Y_SCROLL_VISIBLE_TOP= 0x800000  //!< Y scroll linked to top of visible area
+	   ALIGN_X_SCROLL_VISIBLE_LEFT = 0x1000000, //!< X scroll linked to left of visible area
+	   ALIGN_X_SCROLL_VISIBLE_RIGHT = 0x2000000, //!< X scroll linked to right of visible area
+	   ALIGN_Y_SCROLL_VISIBLE_BOTTOM = 0x4000000, //!< Y scroll linked to bottom of visible area
+	   ALIGN_Y_SCROLL_VISIBLE_TOP= 0x8000000  //!< Y scroll linked to top of visible area
 	};
 
 	/**
