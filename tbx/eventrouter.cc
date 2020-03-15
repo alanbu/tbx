@@ -834,7 +834,6 @@ void EventRouter::process_mouse_click()
 	if (item)
 	{
 		Window win(_id_block.self_object_id);
-		Gadget g = win.gadget(_id_block.self_component_id);
 		Point pt(_poll_block.word[0], _poll_block.word[1]);
 		// Get flag to see if mouse click can include double clicks
 		ButtonType type = BUTTONTYPE_CLICK_ONCE;

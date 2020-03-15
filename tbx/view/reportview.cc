@@ -572,7 +572,6 @@ void ReportView::changing(unsigned int where, unsigned int how_many)
  */
 void ReportView::changed(unsigned int where, unsigned int how_many)
 {
-	unsigned int first = where;
 	unsigned int last = where + how_many;
 	unsigned int old_width = _width;
 
@@ -605,14 +604,12 @@ void ReportView::changed(unsigned int where, unsigned int how_many)
 				{
 					_width += col_width - (*i).width;
 					(*i).width = col_width;
-					first  = 0;
 				}
 			}
 		}
 
 		if (col_shrinks && adjust_min_width(0, _count))
 		{
-			first = 0;
 			last = _count;
 		}
 		if (old_width != _width) update_window_extent();
