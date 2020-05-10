@@ -72,7 +72,7 @@ namespace tbx
 	 */
 	inline bool monotonic_lt(unsigned int compare, unsigned int to)
 	{
-		if (to >= compare) return false;
+		if (compare < to) return true;
 		return (compare - to) > 0x7FFFFFFF;
 	}
 
@@ -86,8 +86,7 @@ namespace tbx
 	 */
 	inline bool monotonic_le(unsigned int compare, unsigned int to)
 	{
-		if (to > compare) return false;
-		if (to == compare) return true;
+		if (compare <= to) return true;
 		return (compare - to) > 0x7FFFFFFF;
 	}
 
@@ -101,8 +100,8 @@ namespace tbx
 	 */
 	inline bool monotonic_gt(unsigned int compare, unsigned int to)
 	{
-		if (compare > to) return true;
-		return (compare - to) < 0x7FFFFFFF;
+		if (compare <= to) return false;
+		return (compare - to) <= 0x7FFFFFFF;
 	}
 
 	/**
@@ -115,9 +114,9 @@ namespace tbx
 	 */
 	inline bool monotonic_ge(unsigned int compare, unsigned int to)
 	{
-		if (compare > to) return true;
+		if (compare < to) return false;
 		if (compare == to) return true;
-		return (compare - to) < 0x7FFFFFFF;
+		return (compare - to) <= 0x7FFFFFFF;
 	}
 }
 

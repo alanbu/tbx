@@ -4,6 +4,7 @@
  * <B>0.7.? Alpha ??? <B>
  *
  *  - Fixed subwindow alignment flags (from Serge Lenz)
+ *  - Fixed monotonic_le/lt/ge/gt (bug raised by Serge Lenz)
  *
  * <B>0.7.5 Alpha July 2019</B>
  *

@@ -21,6 +21,12 @@
                 "kind": "build"
             },
             "problemMatcher":"$gcc"
-        }      
+        },
+        {
+            "label": "Copy to RPCEMU",
+            "type": "shell",
+            "command": "./copytorpcemu.sh",
+            "problemMatcher": []
+        }
     ]
 }
