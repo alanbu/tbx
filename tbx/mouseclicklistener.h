@@ -38,7 +38,7 @@ namespace tbx
 	 * Gadget clicked upon is id_block().self_component() and will be null if
 	 * click is on a window background
 	 */
-	class MouseClickEvent : EventInfo
+	class MouseClickEvent : public EventInfo
 	{
 		unsigned int _click_shift;
 

@@ -61,7 +61,9 @@ using namespace tbx;
 EventRouter *EventRouter::_instance = 0;
 
 // Maximum window event in window event map
-const int MAX_WINDOW_EVENTS = 12;
+// Events 12 onwards are dummy events
+const int MAX_WINDOW_EVENTS = 14;
+
 
 namespace tbx
 {
@@ -830,8 +832,9 @@ void EventRouter::process_pointer_entering_window()
 void EventRouter::process_mouse_click()
 {
 	WindowEventListenerItem *item = find_window_event_listener(_id_block.self_object_id, 6);
+	WindowEventListenerItem *all_item = find_window_event_listener(_id_block.self_object_id, WINDOW_AND_COMPONENT_MOUSE_CLICK);
 	if (item) find_window_event_component(item, _id_block.self_component_id);
-	if (item)
+	if (item || all_item)
 	{
 		Window win(_id_block.self_object_id);
 		Point pt(_poll_block.word[0], _poll_block.word[1]);
@@ -869,7 +872,14 @@ void EventRouter::process_mouse_click()
 			item = item->next;
 			if (_remove_running) remove_running_window_event_listener(_id_block.self_object_id, 6);
 		}
-		_running_window_event_item = 0;
+		while (all_item)
+		{
+			_running_window_event_item = all_item;
+			static_cast<MouseClickListener *>(all_item->listener)->mouse_click(ev);
+			all_item = all_item->next;
+			if (_remove_running) remove_running_window_event_listener(_id_block.self_object_id, WINDOW_AND_COMPONENT_MOUSE_CLICK);
+		}
+		_running_window_event_item = 0;		
 	}
 }
 
@@ -880,6 +890,7 @@ void EventRouter::process_key_pressed()
 {
 	WindowEventListenerItem *item = find_window_event_listener(_id_block.self_object_id, 8);
 	bool used = false;
+
 	if (item) find_window_event_component(item, _id_block.self_component_id);
 	if (item)
 	{
@@ -894,6 +905,23 @@ void EventRouter::process_key_pressed()
 			used = ev.is_key_used();
 		}
 		_running_window_event_item = 0;
+	}
+	if (!used)
+	{
+		item = find_window_event_listener(_id_block.self_object_id, WINDOW_AND_COMPONENT_KEY_PRESSED);
+		if (item)
+		{
+			KeyEvent ev(_id_block, _poll_block);
+			while (!used && item)
+			{
+				_running_window_event_item = item;
+				static_cast<KeyListener *>(item->listener)->key(ev);
+				item = item->next;
+				if (_remove_running) remove_running_window_event_listener(_id_block.self_object_id, 6);
+				used = ev.is_key_used();
+			}
+			_running_window_event_item = 0;
+		}
 	}
 
 	// Pass on if not used
@@ -1046,34 +1074,37 @@ void EventRouter::remove_window_event_listener(ObjectId object_id, int event_cod
        {
     	   WindowEventListenerItem *item = found->second[event_code-1];
     	   WindowEventListenerItem *prev = 0;
-    	   while (item && item->listener != listener && item->component_id != NULL_ComponentId)
+    	   while (item && (item->listener != listener || item->component_id != NULL_ComponentId))
     	   {
     		   prev = item;
     		   item = item->next;
     	   }
-    	   if (item == _running_window_event_item) _remove_running = true;
-    	   else if (item != 0)
-    	   {
-    		   if (prev == 0) found->second[event_code-1] = item->next;
-    		   else prev->next = item->next;
+		   if (item)
+		   {
+				if (item == _running_window_event_item) _remove_running = true;
+				else
+				{
+					if (prev == 0) found->second[event_code-1] = item->next;
+					else prev->next = item->next;
 
-    		   if (prev == 0 && item->next == 0)
-    		   {
-    			   // All of this type of listeners have been deleted
-    			   // so check if there are any other events
-    			   bool delete_all = true;
-    			   for (int j = 0; j < MAX_WINDOW_EVENTS && delete_all; j++)
-    				   if (found->second[j]) delete_all = false;
-    			   if (delete_all)
-    			   {
-    				   delete [] found->second;
-    				   _window_event_listeners->erase(found);
-    			   }
-    		   }
+					if (prev == 0 && item->next == 0)
+					{
+						// All of this type of listeners have been deleted
+						// so check if there are any other events
+						bool delete_all = true;
+						for (int j = 0; j < MAX_WINDOW_EVENTS && delete_all; j++)
+							if (found->second[j]) delete_all = false;
+						if (delete_all)
+						{
+							delete [] found->second;
+							_window_event_listeners->erase(found);
+						}
+					}
 
-       		   delete item;
-    	   }
-       }
+					delete item;
+	    	   }
+		   }
+	   }
     }
 }
 
@@ -1171,29 +1202,31 @@ void EventRouter::remove_window_event_listener(ObjectId object_id, ComponentId c
     		   item = item->next;
     	   }
 
-    	   if (item && item->component_id != component_id) item = 0;
-    	   if (item == _running_window_event_item) _remove_running = true;
-    	   else if (item != 0)
-    	   {
-    		   if (prev == 0) found->second[event_code-1] = item->next;
-    		   else prev->next = item->next;
+    	   if (item && item->component_id == component_id && item->listener == listener)
+		   {
+				if (item == _running_window_event_item) _remove_running = true;
+				else if (item != 0)
+				{
+					if (prev == 0) found->second[event_code-1] = item->next;
+					else prev->next = item->next;
 
-    		   if (prev == 0 && item->next == 0)
-    		   {
-    			   // All of this type of listeners have been deleted
-    			   // so check if there are any other events
-    			   bool delete_all = true;
-    			   for (int j = 0; j < MAX_WINDOW_EVENTS && delete_all; j++)
-    				   if (found->second[j]) delete_all = false;
-    			   if (delete_all)
-    			   {
-    				   delete [] found->second;
-    				   _window_event_listeners->erase(found);
-    			   }
-    		   }
+					if (prev == 0 && item->next == 0)
+					{
+						// All of this type of listeners have been deleted
+						// so check if there are any other events
+						bool delete_all = true;
+						for (int j = 0; j < MAX_WINDOW_EVENTS && delete_all; j++)
+							if (found->second[j]) delete_all = false;
+						if (delete_all)
+						{
+							delete [] found->second;
+							_window_event_listeners->erase(found);
+						}
+					}
 
-       		   delete item;
-    	   }
+					delete item;
+				}
+		   }
        }
     }
 }

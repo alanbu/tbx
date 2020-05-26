@@ -269,8 +269,12 @@ namespace tbx
 		void remove_pointer_entering_listener(PointerEnteringListener *listener);
 		void add_mouse_click_listener(MouseClickListener *listener);
 		void remove_mouse_click_listener(MouseClickListener *listener);
+		void add_all_mouse_click_listener(MouseClickListener *listener);
+		void remove_all_mouse_click_listener(MouseClickListener *listener);
 		void add_key_listener(KeyListener *listener);
 		void remove_key_listener(KeyListener *listener);
+		void add_all_key_listener(KeyListener *listener);
+		void remove_all_key_listener(KeyListener *listener);
 		void add_lose_caret_listener(LoseCaretListener *listener);
 		void remove_lose_caret_listener(LoseCaretListener *listener);
 		void add_gain_caret_listener(GainCaretListener *listener);

@@ -37,6 +37,7 @@
 namespace tbx {
 
 class TextChangedListener;
+class KeyListener;
 
 /**
  * WritableField wrapper class for an underlying toolbox WritableField gadget.
@@ -186,6 +187,9 @@ public:
 	// Listeners
 	void add_text_changed_listener(TextChangedListener *listener);
 	void remove_text_changed_listener(TextChangedListener *listener);
+
+    void add_key_listener(KeyListener *listener);
+	void remove_key_listener(KeyListener *listener);
 };
 
 }

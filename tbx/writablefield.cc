@@ -1,7 +1,7 @@
 /*
  * tbx RISC OS toolbox library
  *
- * Copyright (C) 2010 Alan Buckley   All Rights Reserved.
+ * Copyright (C) 2010-2020 Alan Buckley   All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -26,6 +26,7 @@
 #include "pollinfo.h"
 #include "swixcheck.h"
 #include "textchangedlistener.h"
+#include "keylistener.h"
 
 #include "kernel.h"
 
@@ -134,5 +135,20 @@ void WritableField::remove_text_changed_listener(TextChangedListener *listener)
 	remove_listener(0x82885, listener);
 }
 
+/**
+ * Add a listener to report the keys pressed in a Writable field.
+ */
+void WritableField::add_key_listener(KeyListener *listener)
+{
+	add_window_listener(8, listener);
+}
+
+/**
+ * Remove the keys pressed event.
+ */
+void WritableField::remove_key_listener(KeyListener *listener)
+{
+	remove_window_listener(8, listener);
+}
 
 }

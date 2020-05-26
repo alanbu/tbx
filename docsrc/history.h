@@ -1,10 +1,12 @@
 /**
  * @page history History/Changelog
  *
- * <B>0.7.? Alpha ??? <B>
+ * <B>0.7.6 Alpha May 2020 <B>
  *
  *  - Fixed subwindow alignment flags (from Serge Lenz)
  *  - Fixed monotonic_le/lt/ge/gt (bug raised by Serge Lenz)
+ *  - Added Window add_all_key_listener to listen for key events on a Window and it's components
+ *  - Added Window add_all_mouse_click_listener to listent for key events on a Window and it's components.
  *
  * <B>0.7.5 Alpha July 2019</B>
  *

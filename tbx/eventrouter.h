@@ -52,6 +52,10 @@ class PostPollListener;
 class PostEventListener;
 class UncaughtHandler;
 
+/* Dummy window events to include component key presses/mouse click with those on the window */
+const int WINDOW_AND_COMPONENT_KEY_PRESSED = 12;
+const int WINDOW_AND_COMPONENT_MOUSE_CLICK = 13;
+
 class EventRouter
 {
 public:
@@ -86,6 +90,8 @@ private:
 	void remove_window_event_listener(ObjectId handle, int event_code, Listener *listener);
 	void add_window_event_listener(ObjectId handle, ComponentId component_id, int event_code, Listener *listener);
 	void remove_window_event_listener(ObjectId handle, ComponentId component_id, int event_code, Listener *listener);
+	void add_window_component_event_listener(ObjectId handle, int event_code, Listener *listener);
+	void remove_window_component_event_listener(ObjectId handle, int event_code, Listener *listener);
 
 	void remove_all_listeners(ObjectId handle);
 	void remove_all_listeners(ObjectId handle, ComponentId component_id);
