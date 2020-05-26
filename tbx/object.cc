@@ -253,6 +253,48 @@ void Object::show()
 }
 
 /**
+ * Show the object in the centre of the screen
+ *
+ * @throws ObjectNullError toolbox handle is NULL_ObjectId
+ * @throws OsError Underlying call to toolbox failed.
+ */
+void Object::show_centred()
+{
+	if (_handle == NULL_ObjectId) throw ObjectNullError();
+
+	_kernel_swi_regs regs;
+    regs.r[0] = 3; // 0 - Show normally
+    regs.r[1] = _handle;
+    regs.r[2] = 3; // Show centred
+    regs.r[3] = 0; // Show Type data
+    regs.r[4] = 0; // Parent object id
+    regs.r[5] = -1; // Parent componend id
+
+    swix_check(_kernel_swi(0x44EC3, &regs, &regs));
+}
+
+/**
+ * Show the object at the current mouse position
+ *
+ * @throws ObjectNullError toolbox handle is NULL_ObjectId
+ * @throws OsError Underlying call to toolbox failed.
+ */
+void Object::show_at_pointer()
+{
+	if (_handle == NULL_ObjectId) throw ObjectNullError();
+
+	_kernel_swi_regs regs;
+    regs.r[0] = 3; // 0 - Show normally
+    regs.r[1] = _handle;
+    regs.r[2] = 4; // Show at pointer
+    regs.r[3] = 0; // Show Type data
+    regs.r[4] = 0; // Parent object id
+    regs.r[5] = -1; // Parent componend id
+
+    swix_check(_kernel_swi(0x44EC3, &regs, &regs));
+}
+
+/**
  * Hide the object.
  *
  * @throws ObjectNullError toolbox handle is NULL_ObjectId

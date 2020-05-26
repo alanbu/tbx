@@ -133,6 +133,8 @@ namespace tbx
 
 		// Visibility
 		void show();
+		void show_centred();
+		void show_at_pointer();
 		void hide();
 		bool showing() const;
 

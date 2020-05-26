@@ -16,11 +16,11 @@ copy_headers() {
   hdrs=$unix_dir/*.h
   for hdr in $hdrs; do
      dhdr=$(basename $hdr | sed s#\.h\$##)
-     cp -av $hdr $riscos_dir/h/$dhdr
+     cp -afv $hdr $riscos_dir/h/$dhdr
   done
 }
 
-cp -f libtbx.a $RPCDIR
+cp -fv libtbx.a $RPCDIR
 
 copy_headers tbx $RPCDIR/tbx
 
