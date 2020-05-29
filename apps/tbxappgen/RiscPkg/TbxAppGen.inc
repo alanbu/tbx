@@ -1,2 +1,0 @@
-RiscPkg/*
-Apps/Development/!TbxAppGen/*
