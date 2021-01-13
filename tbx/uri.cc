@@ -24,7 +24,7 @@
 
 
 #include "uri.h"
-#include "tbx/application.h"
+#include "application.h"
 #include "swis.h"
 #include "kernel.h"
 
@@ -32,7 +32,7 @@ namespace tbx
 {
 
 const int URI_MReturnResult = 0x4E383;
-   
+
 // Cache of URI handler started result
 // 0 - not checked
 // 1 - started OK
@@ -44,7 +44,7 @@ static int s_uri_handler_started = 0;
  *
  * @param: uri to dispatch
  */
-URI::URI(const std::string &uri) : 
+URI::URI(const std::string &uri) :
    _uri(uri),
    _uri_handle(0),
    _handler(0),
@@ -73,9 +73,9 @@ void URI::uri(const std::string &new_uri)
 
 /**
  * When the object is destroyed the result handler is cancelled.
- */  
+ */
 URI::~URI()
-{  
+{
    if (_state == WaitingForResult)
    {
       tbx::app()->remove_recorded_message_listener(URI_MReturnResult, this);
@@ -208,16 +208,16 @@ bool URI::dispatch(const std::string &uri)
  *
  * This can only be called from a Wimp task after the application has
  * been initialised.
- * 
+ *
  * Caches the result so does nothing after the first successful call.
- * 
+ *
  * @return true if successful
  */
 bool URI::ensure_uri_handler()
 {
    if (s_uri_handler_started) return (s_uri_handler_started == 1);
    if (_kernel_oscli("RMEnsure AcornURI 0.01"))
-   {                      
+   {
       // Module not loaded
       if (_swix(OS_Module, _INR(0,1), 1, "System:Modules.Network.URI"))
       {
@@ -234,7 +234,7 @@ bool URI::ensure_uri_handler()
 
 /**
  * Check if the uri_handler has been started
- * 
+ *
  * If not started from this task, will use version() to check if it exists
  * and caches the result.
  *
@@ -243,13 +243,13 @@ bool URI::ensure_uri_handler()
 bool URI::uri_handler_started()
 {
    if (s_uri_handler_started) return (s_uri_handler_started == 1);
-   
+
    if (version() != 0) s_uri_handler_started = true;
-   
+
    return (s_uri_handler_started == 1);
 }
 
-   
+
 //! @cond INTERNAL
 
 /*

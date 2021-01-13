@@ -26,7 +26,7 @@
 #define TBX_URI_H_
 
 #include <string>
-#include "tbx/wimpmessagelistener.h"
+#include "wimpmessagelistener.h"
 
 namespace tbx
 {
@@ -79,12 +79,12 @@ class URIResultHandler
    public:
       URIResultHandler() {}
       virtual ~URIResultHandler() {}
-       
+
       /**
        * Called once the Wimp has attempted to launch
        * the URI dispatcher
        * @param uri_handle handle from the launch
-       * @param claimed true if the dispatched message has been claimed 
+       * @param claimed true if the dispatched message has been claimed
        */
       virtual void uri_result(URI &uri, bool claimed) = 0;
 };
