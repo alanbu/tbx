@@ -11,6 +11,7 @@
  *  - Added Object show_at_pointer to show an object at the current mouse position
  *  - Added support for TreeView Gadget
  *  - Added support for Tabs Gadget
+ *  - Added key_pressed function to check for current key presses
  *
  * <B>0.7.5 Alpha July 2019</B>
  *
