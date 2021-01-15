@@ -1,0 +1,12 @@
+# Harness messages file
+_TaskName:TbxHarness
+_Sprite:!tbxharness
+
+OK:OK
+YES:Yes
+NO:No
+CANC:Cancel
+QUIT:Quit
+
+MESS:Message from TbxHarness
+ERR:Error from TbxHarness
