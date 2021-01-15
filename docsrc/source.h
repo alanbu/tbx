@@ -1,10 +1,12 @@
 /**
  * @page source Source code
  *
- * The source code is available as part of the source archive at the
- * RISC OS Packaging Project (www.riscpkg.org) and is stored in a
- * SVN repositry.
+ * The source code is available on GitHub at:
  *
- * Details of how to download it are at that site.
+ * https://github.com/alanbu/tbx
+ *
+ * @code
+ *    git clone https://github.com/alanbu/tbx.git tbx
+ * @endcode
  *
  */
