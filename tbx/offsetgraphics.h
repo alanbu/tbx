@@ -1,7 +1,7 @@
 /*
  * tbx RISC OS toolbox library
  *
- * Copyright (C) 2010 Alan Buckley   All Rights Reserved.
+ * Copyright (C) 2010-2021 Alan Buckley   All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -110,10 +110,10 @@ namespace tbx
 		virtual int os_y(int logical_y) const {return logical_y + _offset_y;}
 		virtual int logical_x(int os_x) const {return os_x - _offset_x;}
 		virtual int logical_y(int os_y) const {return os_y - _offset_y;}
-		virtual Point os(const Point &pt) {return Point(pt.x+_offset_x, pt.x+_offset_y);}
-		virtual Point logical(const Point &pt) {return Point(pt.x-_offset_x, pt.x-_offset_y);}
-		virtual BBox os(const BBox &b) {return BBox(b.min.x + _offset_x, b.min.y + _offset_y, b.max.x + _offset_x, b.max.y + _offset_y);}
-		virtual BBox logical(const BBox &b) {return BBox(b.min.x - _offset_x, b.min.y - _offset_y, b.max.x - _offset_x, b.max.y - _offset_y);}
+		virtual Point os(const Point &pt) const {return Point(pt.x+_offset_x, pt.x+_offset_y);}
+		virtual Point logical(const Point &pt) const {return Point(pt.x-_offset_x, pt.x-_offset_y);}
+		virtual BBox os(const BBox &b) const {return BBox(b.min.x + _offset_x, b.min.y + _offset_y, b.max.x + _offset_x, b.max.y + _offset_y);}
+		virtual BBox logical(const BBox &b) const {return BBox(b.min.x - _offset_x, b.min.y - _offset_y, b.max.x - _offset_x, b.max.y - _offset_y);}
 
 		virtual void text(int x, int y, const std::string &text) {OSGraphics::text(x + _offset_x, y + _offset_y, text);}
 		virtual void text(int x, int y, const std::string &text, const Font &font) {OSGraphics::text(x + _offset_x, y + _offset_y, text, font);}

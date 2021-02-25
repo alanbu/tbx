@@ -56,12 +56,12 @@ public:
 	/**
 	 * Object the load is going to occur on
 	 */
-	Object destination_object() {return _object;}
+	Object destination_object() const {return _object;}
 
 	/**
 	 * Gadget for load (can be a null gadget if no gadget is involved).
 	 */
-	Gadget destination_gadget() {return _gadget;}
+	Gadget destination_gadget() const {return _gadget;}
 
 	/**
 	 * Location for load (screen coordinates)

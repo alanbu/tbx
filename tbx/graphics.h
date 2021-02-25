@@ -1,7 +1,7 @@
 /*
  * tbx RISC OS toolbox library
  *
- * Copyright (C) 2010-2012 Alan Buckley   All Rights Reserved.
+ * Copyright (C) 2010-2021 Alan Buckley   All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -82,28 +82,28 @@ namespace tbx
 		 * @param pt value to convert
 		 * @returns equivalent value in OS units
 		 */
-		virtual Point os(const Point &pt) {Point o;o.x=os_x(pt.x);o.y=os_y(pt.y);return o;}
+		virtual Point os(const Point &pt) const {Point o;o.x=os_x(pt.x);o.y=os_y(pt.y);return o;}
 		/**
 		 * Convert from OS units to logical coordinates
 		 *
 		 * @param pt value to convert
 		 * @returns equivalent value in logical units
 		 */
-		virtual Point logical(const Point &pt) {Point o;o.x=logical_x(pt.x);o.y=logical_y(pt.y);return o;}
+		virtual Point logical(const Point &pt) const {Point o;o.x=logical_x(pt.x);o.y=logical_y(pt.y);return o;}
 		/**
 		 * Convert from logical coordinates to OS units
 		 *
 		 * @param b value to convert
 		 * @returns equivalent value in OS units
 		 */
-		virtual BBox os(const BBox &b) {BBox o;o.min = os(b.min);o.max = os(b.max);return o;}
+		virtual BBox os(const BBox &b) const {BBox o;o.min = os(b.min);o.max = os(b.max);return o;}
 		/**
 		 * Convert from OS units to logical coordinates
 		 *
 		 * @param b value to convert
 		 * @returns equivalent value in logical units
 		 */
-		virtual BBox logical(const BBox &b) {BBox o;o.min = logical(b.min);o.max = logical(b.max);return o;}
+		virtual BBox logical(const BBox &b) const {BBox o;o.min = logical(b.min);o.max = logical(b.max);return o;}
 
 		// Colours
 		/**
