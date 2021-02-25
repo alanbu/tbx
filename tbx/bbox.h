@@ -1,7 +1,7 @@
 /*
  * tbx RISC OS toolbox library
  *
- * Copyright (C) 2010 Alan Buckley   All Rights Reserved.
+ * Copyright (C) 2010-2021 Alan Buckley   All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -211,6 +211,26 @@ public:
 		if (max.x < to_cover.max.x) max.x = to_cover.max.x;
 		if (max.y < to_cover.max.y) max.y = to_cover.max.y;
 	}
+	
+	/**
+	 * Intersect this box with another.
+	 *
+	 * The intersection may result in a box with zero height or width
+	 * if the only intersection is one edge.
+	 *
+	 * @param intersect_with the box to intersect with
+	 * @returns true if the boxes intersected (box edges are the intersection)
+	 *          false if the boxes did not intersect (box edges are now invalid)
+	 */
+	bool intersect(const BBox &intersect_with)
+	{
+		if (min.x < intersect_with.min.x) min.x = intersect_with.min.x;
+		if (min.y < intersect_with.min.y) min.y = intersect_with.min.y;
+		if (max.x > intersect_with.max.x) max.x = intersect_with.max.x;
+		if (max.y > intersect_with.max.y) max.y = intersect_with.max.y;
+		
+		return max.x >= min.x && max.y >= min.y;
+	}
 
 	/**
 	 * Inflate box by given amount on each side
@@ -219,6 +239,15 @@ public:
 	{
 		min.x -= amount; max.x += amount;
 		min.y -= amount; max.y += amount;
+	}
+	
+	/**
+	 * Inflate box by given amounts
+	 */
+	void inflate(int amount_x, int amount_y)
+	{
+		min.x -= amount_x; max.x += amount_x;
+		min.y -= amount_y; max.y += amount_y;
 	}
 
 	/**
