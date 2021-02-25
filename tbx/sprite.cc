@@ -1,7 +1,7 @@
 /*
  * tbx RISC OS toolbox library
  *
- * Copyright (C) 2010 Alan Buckley   All Rights Reserved.
+ * Copyright (C) 2010-2021 Alan Buckley   All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -1020,13 +1020,17 @@ int SpriteArea::sprite_count() const
 /**
  * Initialise a new user sprite area
  *
- * @param size size of sprite area in bytes
+ * @param size size of sprite area in bytes. The value is rounded up to a whole number
+ * of words and should be greater than 16 (size of the header only).
  * @returns true if successful
  */
 bool SpriteArea::initialise(int size)
 {
     if (_owns_area) delete [] _area;
-    _area = new int[(size>>2) + 1];
+    int area_size = (size >> 2);
+	if (size & 3) ++area_size; // Round up to full number of words
+	if (area_size < 16) area_size = 16;
+    _area = new int[area_size];
     _area[0] = size;
     _area[2] = 16; // Offset to first sprite
 
@@ -1047,6 +1051,20 @@ bool SpriteArea::initialise(int size)
 }
 
 /**
+ * Clear the sprite area, freeing memory used.
+ *
+ * This method will delete the memory for the sprite area
+ * and resets the class to an uninitialised state.
+ * Use initialise or load to before using the area again.
+ */
+void SpriteArea::clear()
+{
+	if (_owns_area) delete [] _area;
+	_area = 0;
+	_owns_area = true;
+}
+
+/**
  * Load a sprite area from a file
  *
  * @param file_name name of sprite area file
@@ -1062,7 +1080,7 @@ bool SpriteArea::load(const std::string &file_name)
 	if (_kernel_swi(OS_File, &regs,&regs) == NULL)
 	{
 		int fileSize = regs.r[4];
-		fileSize += 16;
+		fileSize += 4;
 		if (fileSize < size() || initialise(fileSize))
 		{
 			regs.r[0] = 10 + 512;

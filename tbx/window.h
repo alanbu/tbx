@@ -232,7 +232,6 @@ namespace tbx
 		void get_state(WindowState &state, Window &parent, int &align_flags) const;
 		void get_info(WindowInfo &info) const;
 		void open_window(const WindowOpenInfo &open_info);
-
 		void open_subwindow(const WindowOpenInfo &open_info , Window &parent, unsigned int align_flags = 0);
 		void scroll(int x, int y);
 		void scroll(const Point &pos);
@@ -248,7 +247,9 @@ namespace tbx
 		BBox outline() const;
 
 		void block_copy(const BBox &bounds, const Point &to);
-
+		
+		void focus();
+		
 		// Listeners - toolbox events
 		void add_about_to_be_shown_listener(AboutToBeShownListener *listener);
 		void remove_about_to_be_shown_listener(AboutToBeShownListener *listener);

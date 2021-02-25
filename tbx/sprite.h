@@ -1,7 +1,7 @@
 /*
  * tbx RISC OS toolbox library
  *
- * Copyright (C) 2010 Alan Buckley   All Rights Reserved.
+ * Copyright (C) 2010-2021 Alan Buckley   All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -246,6 +246,7 @@ namespace tbx
            */
 		  bool is_valid() const	{return (_area != 0);}
 
+		  void clear();
 		  bool initialise(int size);
 		  bool load(const std::string &file_name);
 		  bool merge(const std::string &file_name);

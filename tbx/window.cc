@@ -1,7 +1,7 @@
 /*
  * tbx RISC OS toolbox library
  *
- * Copyright (C) 2010-2013 Alan Buckley   All Rights Reserved.
+ * Copyright (C) 2010-2021 Alan Buckley   All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -38,6 +38,7 @@
 #include "loadermanager.h"
 #include "modeinfo.h"
 #include "sprite.h"
+#include "caret.h"
 #include "res/reswindow.h"
 #include "res/resgadget.h"
 #include "res/resshortcut.h"
@@ -865,6 +866,17 @@ void Window::block_copy(const BBox &bounds, const Point &to)
 	regs.r[6] = to.y;
 
 	swix_check(_kernel_swi(Wimp_BlockCopy, &regs, &regs));
+}
+
+/**
+ * Sets the focus to an invisible caret a postion 0,0 in the window.
+ *
+ * For more control on the position and visibility of the caret use
+ * the Caret class.
+ */
+void Window::focus()
+{
+	Caret(*this).set();
 }
 
 /**
