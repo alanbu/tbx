@@ -12,6 +12,17 @@
  *  - Added support for TreeView Gadget
  *  - Added support for Tabs Gadget
  *  - Added key_pressed function to check for current key presses
+ *  - Added intersect method to intersect this bounding box with another to the BBox class.
+ *  - Added inflate method to inflate in x and y directions independently to the BBox class.
+ *  - Added operator bool() to check if the component has been initialised to the Component class.
+ *  - const correctness fixes to Graphics and Loader class.
+ *  - Added clip methods for setting/getting graphics clipping area to the OSGraphics class.
+ *  - Support for the RISC OS global clipboard using the Clipboard class accessed through the clipboard() function.
+ *  - Helper class MemoryLoader added to make it easy to create a Loader to load a block of data from another application.
+ *  - Caret class to set and read wimp caret position
+ *  - Improved area sizing in initialise() and load() SpriteArea  methods
+ *  - Added SpriteArea clear method to remove internal memory and return the sprite area to an uninitialised state.
+ *  - Added Window focus method to set the focus to an invisible caret in the window.
  *
  * <B>0.7.5 Alpha July 2019</B>
  *
