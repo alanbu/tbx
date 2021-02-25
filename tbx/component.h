@@ -121,6 +121,13 @@ public:
 	 */
 	bool operator!=(const Component &other) const {return (_handle != other._handle || _id != other._id);}
 
+	/**
+	 * Operator to check if this component has been initialised
+	 *
+	 * @returns true if the component has been initialised
+	 */
+	operator bool() const {return (_id != NULL_ComponentId);}
+	
 	// Listeners for all components
 	void add_command(int command_id, Command *command);
 	void remove_command(int command_id, Command *command);
