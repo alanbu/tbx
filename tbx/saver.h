@@ -85,6 +85,7 @@ class Saver
 		std::string _leaf_name;
 		int _file_type;
 		int _file_size;
+		int _your_ref;
 		bool _safe;
 		SaverSaveToFileHandler *_save_to_file_handler;
 		SaverFillBufferHandler *_fill_buffer_handler;
@@ -124,7 +125,8 @@ public:
 	 */
 	bool operator!=(const Saver &other) const {return _impl != other._impl;}
 
-	void save(const PointerInfo &where, const std::string &file_name, int file_type, int file_size);
+	void save(const PointerInfo &where, const std::string &leaf_name, int file_type, int file_size);
+	void save_for_data_request(const WimpMessage &data_req, const std::string &leaf_name, int file_type, int file_size);
 
 	/**
 	 * Get the proposed leaf name for the file to be saved

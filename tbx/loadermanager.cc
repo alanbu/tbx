@@ -28,6 +28,7 @@
 #include "path.h"
 #include "iconbar.h"
 #include "string.h"
+#include <cstring>
 
 namespace tbx {
 
@@ -40,9 +41,11 @@ LoaderManager::LoaderManager()
 {
 	_instance = this;
 	_loading = 0;
+	_paste_ref = 0;
 
 	// Register for messages we handle
 	// User messages
+	app()->add_user_message_listener(1, this); // DataSave - from paste
 	app()->add_user_message_listener(3, this); // DataLoad
 	app()->add_user_message_listener(7, this); // RAMTransmit
 	// Recorded messages
@@ -192,6 +195,21 @@ void LoaderManager::user_message(WimpMessageEvent &event)
 {
     switch(event.message().message_id())
     {
+    case 1: // Message DataSave
+		{
+			int reply_to = event.message().sender_task_handle();
+			int my_ref = event.message().your_ref();
+
+			// This can come as user message (instead of the recorded message
+			// as expected) as a response to a clipboard DataRequest
+			if (my_ref == 0 || my_ref == _paste_ref)
+			{
+				if (my_ref == 0) _paste_ref = 0;
+				start_loader(event, reply_to);
+				if (_loading) event.claim();
+			}
+		}
+    	break;
     case 3: // Message DataLoad - should be sent recorded (see below, but
     	    // PRM says must allow for both types.
     	process_dataload(event);
@@ -214,8 +232,9 @@ void LoaderManager::recorded_message(WimpMessageEvent &event, int reply_to)
     switch(event.message().message_id())
     {
     case 1: // Message DataSave - file coming from another application
-    	if (my_ref == 0)
+    	if (my_ref == 0 || my_ref == _paste_ref)
     	{
+			if (my_ref == 0) _paste_ref = 0;
     		start_loader(event, reply_to);
     		if (_loading) event.claim();
     	}
@@ -323,6 +342,7 @@ void LoaderManager::start_loader(WimpMessageEvent &msg_event, int reply_to)
 	{
 		_loading->_data_save_reply = new WimpMessage(msg, 14);
 		_loading->_data_save_reply->message_id(2); // DataSaveAck
+		if (_paste_ref) _loading->_data_save_reply->my_ref(_paste_ref);
 		_loading->_data_save_reply->your_ref(msg.my_ref());
 		_loading->_data_save_reply->word(9) = -1; // Save is unsafe i.e. not to a filer
 		strcpy(_loading->_data_save_reply->str(11), "<Wimp$Scrap>");
@@ -332,6 +352,7 @@ void LoaderManager::start_loader(WimpMessageEvent &msg_event, int reply_to)
 			if (_loading->_buffer_size <= 0) _loading->_buffer_size = 256;
 			WimpMessage reply(msg, true);
 			reply.message_id(6); // RAMFetch
+			if (_paste_ref) reply.my_ref(_paste_ref);
 			reply.your_ref(msg.my_ref());
 			reply.word(5) = (int)buffer;
 			reply.word(6) = _loading->_buffer_size;
@@ -344,6 +365,7 @@ void LoaderManager::start_loader(WimpMessageEvent &msg_event, int reply_to)
 			_loading->_my_ref = _loading->_data_save_reply->my_ref();
 		}
 	}
+	_paste_ref = 0;
 }
 
 /**
@@ -462,6 +484,64 @@ void LoaderManager::ram_transmit(const WimpMessage &msg)
 	{
 		delete _loading;
 		_loading = 0;
+	}
+}
+
+// Helper for clipboard support to send data directly to
+// a loader by simulating a ram data transmit from another
+// application.
+void LoaderManager::send_local(int file_type, const char *data, int size, Object load_object, Gadget load_gadget, int x, int y)
+{
+	std::map<ObjectId, LoaderItem *>::iterator found = _loaders.find(load_object.handle());
+	if (found != _loaders.end())
+	{		
+		LoaderItem *item = found->second;
+		LoaderItem *item_to_load = 0;
+		ComponentId id = load_gadget.id();
+		LoadEvent load_event(load_object, load_gadget, x, y, size, file_type, "local", false);
+		while (item && !item_to_load)
+		{
+			if (item->id == id || item->id == NULL_ComponentId)
+			{
+				if (item->file_type == file_type || item->file_type == -2)
+				{
+					if (item->loader->accept_file(load_event))
+					{
+						item_to_load = item;
+					}
+				}
+			}
+			item = item->next;
+		}
+		
+		if (item_to_load)
+		{
+			int recv_size = size;
+			void *recv_buffer = item_to_load->loader->data_buffer(load_event, recv_size);
+			if (recv_buffer)
+			{
+				int sent = 0;
+				bool more = true;
+				while (more)
+				{
+					int size_to_send = size-sent;
+					if (size_to_send > recv_size) size_to_send = recv_size;
+					else if (size_to_send < recv_size) more = false;
+					if (size_to_send > 0) std::memcpy(recv_buffer, data, size_to_send);
+					DataReceivedEvent recv_event(&load_event, recv_buffer, recv_size, size_to_send);
+					if (item_to_load->loader->data_received(recv_event))
+					{
+						recv_buffer = recv_event.buffer();
+						recv_size = recv_event.buffer_size();
+						data += size_to_send;
+						sent += size_to_send;
+					} else
+					{
+						break; // Drop out of loop on error
+					}
+				}
+			}
+		}		
 	}
 }
 

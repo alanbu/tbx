@@ -59,6 +59,10 @@ public:
 
 	void remove_all_loaders(ObjectId handle);
 	void remove_all_loaders(ObjectId handle, ComponentId id);
+	
+	// Clipboard support
+	void paste_ref(int ref) {_paste_ref = ref;}
+	void send_local(int file_type, const char *data, int size, Object load_object, Gadget load_gadget, int x, int y);
 
 private:
 	void start_loader(WimpMessageEvent &msg_event, int reply_to);
@@ -91,6 +95,8 @@ private:
 		LoadingItem(Loader *loader) : _loader(loader), _data_save_reply(0), _load_event(0) {};
 		~LoadingItem() {delete _data_save_reply; delete _load_event;}
 	} *_loading;
+	
+	int _paste_ref;
 };
 
 //! @endcond

@@ -94,6 +94,7 @@ Saver &Saver::operator=(const Saver &other)
  * @param leaf_name leaf_name of the file to save
  * @param file_type file type for the saved file
  * @param file_size estimated file size for the saved file
+ * @param your_ref reference from other application when saving from a data request or equivalent (0 for no ref)
  */
 void Saver::save(const PointerInfo &where, const std::string &leaf_name, int file_type, int file_size)
 {
@@ -101,6 +102,31 @@ void Saver::save(const PointerInfo &where, const std::string &leaf_name, int fil
 	_impl->_leaf_name = leaf_name;
 	_impl->_file_type = file_type;
 	_impl->_file_size = file_size;
+	_impl->_your_ref = 0;
+
+	_impl->start();
+}
+
+/**
+ * Start save in response to a DataRequest message.
+ *
+ * @param leaf_name leaf_name of the file to save
+ * @param file_type file type for the saved file
+ * @param file_size estimated file size for the saved file
+ */
+void Saver::save_for_data_request(const WimpMessage &data_req, const std::string &leaf_name, int file_type, int file_size)
+{
+    _impl->_where = tbx::PointerInfo(
+					(WindowHandle)data_req[5],
+					(IconHandle)data_req[6],
+					data_req[7], // x-coordinate
+					data_req[8], // y-coordinate
+					0 /* Buttons */
+					);
+	_impl->_leaf_name = leaf_name;
+	_impl->_file_type = file_type;
+	_impl->_file_size = file_size;
+	_impl->_your_ref = data_req.my_ref();
 
 	_impl->start();
 }
@@ -167,6 +193,8 @@ void Saver::SaverImpl::start()
 	data_save[10] = _file_type;
 	_leaf_name.copy(data_save.str(11), _leaf_name.size());
 	*(data_save.str(11) + _leaf_name.size()) = 0;
+	
+	data_save.your_ref(_your_ref);
 
 	data_save.send(WimpMessage::Recorded, _where.window_handle(), _where.icon_handle());
 	_my_ref = data_save.my_ref();
