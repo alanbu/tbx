@@ -1,7 +1,7 @@
 /*
  * tbx RISC OS toolbox library
  *
- * Copyright (C) 2010 Alan Buckley   All Rights Reserved.
+ * Copyright (C) 2010-2021 Alan Buckley   All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -60,10 +60,10 @@ namespace tbx
 		virtual int logical_x(int os_x) const {return os_x;}
 		virtual int logical_y(int os_y) const {return os_y;}
 
-		virtual Point os(const Point &pt) {return pt;}
-		virtual Point logical(const Point &pt) {return pt;}
-		virtual BBox os(const BBox &b) {return b;}
-		virtual BBox logical(const BBox &b) {return b;}
+		virtual Point os(const Point &pt)  const {return pt;}
+		virtual Point logical(const Point &pt) const {return pt;}
+		virtual BBox os(const BBox &b) const {return b;}
+		virtual BBox logical(const BBox &b) const {return b;}
 
 		virtual void foreground(Colour colour);
 		virtual void background(Colour colour);
@@ -106,6 +106,8 @@ namespace tbx
 
 		// OS Graphics specific functions
 		void clear();
+		BBox clip() const;
+		void clip(const BBox &clip_to);
 
 	protected:
 		/**

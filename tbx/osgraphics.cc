@@ -1,7 +1,7 @@
 /*
  * tbx RISC OS toolbox library
  *
- * Copyright (C) 2010 Alan Buckley   All Rights Reserved.
+ * Copyright (C) 2010-2021 Alan Buckley   All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -428,4 +428,51 @@ void OSGraphics::stroke(int x, int y, const DrawPath &path,DrawFillStyle fill_st
 void OSGraphics::clear()
 {
 	_kernel_oswrch(16);
+}
+
+/**
+ * Get the current Graphics clipping region.
+ *
+ * @returns bounding box of the cliping region in logical co-ordinates.
+ * The coordinates are inclusive. The egdes of the bounding box lie within the window.
+ */
+BBox OSGraphics::clip() const
+{
+	int vars[7], vals[6];
+	vars[0] = 4; // X-Eig
+	vars[1] = 5; // Y-Eig
+	vars[2] = 128; // Left-hand column of the graphics window (ic)
+	vars[3] = 129; // Bottom row of the graphics window (ic)
+	vars[4] = 130; // Right-hand column of the graphics window (ic)
+	vars[5] = 131; // Top row of the graphics window (ic)
+	vars[6] = -1;
+	
+	_swix(OS_ReadVduVariables, _INR(0,1), vars, vals);
+	
+	// Create result in OS coordinates
+	BBox result(vals[2] << vals[0], vals[3] << vals[1], vals[4] << vals[0], vals[5] << vals[1]);
+	return logical(result);
+}
+
+/**
+ * Set the clipping region.
+ *
+ * This call will fail if the clip_to parameter is outside the screen once transformed
+ * from logical co-ordinates to screen co-ordinates.
+ *
+ * @param clip_to area to clip the graphics to in logical units.
+ * The coordinates are inclusive. The egdes of the bounding box lie within the window.
+ */
+void OSGraphics::clip(const BBox &clip_to)
+{
+	BBox lclip = os(clip_to);
+	_kernel_oswrch(24);
+	_kernel_oswrch(lclip.min.x & 0xFF);
+	_kernel_oswrch(lclip.min.x >> 8);
+	_kernel_oswrch(lclip.min.y & 0xFF);
+	_kernel_oswrch(lclip.min.y >> 8);
+	_kernel_oswrch(lclip.max.x & 0xFF);
+	_kernel_oswrch(lclip.max.x >> 8);
+	_kernel_oswrch(lclip.max.y & 0xFF);	
+	_kernel_oswrch(lclip.max.y >> 8);	
 }
