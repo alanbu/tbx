@@ -32,7 +32,7 @@
 #ifndef TBX_TREEVIEW_H_
 #define TBX_TREEVIEW_H_
 
-#include "tbx/gadget.h"
+#include "../gadget.h"
 
 namespace tbx {
 namespace ext {

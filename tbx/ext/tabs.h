@@ -2,8 +2,8 @@
 #define TABS_H
 
 
-#include "tbx/gadget.h"
-#include "tbx/listener.h"
+#include "../gadget.h"
+#include "../listener.h"
 
 namespace tbx
 {

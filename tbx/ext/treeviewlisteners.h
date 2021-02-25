@@ -32,10 +32,10 @@
 #ifndef TBX_TREEVIEWLISTENERS_H_
 #define TBX_TREEVIEWLISTENERS_H_
 
-#include "tbx/eventinfo.h"
-#include "tbx/listener.h"
-#include "tbx/pointerinfo.h"
-#include "tbx/visiblearea.h"
+#include "../eventinfo.h"
+#include "../listener.h"
+#include "../pointerinfo.h"
+#include "../visiblearea.h"
 
 namespace tbx {
 namespace ext {
@@ -141,7 +141,7 @@ public:
 	// Called when a node is renamed.
 	virtual void treeview_node_renamed(const TreeViewNodeRenamedEvent &event) = 0;
 };
-/*
+*/
 
 /**
  * Tree node has been dragged event

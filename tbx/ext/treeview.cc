@@ -29,10 +29,10 @@
  *      Author: alanb
  */
 
-#include "tbxnew/ext/treeview.h"
-#include "tbxnew/ext/treeviewlisteners.h"
+#include "treeview.h"
+#include "treeviewlisteners.h"
 
-#include "tbx/swixcheck.h"
+#include "../swixcheck.h"
 
 #include <kernel.h>
 

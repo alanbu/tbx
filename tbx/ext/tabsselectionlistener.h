@@ -2,9 +2,9 @@
 #define TAB_SELECTED_LISTENER_H
 
 
-#include "tbx/gadget.h"
-#include "tbx/listener.h"
-#include "tbx/eventinfo.h"
+#include "../gadget.h"
+#include "../listener.h"
+#include "../eventinfo.h"
 
 namespace tbx
 {

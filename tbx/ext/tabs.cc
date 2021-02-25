@@ -1,7 +1,7 @@
 #include "tabs.h"
 #include "tabsselectionlistener.h"
 
-#include "tbx/swixcheck.h"
+#include "../swixcheck.h"
 
 #include <memory>
 #include "kernel.h"
