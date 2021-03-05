@@ -42,6 +42,7 @@ LoaderManager::LoaderManager()
 	_instance = this;
 	_loading = 0;
 	_paste_ref = 0;
+	_message_intercept = 0;
 
 	// Register for messages we handle
 	// User messages
@@ -193,6 +194,12 @@ void LoaderManager::remove_all_loaders(ObjectId handle, ComponentId id)
 
 void LoaderManager::user_message(WimpMessageEvent &event)
 {
+	if (_message_intercept && _message_intercept->loader_message_intercept(WimpMessage::User, event,-1))
+	{
+		event.claim();
+		return; // Loader temporarily redirected (e.g. to clipboard)
+	}
+	
     switch(event.message().message_id())
     {
     case 1: // Message DataSave
@@ -227,6 +234,12 @@ void LoaderManager::user_message(WimpMessageEvent &event)
 
 void LoaderManager::recorded_message(WimpMessageEvent &event, int reply_to)
 {
+	if (_message_intercept && _message_intercept->loader_message_intercept(WimpMessage::Recorded, event, reply_to))
+	{
+		event.claim();
+		return; // Loader temporarily redirected (e.g. to clipboard)
+	}		
+
 	int my_ref = event.message().your_ref();
 
     switch(event.message().message_id())
@@ -235,8 +248,9 @@ void LoaderManager::recorded_message(WimpMessageEvent &event, int reply_to)
     	if (my_ref == 0 || my_ref == _paste_ref)
     	{
 			if (my_ref == 0) _paste_ref = 0;
-    		start_loader(event, reply_to);
-    		if (_loading) event.claim();
+			start_loader(event, reply_to);
+			if (_loading) event.claim();
+			
     	}
     	break;
 
@@ -259,6 +273,11 @@ void LoaderManager::recorded_message(WimpMessageEvent &event, int reply_to)
  */
 void LoaderManager::acknowledge_message(WimpMessageEvent &event)
 {
+	if (_message_intercept && _message_intercept->loader_message_intercept(WimpMessage::Acknowledge, event,-1))
+	{
+		event.claim();
+		return; // Loader temporarily redirected (e.g. to clipboard)
+	}		
 	if (event.message().message_id() == 6)
 	{
 		// RAMFetched was not acknowledged by the other application.

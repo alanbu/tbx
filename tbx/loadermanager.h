@@ -63,6 +63,15 @@ public:
 	// Clipboard support
 	void paste_ref(int ref) {_paste_ref = ref;}
 	void send_local(int file_type, const char *data, int size, Object load_object, Gadget load_gadget, int x, int y);
+	// Allow temporary interception of loader messages.
+	class MessageIntercept
+	{		
+		public:
+		   virtual ~MessageIntercept() {};
+		   virtual bool loader_message_intercept(WimpMessage::SendType type, WimpMessageEvent &event, int reply_to) = 0;
+	};
+	void message_intercept(MessageIntercept *intercept) {_message_intercept = intercept;}
+    MessageIntercept *message_intercept() const {return _message_intercept;}	
 
 private:
 	void start_loader(WimpMessageEvent &msg_event, int reply_to);
@@ -97,6 +106,7 @@ private:
 	} *_loading;
 	
 	int _paste_ref;
+	MessageIntercept *_message_intercept;
 };
 
 //! @endcond

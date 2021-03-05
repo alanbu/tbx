@@ -30,6 +30,7 @@
 #include <map>
 
 #include "gadget.h"
+#include "loadermanager.h"
 
 namespace tbx
 {
@@ -51,6 +52,28 @@ class ClipboardClaimedListener
 		virtual void clipboard_claimed() {}
 };
 
+
+/**
+ * Listener for the response to check_format(s)
+ */
+ class ClipboardFormatListener
+ {
+	 public:
+		virtual ~ClipboardFormatListener() {}
+		
+		/**
+		 * Called after a check_format method with the first format found
+		 *
+		 * @param file_type file type found. This may be the native format of the clipboard
+		 * owning application rather than one that was asked for.
+		 */
+		virtual void clipboard_format_available(int file_type) = 0;
+		/**
+		 * Called if there is no data on the global clipboard
+		 */
+		virtual void clipboard_empty() {}
+ };
+
 class ClipboardData;
 
 /**
@@ -71,10 +94,15 @@ class Clipboard
 	  void paste(int file_type, Window &window, int x = 0, int y = 0);
 	  void paste(int *file_types, int num_types, Window &window, int x = 0, int y = 0);
 	  
+	  void check(int file_type, Window &window);
+	  void check(int *file_types, int num_types, Window &window);
+	  
 	  void claim_caret();
 	  
 	  void add_claimed_listener(ClipboardClaimedListener *listener);
 	  void remove_claimed_listener(ClipboardClaimedListener *listener);
+	  void add_format_listener(ClipboardFormatListener *listener);
+	  void remove_format_listener(ClipboardFormatListener *listener);
 	  
       /**
        * Check if global clipboard is currently owned by this application.
@@ -83,22 +111,26 @@ class Clipboard
       bool owns_clipboard() const {return _owns_clipboard;}		  
 	  ClipboardData *data(int file_type) const;
 	  ClipboardData *native_data() const;
-	  int native_file_type() const;
+	  int native_file_type() const;	  
 	  
 	private:
 	  Clipboard();
       void claim_clipboard();
 	  void fire_claimed(bool clipboard_claimed, bool caret_claimed);
 	  void paste(int *file_types, int num_types, Window window, Gadget gadget, int x, int y);
+	  void fire_format_found(int file_type);
+	  void fire_clipboard_empty();
 	  
 	  // Private class to do all the message handling
 	  class MessageHandler
 		: WimpUserMessageListener,
-		  WimpRecordedMessageListener,		 
+		  WimpRecordedMessageListener,	
+		  WimpAcknowledgeMessageListener,
 		  tbx::SaverFinishedHandler,
 		  tbx::SaverSaveCompletedHandler,
 		  tbx::SaverSaveToFileHandler,
-		  tbx::SaverFillBufferHandler
+		  tbx::SaverFillBufferHandler,
+		  public LoaderManager::MessageIntercept
 	  {
 		public:
 		   MessageHandler();
@@ -108,11 +140,15 @@ class Clipboard
 
 		   virtual void user_message(WimpMessageEvent &event);
 		   virtual void recorded_message(WimpMessageEvent &event, int reply_to);
+		   virtual void acknowledge_message(WimpMessageEvent &event);
 
 		   virtual void saver_finished(const tbx::SaverFinishedEvent &finished);
 		   virtual void saver_save_completed(tbx::SaverSaveCompletedEvent &event);
 		   virtual void saver_save_to_file(tbx::Saver saver, std::string file_name);
 		   virtual void saver_fill_buffer(tbx::Saver saver, int size, void *buffer, int already_transmitted);
+		   
+		   bool loader_message_intercept(WimpMessage::SendType type, WimpMessageEvent &event, int reply_to);
+		   
 		private:
 		   tbx::Saver *_saver;
 	       ClipboardData *_save_data;
@@ -127,6 +163,7 @@ class Clipboard
 	   int _native_file_type;
 	   std::map<int, ClipboardData *> _data;	   
 	   std::vector<ClipboardClaimedListener *> _claimed_listeners;
+	   std::vector<ClipboardFormatListener *> *_format_listeners;
 	   static Clipboard *s_instance;
 };
 

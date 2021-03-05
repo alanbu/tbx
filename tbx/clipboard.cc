@@ -33,6 +33,7 @@ namespace tbx
 {
 
 // Wimp messages used by the clipboard	
+const int Message_DataSave = 1;
 const int Message_ClaimEntity = 15;
 const int Message_DataRequest = 16;
 
@@ -41,7 +42,8 @@ Clipboard *Clipboard::s_instance = 0;
 Clipboard::Clipboard() 
 	: _owns_clipboard(false),
 	  _owns_caret(false),
-	  _native_file_type(-1)
+	  _native_file_type(-1),
+	  _format_listeners(0)
 {
 	s_instance = this;
 }	
@@ -191,7 +193,9 @@ void Clipboard::paste(int *file_types, int num_types, Window window, Gadget gadg
 			}
 			if (found_data)
 			{
+				found_data->copy_started();
 				manager->send_local(file_type, found_data->data(), found_data->size(), gadget.window(), gadget, x, y);
+				found_data->copy_finished();
 			}
 		}
 	} else
@@ -263,6 +267,77 @@ void Clipboard::paste(int *file_types, int num_types, Window &window, int x /*= 
 {
 	paste(file_types, num_types, window, Gadget(), x, y);
 }
+
+/**
+ * Check the global clipboard for a given file type.
+ * The result of the check is returned via the ClipboardFormatListener.
+ *
+ * @param file_type the file type to check for
+ * @param window a window to use for checking.
+ */
+void Clipboard::check(int file_type, Window &window)
+{
+	check(&file_type, 1, window);
+}
+
+/**
+ * Check the global clipboard for once of thegiven file type.
+ * The result of the check is returned via the ClipboardFormatListener.
+ *
+ * @param file_types an array of file types to check for.
+ * @param num_type the number of types in the array.
+ * @param window a window to use for checking.
+ */
+void Clipboard::check(int *file_types, int num_types, Window &window)
+{
+	if (_owns_clipboard)
+	{
+		int file_type;
+		ClipboardData*found_data = 0;
+		for (int j = 0; j < num_types && found_data == 0; ++j)
+		{
+			file_type = file_types[j];
+			found_data = clipboard()->data(file_type);
+		}
+
+		// According to the spec, return native format if requested
+		// format is not available.
+		if (!found_data)			
+		{
+			found_data = clipboard()->native_data();
+			if (found_data) file_type = clipboard()->native_file_type();
+		}
+		if (found_data)
+		{
+			fire_format_found(file_type);			
+		} else
+		{
+			fire_clipboard_empty();
+		}
+	} else
+	{
+		// Pasting from foreign application
+		WimpMessage data_req(Message_DataRequest, 11 + num_types);
+		data_req[5] = window.window_handle();
+		data_req[6] = -1;
+		data_req[7] = 0;
+		data_req[8] = 0;
+		data_req[9] = 4; // bit 2, send data from clipboard
+		for (int j = 0; j < num_types;j++)
+		{
+			data_req[10+j] = *file_types++;
+		}
+		data_req[10+num_types] = -1;
+		
+		data_req.send(WimpMessage::Recorded, WimpMessage::Broadcast);
+		_message_handler.paste_ref(data_req.my_ref());
+		LoaderManager *manager = LoaderManager::instance();
+		if (manager == 0) manager = new LoaderManager();
+		manager->paste_ref(data_req.my_ref());
+		manager->message_intercept(&_message_handler);
+	}
+}
+
 
 
 /**
@@ -347,6 +422,46 @@ void Clipboard::claim_clipboard()
 	_owns_clipboard = true;
 }
 
+void Clipboard::add_claimed_listener(ClipboardClaimedListener *listener)
+{
+	_claimed_listeners.push_back(listener);
+}
+
+void Clipboard::remove_claimed_listener(ClipboardClaimedListener *listener)
+{
+	for(std::vector<ClipboardClaimedListener *>::iterator i = _claimed_listeners.begin();
+	    i != _claimed_listeners.end();
+		++i)
+	{
+		if (*i == listener)
+		{
+			_claimed_listeners.erase(i);
+			return;
+		}
+	}
+}
+
+void Clipboard::add_format_listener(ClipboardFormatListener *listener)
+{
+	if (!_format_listeners) _format_listeners = new std::vector<ClipboardFormatListener*>();
+	_format_listeners->push_back(listener);
+}
+
+void Clipboard::remove_format_listener(ClipboardFormatListener *listener)
+{
+	if (!_format_listeners) return;
+	for(std::vector<ClipboardFormatListener *>::iterator i = _format_listeners->begin();
+	    i != _format_listeners->end();
+		++i)
+	{
+		if (*i == listener)
+		{
+			_format_listeners->erase(i);
+			return;
+		}
+	}
+}
+
 // Private methods to update owner flags and fire listeners
 void Clipboard::fire_claimed(bool clipboard_claimed, bool caret_claimed)
 {
@@ -361,6 +476,29 @@ void Clipboard::fire_claimed(bool clipboard_claimed, bool caret_claimed)
 	}
 }
 
+void Clipboard::fire_format_found(int file_type)
+{
+	if (!_format_listeners) return;
+	std::vector<ClipboardFormatListener*> listeners(*_format_listeners);
+	for(std::vector<ClipboardFormatListener *>::iterator i = listeners.begin();
+		i != listeners.end(); ++i)
+	{
+		(*i)->clipboard_format_available(file_type);
+	}
+}
+
+void Clipboard::fire_clipboard_empty()
+{
+	if (!_format_listeners) return;
+	std::vector<ClipboardFormatListener*> listeners(*_format_listeners);
+	for(std::vector<ClipboardFormatListener *>::iterator i = listeners.begin();
+		i != listeners.end(); ++i)
+	{
+		(*i)->clipboard_empty();
+	}
+}
+
+
 // Set up the message handling class
 Clipboard::MessageHandler::MessageHandler()
 	: _saver(0),
@@ -369,6 +507,7 @@ Clipboard::MessageHandler::MessageHandler()
 {
 	app()->add_user_message_listener(Message_ClaimEntity, this);
 	app()->add_recorded_message_listener(Message_DataRequest, this);
+	app()->add_acknowledge_message_listener(Message_DataRequest, this);
 }
 
 Clipboard::MessageHandler::~MessageHandler()
@@ -406,7 +545,6 @@ void Clipboard::MessageHandler::recorded_message(WimpMessageEvent &event, int re
     if (event.message().message_id() == Message_DataRequest)
 	{
 		const WimpMessage &data_req = event.message();
-
 		
 	    // Must ignore message if bit 2 is not set
 		if (data_req[9] & 4)
@@ -444,6 +582,23 @@ void Clipboard::MessageHandler::recorded_message(WimpMessageEvent &event, int re
 
 				_saver->save_for_data_request(data_req, "selection", file_type, found_data->size());
 			}
+		}
+	}
+}
+
+void Clipboard::MessageHandler::acknowledge_message(WimpMessageEvent &event)
+{
+    if (event.message().message_id() == Message_DataRequest)
+	{
+		if (event.message().your_ref() == 0)
+		{
+			// Clipboard check response
+			if (LoaderManager::instance()
+			    && LoaderManager::instance()->message_intercept() == this)
+			{
+				LoaderManager::instance()->message_intercept(0);
+				clipboard()->fire_clipboard_empty();
+			}			
 		}
 	}
 }
@@ -510,6 +665,29 @@ void Clipboard::MessageHandler::saver_fill_buffer(tbx::Saver saver, int size, vo
 	if (left > size) left = size;
 	std::memcpy(_save_buffer, bytes + already_transmitted, left);
 	saver.buffer_filled(_save_buffer, left);
+}
+
+// Temporary loader intercept used when check for clipboard formats
+bool Clipboard::MessageHandler::loader_message_intercept(WimpMessage::SendType type, WimpMessageEvent &event, int reply_to)
+{
+	if (type == WimpMessage::User || type == WimpMessage::Recorded)
+	{
+		if (event.message().message_id() == Message_DataSave)
+		{
+			if (event.message().your_ref()) // Message sent from us if no 0
+			{
+				// Message processed so dump intercept - do it before call in case it's readded
+				LoaderManager::instance()->message_intercept(0);
+				clipboard()->fire_format_found(event.message()[10]);
+				return true;				
+			} else
+			{
+				// Something didn't get cleaned - dump the intercept to be safe
+				LoaderManager::instance()->message_intercept(0);
+			}
+		}
+	}
+	return false;
 }
 
 /**
