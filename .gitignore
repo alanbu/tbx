@@ -6,3 +6,4 @@ timestamp
 *.ipch
 *.bin
 docs/html/*
+\!TBX/tbx/*
