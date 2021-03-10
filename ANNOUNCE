@@ -1,31 +1,36 @@
-TBX C++ library version 0.7.6 (alpha) has now been released. 
+TBX C++ library version 0.7.6 has now been released.
 
-The main features of this release are: 
- * Added Object show_centred to show an object in the centre of the screen
- * Added Object show_at_pointer to show an object at the current mouse position
+The main features of this release are:
+ * Removed Alpha from version as it has been used in distributed programs for over 10 years.
+ * Support for the RISC OS global clipboard.
  * Added support for TreeView Gadget
  * Added support for Tabs Gadget
- * Added Window add_all_key_listener to listen for key events on a Window and it's components
- * Added Window add_all_mouse_click_listener to listen for key events on a Window and it's components.
+ * Added Window key and mouse listeners to listen for events on a Window and it's components
+ * Added Caret class to set and read wimp caret position
+ * Added show_centred & show_at_pointer when showing an object
+ * Added Window focus method to set the focus to an invisible caret in the window.
  * Added key_pressed function to check for current key presses
- * Fixed subwindow alignment flags (from Serge Lenz)
- * Fixed monotonic_le/lt/ge/gt (bug raised by Serge Lenz)
-  
-TBX is a C++ library to help with the development of 
-C++ applications for the RISC OS desktop. 
+ * Added intersect & infate methods to the BBox class.
+ * Added clip methods for setting/getting graphics clipping area in the OSGraphics class.
+ * Added MemoryLoader class as a userful helper base class to create a Loader.
+ * SpriteArea clear method and improvements to sizing of sprite area.
+ * Fixed bugs in subwindow alignment flags and montonic time comparison functions.
 
-It comes with a userguide and reference documentation. 
+TBX is a C++ library to help with the development of
+C++ applications for the RISC OS desktop.
 
-TBX is released under the permissive X11 licence so can be used 
-with commercial and non-commercial applications without charge. 
+It comes with a userguide and reference documentation.
 
-Addition downloads provide some examples and a 
-program to help generate simple C++ skeleton projects. 
+TBX is released under the permissive X11 licence so can be used
+with commercial and non-commercial applications without charge.
 
-All these packages can be easily downloaded using a 
-RISC OS Packaging Project manager e.g. !PackMan. 
+Addition downloads provide some examples and a
+program to help generate simple C++ skeleton projects.
 
-For more information and instruction on how to download 
-them manually see: 
+All these packages can be easily downloaded using a
+RISC OS Packaging Project manager e.g. !PackMan.
 
-https://sites.google.com/site/alansriscosstuff/tbx 
+For more information and instruction on how to download
+them manually see:
+
+https://sites.google.com/site/alansriscosstuff/tbx

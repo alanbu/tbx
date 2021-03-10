@@ -1,8 +1,9 @@
 /**
  * @page history History/Changelog
  *
- * <B>0.7.6 Alpha January 2021<B>
+ * <B>0.7.6 March 2021<B>
  *
+ *  - Removed Alpha from version as it has been used in distributed programs for over 10 years
  *  - Fixed subwindow alignment flags (from Serge Lenz)
  *  - Fixed monotonic_le/lt/ge/gt (bug raised by Serge Lenz)
  *  - Added Window add_all_key_listener to listen for key events on a Window and it's components
