@@ -33,6 +33,8 @@
 #include "application.h"
 #include <pthread.h>
 
+namespace tbx
+{
 PThreadGuard *PThreadGuard::_instance = 0;
 
 PThreadGuard::PThreadGuard() {
@@ -95,4 +97,6 @@ void PThreadGuard::post_event(int reason_code, const tbx::PollBlock &poll_block,
 
 	// Allow other threads to get a chance to run
 	pthread_yield();
+}
+
 }

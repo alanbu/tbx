@@ -1,7 +1,7 @@
 /**
  * @page history History/Changelog
  *
- * <B>0.7.6 March 2021<B>
+ * <B>0.7.6 March 2021</B>
  *
  *  - Removed Alpha from version as it has been used in distributed programs for over 10 years
  *  - Fixed subwindow alignment flags (from Serge Lenz)
@@ -24,7 +24,8 @@
  *  - Improved area sizing in initialise() and load() SpriteArea  methods
  *  - Added SpriteArea clear method to remove internal memory and return the sprite area to an uninitialised state.
  *  - Added Window focus method to set the focus to an invisible caret in the window.
- *  - Moved tbx exceptions to the tbx namespace.
+ *  - Moved tbx exceptions, PThreadGuard and ResIteratorBase to the tbx namespace.
+ *  - Doxygen generated documentation fixes
  *
  * <B>0.7.5 Alpha July 2019</B>
  *

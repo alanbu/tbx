@@ -2,6 +2,11 @@
 #ifndef TBX_RES_RESITERATORBASE_H
 #define TBX_RES_RESITERATORBASE_H
 
+namespace tbx
+{
+namespace res
+{
+	
 /**
 * Base class for Resource component iterators
 */
@@ -35,5 +40,9 @@ public:
     */
    bool operator!=(const ResIteratorBase &other) const {return _object != other._object || _offset != other._offset;}
 };
+
+}
+}
+
 
 #endif

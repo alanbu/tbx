@@ -34,6 +34,8 @@
 #include "prepolllistener.h"
 #include "posteventlistener.h"
 
+namespace tbx
+{
 /**
  * Helper class to stop pthreads from executing during event
  * processing which is unsafe
@@ -55,5 +57,7 @@ public:
 	static void start();
 	static void stop();
 };
+
+}
 
 #endif /* TBX_PTHREADGUARD_H_ */
