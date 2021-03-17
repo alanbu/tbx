@@ -24,6 +24,7 @@
  *  - Improved area sizing in initialise() and load() SpriteArea  methods
  *  - Added SpriteArea clear method to remove internal memory and return the sprite area to an uninitialised state.
  *  - Added Window focus method to set the focus to an invisible caret in the window.
+ *  - Moved tbx exceptions to the tbx namespace.
  *
  * <B>0.7.5 Alpha July 2019</B>
  *

@@ -1,7 +1,7 @@
 /*
  * tbx RISC OS toolbox library
  *
- * Copyright (C) 2010 Alan Buckley   All Rights Reserved.
+ * Copyright (C) 2010-2021 Alan Buckley   All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -27,7 +27,8 @@
 
 #include <stdexcept>
 
-
+namespace tbx
+{
 /**
  * Exception thrown when the underlying toolbox object class doesn't
  * match the C++ class used to represent the toolbox object.
@@ -77,5 +78,6 @@ class ResMenuItemError : public std::invalid_argument
 public:
 	ResMenuItemError() : std::invalid_argument("Component ID isn't in menu resource") {};
 };
+}
 
 #endif /* TBXEXCEPT_H_ */
