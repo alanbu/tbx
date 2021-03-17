@@ -96,7 +96,7 @@ enum InternalKey
 
 /**
 * Check if a key is being pressed when this function is called.
-* @param Internal key code
+* @param key_code Internal key code
 * @returns true if key is pressed
 */
 inline bool key_pressed(InternalKey key_code)

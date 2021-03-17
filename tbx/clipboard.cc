@@ -33,9 +33,11 @@ namespace tbx
 {
 
 // Wimp messages used by the clipboard	
+//! @cond INTERNAL
 const int Message_DataSave = 1;
 const int Message_ClaimEntity = 15;
 const int Message_DataRequest = 16;
+//! @endcond INTERNAL
 
 Clipboard *Clipboard::s_instance = 0;
 
@@ -121,8 +123,8 @@ void Clipboard::copy(int file_type, char *bytes, int size, bool copy_bytes/* = t
  * it will try to load the native format stored on the clipboard. This means the gadget
  * loader routine may receive a different format if it is set to load all types.
  * @param gadget gadget to paste to
- * @param x-coordinate for paste (defaults to 0)
- * @param y-coordinate for paste (defaults to 0)
+ * @param x x-coordinate for paste (defaults to 0)
+ * @param y y-coordinate for paste (defaults to 0)
  */
 void Clipboard::paste(int file_type, tbx::Gadget &gadget, int x, int y)
 {
@@ -143,8 +145,8 @@ void Clipboard::paste(int file_type, tbx::Gadget &gadget, int x, int y)
  * loader routine may receive a different format if it is set to load all types.
  * @param num_types number of file types in the list.
  * @param gadget gadget to paste to (must be in window or null)
- * @param x-coordinate for paste
- * @param y-coordinate for paste
+ * @param x x-coordinate for paste
+ * @param y y-coordinate for paste
  */
 void Clipboard::paste(int *file_types, int num_types, Gadget &gadget, int x /*= 0*/, int y /*= 0*/)
 {
@@ -166,8 +168,8 @@ void Clipboard::paste(int *file_types, int num_types, Gadget &gadget, int x /*= 
  * @param num_types number of file types in the list.
  * @param window window to paste to
  * @param gadget gadget to paste to (must be in window or null)
- * @param x-coordinate for paste
- * @param y-coordinate for paste
+ * @param x x-coordinate for paste
+ * @param y y-coordinate for paste
  */
 void Clipboard::paste(int *file_types, int num_types, Window window, Gadget gadget, int x, int y)
 {
@@ -240,15 +242,15 @@ void Clipboard::paste(int *file_types, int num_types, Window window, Gadget gadg
  * it will try to load the native format stored on the clipboard. This means the gadget
  * loader routine may receive a different format if it is set to load all types.
  * @param window window to paste to
- * @param x-coordinate for paste (defaults to 0)
- * @param y-coordinate for paste (defaults to 0)
+ * @param x x-coordinate for paste (defaults to 0)
+ * @param y y-coordinate for paste (defaults to 0)
  */
 void Clipboard::paste(int file_type, Window &window, int x /*= 0*/, int y /*= 0*/)
 {
 	paste(&file_type,1,window,x,y);
 }
 
-/*
+/**
  * Paste data from global clipboard
  *
  * The window to paste to must have a Loader with add loader to
@@ -260,8 +262,8 @@ void Clipboard::paste(int file_type, Window &window, int x /*= 0*/, int y /*= 0*
  * loader routine may receive a different format if it is set to load all types.
  * @param num_types number of file types in the list.
  * @param window window to paste to
- * @param x-coordinate for paste (defaults to 0)
- * @param y-coordinate for paste (defaults to 0)
+ * @param x x-coordinate for paste (defaults to 0)
+ * @param y y-coordinate for paste (defaults to 0)
  */
 void Clipboard::paste(int *file_types, int num_types, Window &window, int x /*= 0*/, int y /*= 0*/)
 {
@@ -285,7 +287,7 @@ void Clipboard::check(int file_type, Window &window)
  * The result of the check is returned via the ClipboardFormatListener.
  *
  * @param file_types an array of file types to check for.
- * @param num_type the number of types in the array.
+ * @param num_types the number of types in the array.
  * @param window a window to use for checking.
  */
 void Clipboard::check(int *file_types, int num_types, Window &window)
@@ -422,11 +424,19 @@ void Clipboard::claim_clipboard()
 	_owns_clipboard = true;
 }
 
+/**
+ * Add a listener for when the clipboard has been claimed by another application.
+ * @param listener listener to add
+ */
 void Clipboard::add_claimed_listener(ClipboardClaimedListener *listener)
 {
 	_claimed_listeners.push_back(listener);
 }
 
+/**
+ * Remove a listener for when the clipboard has been claimed by another application.
+ * @param listener listener to remove
+ */
 void Clipboard::remove_claimed_listener(ClipboardClaimedListener *listener)
 {
 	for(std::vector<ClipboardClaimedListener *>::iterator i = _claimed_listeners.begin();
@@ -441,12 +451,20 @@ void Clipboard::remove_claimed_listener(ClipboardClaimedListener *listener)
 	}
 }
 
+/**
+ * Add a listener for the result of a Clipboard::check call.
+ * @param listener listener to add
+ */
 void Clipboard::add_format_listener(ClipboardFormatListener *listener)
 {
 	if (!_format_listeners) _format_listeners = new std::vector<ClipboardFormatListener*>();
 	_format_listeners->push_back(listener);
 }
 
+/**
+ * Remove a listener for the result of a Clipboard::check call.
+ * @param listener listener to remove
+ */
 void Clipboard::remove_format_listener(ClipboardFormatListener *listener)
 {
 	if (!_format_listeners) return;
@@ -463,6 +481,7 @@ void Clipboard::remove_format_listener(ClipboardFormatListener *listener)
 }
 
 // Private methods to update owner flags and fire listeners
+//! @cond INTERNAL
 void Clipboard::fire_claimed(bool clipboard_claimed, bool caret_claimed)
 {
 	if (clipboard_claimed) _owns_clipboard = false;
@@ -690,12 +709,14 @@ bool Clipboard::MessageHandler::loader_message_intercept(WimpMessage::SendType t
 	return false;
 }
 
+//! @endcond INTERNAL
+
 /**
  * Construct a clipboard data object to hold an array of bytes
  *
- * @param: bytes the bytes to store on the clipboard (see copy flag for ownership)
- * @param: size number of bytes to store on the clipboard
- * @param: copy true (the default) to make a copy of the given bytes.
+ * @param bytes the bytes to store on the clipboard (see copy flag for ownership)
+ * @param size number of bytes to store on the clipboard
+ * @param copy true (the default) to make a copy of the given bytes.
  *              false take ownership of the bytes. This class will delete them when
  *              no longer required (they must have been allocated with new[].
  */

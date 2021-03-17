@@ -33,7 +33,7 @@ namespace tbx
  *
  * Do not call set until get is called or the fields are set.
  *
- * @params get true to read in the current caret data, false to leave uninitialised (default false).
+ * @params get_current true to read in the current caret data, false to leave uninitialised (default false).
  */
 Caret::Caret(bool get_current /*= false*/)
 {
@@ -152,7 +152,7 @@ Caret::Caret(tbx::Window window, int x, int y, int height, bool vdu /*= false*/)
  * @param y y work area offset of the caret.
  * @param height height of the caret in OS units.
  * @param colour the colour for the cursor.
- * @param untranslated, true to use the colour number directly, false (the default) to use the equivalent WIMP colour.
+ * @param untranslated true to use the colour number directly, false (the default) to use the equivalent WIMP colour.
  * @param vdu true to use a VDU 5 style caret, false (the default) to use the standard anti-aliased caret.
  */
 Caret::Caret(tbx::Window window, int x, int y, int height, int colour, bool untranslated /*= false*/, bool vdu /*= false*/) :

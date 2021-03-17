@@ -48,17 +48,19 @@ template<class T> std::string to_string(const T &value)
 	return ss.str();
 }
 
-// Specialisations for string types
+/** Specialisation for std::string */
 inline std::string to_string(const std::string &value)
 {
 	return value;
 }
 
+/** Specialisation for constant null terminated string */
 inline std::string to_string(const char *value)
 {
 	return std::string(value);
 }
 
+/** Specialisation for null terminated string */
 inline std::string to_string(char *value)
 {
 	return std::string(value);

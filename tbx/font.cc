@@ -298,7 +298,7 @@ int Font::string_width_os(const char *text, int length /*= -1*/) const
  *
  * @param text string to measure
  * @param length length of string or -1 to measure to terminating char 0
- * @parma max_width maximum width of string is os units or -1 for maximum possible
+ * @param max_width maximum width of string is os units or -1 for maximum possible
  * @returns height of string in os units
  */
 int Font::string_height_os(const char *text, int length /*= -1*/, int max_width /* = -1 */) const
@@ -323,7 +323,7 @@ int Font::string_height_os(const char *text, int length /*= -1*/, int max_width 
  * Get height of string in os units
  *
  * @param text string to measure
- * @parma max_width maximum width of string is os units or -1 for maximum possible
+ * @param max_width maximum width of string is os units or -1 for maximum possible
  * @returns height of string in os units
  */
 int Font::string_height_os(const std::string &text, int max_width /*= -1*/) const
@@ -360,7 +360,7 @@ inline int round_up_mp_to_os(int mp)
  * Get size of string in os units
  *
  * @param text string to measure
- * @parma max_width maximum width of string is os units or -1 for maximum possible
+ * @param max_width maximum width of string is os units or -1 for maximum possible
  * @returns size of string in os units
  */
 tbx::Size Font::string_size_os(const std::string &text, int max_width /*= -1*/) const
@@ -398,7 +398,7 @@ tbx::Size Font::string_size_os(const std::string &text, int max_width /*= -1*/) 
  *
  * @param text string to measure
  * @param length length of string or -1 to measure to terminating char 0
- * @parma max_width maximum width of string is os units or -1 for maximum possible
+ * @param max_width maximum width of string is os units or -1 for maximum possible
  * @returns size of of string in os units
  */
 tbx::Size Font::string_size_os(const char *text, int length /*= -1*/, int max_width /* = -1*/) const
@@ -435,7 +435,7 @@ tbx::Size Font::string_size_os(const char *text, int length /*= -1*/, int max_wi
  * Get bounding box of a string in os units
  *
  * @param text string to measure
- * @parma max_width maximum width of string is os units or -1 for maximum possible
+ * @param max_width maximum width of string is os units or -1 for maximum possible
  * @returns bounding box of string in os units
  */
 tbx::BBox Font::string_bounds_os(const std::string &text, int max_width /*= -1*/) const
@@ -473,7 +473,7 @@ tbx::BBox Font::string_bounds_os(const std::string &text, int max_width /*= -1*/
  *
  * @param text string to measure
  * @param length length of string or -1 to measure to terminating char 0
- * @parma max_width maximum width of string is os units or -1 for maximum possible
+ * @param max_width maximum width of string is os units or -1 for maximum possible
  * @returns bounding box of string in os units
  */
 tbx::BBox Font::string_bounds_os(const char *text, int length /*= -1*/, int max_width  /*= -1*/) const

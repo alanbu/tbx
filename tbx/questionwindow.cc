@@ -41,6 +41,7 @@ namespace tbx {
  * This shows the window and returns immediately. The commands given
  * are run when the use clicks on the appropriate button.
  *
+ * @param question The question to ask.
  * @param title The title of the message box. Use "" for the default.
  * @param yes_command command to run if yes is chosen or 0 for none.
  * @param no_command command to run if no is chosen or 0 (the default) for none

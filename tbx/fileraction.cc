@@ -42,6 +42,7 @@ namespace tbx {
 
 // Internal class to detect when the FilerAction task has finished
 // Looks out for task finished message for this task
+//! @cond INTERNAL
 class FilerActionTaskFinished :
    public WimpUserMessageListener
 {
@@ -65,6 +66,8 @@ public:
  	    }
  	}
 };
+
+//! @endcond INTERNAL
 
 /**
  * Constructor with no parameters

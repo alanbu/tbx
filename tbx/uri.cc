@@ -269,4 +269,6 @@ void URI::recorded_message(tbx::WimpMessageEvent &event, int reply_to)
     }
 }
 
+//! @endcond INTERNAL
+
 }
