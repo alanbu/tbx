@@ -573,7 +573,7 @@ void dump_adjuster(std::ostream &os, const ResGadget &gadget)
 
 void dump_button(std::ostream &os, const ResGadget &gadget)
 {
-	static char *ButtonTypes[] =
+	static const char *ButtonTypes[] =
 	{
 		"IGNORE_CLICKS",
 		"CONTINUOUS",
@@ -803,15 +803,15 @@ void dump_toolaction(std::ostream &os, const ResGadget &gadget)
 	if (g.show_transient())	os << MARGIN << MARGIN << " show_transient" << endl;
 	if (g.show_as_pop_up())	os << MARGIN << MARGIN << " show_as_pop_up" << endl;
 	if (g.has_fade_sprite())	os << MARGIN << MARGIN << " has_fade_sprite" << endl;
-	os << MARGIN << MARGIN << "Off_text: " << string_or_null(g.off_text()) << endl;
-	os << MARGIN << MARGIN << "Max_off_text: " << g.max_off_text() << endl;
-	os << MARGIN << MARGIN << "On_text: " << string_or_null(g.on_text()) << endl;
-	os << MARGIN << MARGIN << "Max_on_text: " << g.max_on_text() << endl;
+	os << MARGIN << MARGIN << "Off_ident: " << string_or_null(g.off_ident()) << endl;
+	os << MARGIN << MARGIN << "Max_off_ident: " << g.max_off_ident() << endl;
+	os << MARGIN << MARGIN << "On_ident: " << string_or_null(g.on_ident()) << endl;
+	os << MARGIN << MARGIN << "Max_on_ident: " << g.max_on_ident() << endl;
 	os << MARGIN << MARGIN << "Click_event: " << g.click_event() << endl;
 	os << MARGIN << MARGIN << "Select_show: " << string_or_null(g.select_show()) << endl;
 	os << MARGIN << MARGIN << "Adjust_event: " << g.adjust_event() << endl;
 	os << MARGIN << MARGIN << "Adjust_show: " << g.adjust_show() << endl;
-	os << MARGIN << MARGIN << "Fade_text: " << string_or_null(g.fade_text()) << endl;
+	os << MARGIN << MARGIN << "Fade_ident: " << string_or_null(g.fade_ident()) << endl;
 	os << MARGIN << MARGIN << "Max_fade: " << g.max_fade() << endl;
 }
 

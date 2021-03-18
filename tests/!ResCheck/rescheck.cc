@@ -66,8 +66,8 @@
 using namespace std;
 using namespace tbx::res;
 
-char *master_folder = "<ResCheck$Dir>.master.";
-char *test_folder = "<ResCheck$Dir>.test.";
+const char *master_folder = "<ResCheck$Dir>.master.";
+const char *test_folder = "<ResCheck$Dir>.test.";
 
 bool compare_resources(const char *test_name, const std::string &source_fname, const std::string &target_fname);
 bool where_in_res( char *here, char *check, char *start, std::string &desc);
