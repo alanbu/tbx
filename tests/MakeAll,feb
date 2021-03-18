@@ -1,0 +1,12 @@
+| Build all the tests
+
+Dir <Obey$Dir>
+Wimpslot -min 32M
+make
+make -C !KTest/src
+make -C !ResChek
+make -C !ResView
+make -C !SaverTest/src
+make -C !TbxHarness
+make -C !TbxMsgBox/src
+make -C !TbxURI/src
