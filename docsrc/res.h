@@ -1,5 +1,5 @@
 /**
- * @namespace res Classes to use/edit toolbox resources in memory
+ * @namespace tbx::res Classes to use/edit toolbox resources in memory
  *
  * The res namespace provides classes to use/edit toolbox resources
  * in memory.

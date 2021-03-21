@@ -1,5 +1,5 @@
 /**
- * @namespace doc Helper classes to create a document based application
+ * @namespace tbx::doc Helper classes to create a document based application
  *
  * The doc namespace provides helper classes to make it easy to produce
  * a document editing application.

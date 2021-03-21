@@ -1,5 +1,5 @@
 /**
- * @namespace ext::res Classes to use/edit toolbox resources in memory for extension Objects/Gadgets.
+ * @namespace tbx::ext::res Classes to use/edit toolbox resources in memory for extension Objects/Gadgets.
  *
  * The res namespace provides classes to use/edit toolbox resources
  * in memory for third party (i.e. not shipped with RISC OS) objects/gadgets.

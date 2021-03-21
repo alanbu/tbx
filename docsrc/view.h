@@ -1,5 +1,5 @@
 /**
- * @namespace view Helper classes to display and edit data
+ * @namespace tbx::view Helper classes to display and edit data
  *
  * The view namespace provides helper classes to make it easier to
  * display and interact with formatted data.

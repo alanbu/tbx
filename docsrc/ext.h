@@ -1,5 +1,5 @@
 /**
- * @namespace ext Classes to access third-party extensions to RISC OS
+ * @namespace tbx::ext Classes to access third-party extensions to RISC OS
  *
  * The ext namespace provides helper classes to make it easier to
  * user third party applications and modules that are not installed
