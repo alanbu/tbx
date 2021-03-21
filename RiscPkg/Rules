@@ -17,11 +17,9 @@ else
 endif
 
 ifeq ($(HOST),riscos)
-CC_PATTERN=cc
 TOOL_PATH=""
 ZIP=zip
 else
-CC_PATTERN=*.cc
 TOOL_PATH=$(GCCSDK_INSTALL_ENV)/bin/
 ZIP=$(GCCSDK_INSTALL_ENV)/ro-path ../unix-zip
 endif
@@ -39,13 +37,19 @@ pkg:
 	mkdir -p $(INSTALL_TO)
 	cp RiscPkg/Copyright Temp/RiscPkg	
 	cp -rf !TBX $(INSTALL_TO)
-	cp -rf tbx $(INSTALL_TO)/!TBX
-	rm -rf $(INSTALL_TO)/!TBX/tbx/$(CC_PATTERN)
-	rm -rf $(INSTALL_TO)/!TBX/tbx/doc/$(CC_PATTERN)
-	rm -rf $(INSTALL_TO)/!TBX/tbx/ext/$(CC_PATTERN)
-	rm -rf $(INSTALL_TO)/!TBX/tbx/view/$(CC_PATTERN)
-	rm -rf $(INSTALL_TO)/!TBX/tbx/res/$(CC_PATTERN)
 	set UnixEnv$$cp$$sfix f:for:F:fpp:cc:cxx:cpp:c++:C:i:ii:rpo:c:m:h:hh:s:S:xrb:xrs:l:o:y:tcc:cmhg:adb:ads:ali
+	mkdir -p $(INSTALL_TO)/!TBX/tbx
+	cp -rf tbx/*.h $(INSTALL_TO)/!TBX/tbx
+	mkdir -p $(INSTALL_TO)/!TBX/tbx/doc
+	cp -rf tbx/doc/*.h $(INSTALL_TO)/!TBX/tbx/doc
+	mkdir -p $(INSTALL_TO)/!TBX/tbx/ext
+	cp -rf tbx/ext/*.h $(INSTALL_TO)/!TBX/tbx/ext
+	mkdir -p $(INSTALL_TO)/!TBX/tbx/ext/res
+	cp -rf tbx/ext/res/*.h $(INSTALL_TO)/!TBX/tbx/ext/res
+	mkdir -p $(INSTALL_TO)/!TBX/tbx/view
+	cp -rf tbx/view/*.h $(INSTALL_TO)/!TBX/tbx/view
+	mkdir -p $(INSTALL_TO)/!TBX/tbx/res
+	cp -rf tbx/res/*.h $(INSTALL_TO)/!TBX/tbx/res
 	cp libtbx.a $(INSTALL_TO)/!TBX
 	cp -R docs/html $(INSTALL_TO)/!TBX/html/refguide
 	cp -R userguide/html $(INSTALL_TO)/!TBX/html/userguide
