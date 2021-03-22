@@ -15,6 +15,7 @@ The main features of this release are:
  * Added MemoryLoader class as a userful helper base class to create a Loader.
  * SpriteArea clear method and improvements to sizing of sprite area.
  * Fixed bugs in subwindow alignment flags and montonic time comparison functions.
+ * Fixed packaging after last release include intermediate built files
 
 TBX is a C++ library to help with the development of
 C++ applications for the RISC OS desktop.
