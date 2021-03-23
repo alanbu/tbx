@@ -13,14 +13,8 @@
  It is released under a free sofware licence (the X11 Licence) so that
  it can be freely modified and used by anyone.
  </p>
- <h3>Alpha Version 0.7.6</h3>
- <p>The current release is an alpha version with some ommissions and
- possibly a few bugs too!</p>
- <p>
- However it does have enough functionality to write full applications.
- If you try to use the library and need something that is missing please
- get in touch with me (alan_baa@hotmail.com).
- </p>
+ <p>Version 0.7.6</p>
+ 
  <h3>Documentation</h3>
  <ul>
  <li><a href="userguide/index.html">User Guide</a></li>
@@ -30,7 +24,7 @@
  <li><a href="refguide/source.html">Source</a></li>
  <li><a href="refguide/history.html">History/Changelog</a></li>
  </ul>
- *
+ 
  <h3>Contact</h3>
  <p>
  Please send feedback, bug reports and comments to Alan Buckley
