@@ -255,6 +255,9 @@ public:
 	void set_colour(Colour foreground, Colour background);
 	void get_colour(Colour &foreground, Colour &background) const;
 
+	int set_cursor_position(int index, int flags);
+    int get_cursor_position();
+
 	/**
 	 * Set the size of the border for the text area
 	 *

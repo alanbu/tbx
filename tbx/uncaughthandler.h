@@ -53,7 +53,7 @@ public:
 	 * @param e pointer to std::exception caught or 0 if the exception
 	 *  wasn't a standard exception.
 	 */
-	virtual void uncaught_exception(std::exception *e) = 0;
+	virtual void uncaught_exception(std::exception *e, int event_code) = 0;
 };
 
 }

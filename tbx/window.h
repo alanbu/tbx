@@ -151,7 +151,7 @@ namespace tbx
 		 */
 		bool operator!=(const Object &other) const {return (_handle != other.handle());}
 
-		void show_as_subwindow(const ShowSubWindowSpec &spec);
+		void show_as_subwindow(const ShowSubWindowSpec &spec, ObjectId parent = 0, ComponentId cmp_id = -1);
 
 		Gadget gadget(ComponentId component_id);
 

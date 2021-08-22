@@ -151,16 +151,17 @@ void EventRouter::poll()
 
     	if (_catch_exceptions)
     	{
+    	    int r0 = regs.r[0];
 			try
 			{
 				route_event(regs.r[0]);
 			} catch(std::exception &e)
 			{
-				if (_uncaught_handler) _uncaught_handler->uncaught_exception(&e);
+				if (_uncaught_handler) _uncaught_handler->uncaught_exception(&e, r0);
 				else report_error(e.what(), "Uncaught Exception");
 			} catch(...)
 			{
-				if (_uncaught_handler) _uncaught_handler->uncaught_exception(0);
+				if (_uncaught_handler) _uncaught_handler->uncaught_exception(0, r0);
 				else report_error("Uncaught exception");
 			}
     	} else

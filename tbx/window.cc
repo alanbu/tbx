@@ -59,15 +59,15 @@ Window::Window(const res::ResWindow &object_template) : ShowFullObject(object_te
  * @param spec ShowSubWindowSpec specifying the location, parent
  * and alignment flags for positioning this window in it's parent.
  */
-void Window::show_as_subwindow(const ShowSubWindowSpec &spec)
+void Window::show_as_subwindow(const ShowSubWindowSpec &spec, ObjectId parent, ComponentId cmp_id)
 {
 	swix_check(_swix(0x44EC3, _INR(0,5),
 			4,  // Show as sub window flag
 			_handle,
 			1,  // Show using full spec
 			&(spec.visible_area),
-			0,
-			-1));
+			parent,
+            cmp_id));
 }
 
 

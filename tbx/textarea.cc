@@ -216,7 +216,7 @@ void TextArea::set_colour(WimpColour foreground, WimpColour background)
 	regs.r[1] = _handle;
 	regs.r[3] = _id;
 	regs.r[4] = foreground;
-	regs.r[4] = background;
+	regs.r[5] = background;
 	swix_check(_kernel_swi(0x44ec6, &regs, &regs));
 }
 
@@ -234,7 +234,7 @@ void TextArea::set_colour(Colour foreground, Colour background)
 	regs.r[1] = _handle;
 	regs.r[3] = _id;
 	regs.r[4] = foreground;
-	regs.r[4] = background;
+	regs.r[5] = background;
 	swix_check(_kernel_swi(0x44ec6, &regs, &regs));
 }
 
@@ -254,6 +254,29 @@ void TextArea::get_colour(Colour &foreground, Colour &background) const
 	swix_check(_kernel_swi(0x44ec6, &regs, &regs));
 	foreground = regs.r[0];
 	background = regs.r[1];
+}
+
+int TextArea::set_cursor_position(int index, int flags)
+{
+    _kernel_swi_regs regs;
+    regs.r[0] = flags;
+    regs.r[2] = 0x4023;
+    regs.r[1] = _handle;
+    regs.r[3] = _id;
+    regs.r[4] = index;
+    swix_check(_kernel_swi(0x44ec6, &regs, &regs));
+    return regs.r[4];
+}
+
+int TextArea::get_cursor_position()
+{
+    _kernel_swi_regs regs;
+    regs.r[0] = 0;
+    regs.r[2] = 0x4024;
+    regs.r[1] = _handle;
+    regs.r[3] = _id;
+    swix_check(_kernel_swi(0x44ec6, &regs, &regs));
+    return regs.r[4];
 }
 
 
