@@ -135,6 +135,8 @@ namespace tbx
 		void show();
 		void show_centred();
 		void show_at_pointer();
+		void show_centred_as_menu();
+		void show_at_pointer_as_menu();
 		void hide();
 		bool showing() const;
 
