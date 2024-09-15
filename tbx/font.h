@@ -218,7 +218,7 @@ namespace tbx
     {
     public:
     	void set_colours(Colour foreground, Colour background);
-
+		void set_wimp_colours(WimpColour foreground, WimpColour background);
     	/**
     	 * Return height of the font
     	 *

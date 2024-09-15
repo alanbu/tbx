@@ -4,10 +4,10 @@
             "name": "RiscOS",
             "includePath": [
                 "${workspaceFolder}/**",
-                "/home/alan/gccsdk/env/include"
+                "/home/alanb/gccsdk/env/include"
             ],
             "defines": [],
-            "compilerPath": "/home/alan/gccsdk/cross/bin/arm-unknown-riscos-g++",
+            "compilerPath": "/home/alanb/gccsdk/cross/bin/arm-unknown-riscos-g++",
             "cStandard": "c11",
             "cppStandard": "c++11",
             "intelliSenseMode": "gcc-x64"

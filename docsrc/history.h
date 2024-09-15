@@ -1,6 +1,10 @@
 /**
  * @page history History/Changelog
  *
+ * <B>0.7.7 ??? 2024?</B>
+ *
+ * - Added WimpFont::set_wimp_colors to allows setting display of text in Wimp using the standard colour and WimpFontItemRenderer updated to use this.
+ *
  * <B>0.7.6 March 2021</B>
  *
  *  - Removed Alpha from version as it has been used in distributed programs for over 10 years

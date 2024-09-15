@@ -779,8 +779,8 @@ Size Font::size() const
 
 	swix_check(_kernel_swi(0x40083, &regs, &regs));
 
-	sz.width = regs.r[2]; // x point size × 16 (ie in 1/16ths point)
-	sz.height = regs.r[3]; // y point size × 16 (ie in 1/16ths point
+	sz.width = regs.r[2]; // x point size x 16 (ie in 1/16ths point)
+	sz.height = regs.r[3]; // y point size x 16 (ie in 1/16ths point
 
 	return sz;
 }
@@ -957,6 +957,18 @@ void WimpFont::set_colours(Colour foreground, Colour background)
 	swix_check(_swix(Wimp_TextOp, _INR(0,2), 0,
 			(unsigned)foreground,
 			(unsigned)background));
+}
+/**
+ * Sets the anti-aliased font colours from the two standard Wimp colours specified
+ *
+ * @param foreground foreground Wimp colour for the font
+ * @param background background Wimp colour for the font
+ */
+void WimpFont::set_wimp_colours(WimpColour foreground, WimpColour background)
+{
+	swix_check(_swix(Wimp_SetFontColours, _INR(1,2),
+			(unsigned)background,
+			(unsigned)foreground));
 }
 
 /**
